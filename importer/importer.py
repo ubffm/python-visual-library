@@ -5,11 +5,14 @@ from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup as Soup
 from datetime import datetime
 
+from exporter.exporter import InstanceExporter
 from .htmlhandler import get_content_from_url
+from exporter.journal import Article, Issue, Journal
 
 logger = logging.getLogger('Import')
 BASE64_ENCODING_STRING = 'base64'
 UTF8_ENCODING_STRING = 'utf-8'
+DEBUG_FILE_DATA_CONTENT_BYTE_STRING = b'Here could be your PDF file!'
 
 
 class XMLImporter(ABC):
@@ -50,7 +53,35 @@ class XMLImporter(ABC):
         pass
 
 
-class MetsImporter(XMLImporter):
+class File:
+    """ A class holding all information on a file. """
+
+    def __init__(self):
+        self.name = None
+        self.date_uploaded = None
+        self.date_modified = None
+        self.mime_type = None
+        self.languages = None
+        self.data = None
+
+        self._size = 0
+
+    def get_data_in_base64_encoding(self):
+        """ Transforms the data property into a base64-encoded string. """
+
+        encoded_bytes = base64.b64encode(self.data)
+        return str(encoded_bytes, UTF8_ENCODING_STRING)
+
+    @property
+    def size(self):
+        return self._size
+
+    @size.setter
+    def size(self, value):
+        self._size = int(value)
+
+
+class MetsImporter(XMLImporter, InstanceExporter):
     """ A class for importing METS data. """
 
     ATTRIBUTE_FILTER_FOR_SECTIONS = {
@@ -77,8 +108,11 @@ class MetsImporter(XMLImporter):
     def __init__(self, debug=False):
         super().__init__()
         self.structure = []
-        self.files_dict = {}
         self.debug_mode = debug
+
+    def get_next_instance(self):
+        for struct in self.structure:
+            pass
 
     def update_data(self):
         """ Reads the structure of the given METS object recursively. """
@@ -88,32 +122,7 @@ class MetsImporter(XMLImporter):
                                               recursive=False)
         self.structure = [self.Section(sec, self.xml_data) for sec in subsections]
 
-        self._resolve_met_internal_id_references_for_section()
-
-    def _resolve_met_internal_id_references_for_section(self):
-        """ Search all downloadable files belonging to this object.
-            This function only searches for the file group tag that has the USE=DOWNLOAD attribute.
-        """
-
-        file_group_attributes = {self.ATTRIBUTE_KEY_USE_STRING: self.ATTRIBUTE_DOWNLOAD_STRING.upper()}
-        mets_file_group_download = self.xml_data.find(self.METS_TAG_FILE_GROUP_STRING, file_group_attributes)
-
-        assert mets_file_group_download, \
-            'No file group section with the tag <{tag}> and the attributes {attributes} identified!'.format(
-                tag=self.METS_TAG_FILE_GROUP_STRING, attributes=file_group_attributes)
-
-        for section in self.structure:
-            if section.file_pointers is not None:
-                for file_pointer in section.file_pointers:
-                    logger.debug('Processing file pointer: {}'.format(file_pointer))
-                    file_tag_id = file_pointer.get(self.ATTRIBUTE_FILE_ID_STRING)
-                    file_metdata = mets_file_group_download.find(attrs={self.ATTRIBUTE_ID_STRING: file_tag_id})
-                    if file_metdata is not None:
-                        file = self._get_file_from_metadata(file_metdata)
-                        file.languages = section.languages
-                        self.files_dict[file_tag_id] = file
-                    else:
-                        logger.debug('No file node found with id "{}". Skipping!'.format(file_tag_id))
+        self._resolve_mets_internal_id_references_for_section()
 
     def _get_file_from_metadata(self, mets_data):
         """ Creates a file object and adds data as far as possible.
@@ -143,11 +152,43 @@ class MetsImporter(XMLImporter):
                         file.data = get_content_from_url(url)
                     else:
                         # Dummy data for testing purpose
-                        file.data = b'Here could be your PDF file!'
+                        file.data = DEBUG_FILE_DATA_CONTENT_BYTE_STRING
             else:
                 raise TypeError('The file location type {} is not implemented!'.format(location_type))
 
         return file
+
+    def _resolve_mets_internal_id_references_for_section(self):
+        """ Search all downloadable files belonging to this object.
+            This function only searches for the file group tag that has the USE=DOWNLOAD attribute.
+        """
+
+        file_group_attributes = {self.ATTRIBUTE_KEY_USE_STRING: self.ATTRIBUTE_DOWNLOAD_STRING.upper()}
+        mets_file_group_download = self.xml_data.find(self.METS_TAG_FILE_GROUP_STRING, file_group_attributes)
+
+        assert mets_file_group_download, \
+            'No file group section with the tag <{tag}> and the attributes {attributes} identified!'.format(
+                tag=self.METS_TAG_FILE_GROUP_STRING, attributes=file_group_attributes)
+
+        def resolve_file_pointers(sec):
+            for file_pointer_data in sec.file_pointers_data:
+                logger.debug('Processing file pointer: {}'.format(file_pointer_data))
+                file_tag_id = file_pointer_data.get(self.ATTRIBUTE_FILE_ID_STRING)
+                file_metdata = mets_file_group_download.find(attrs={self.ATTRIBUTE_ID_STRING: file_tag_id})
+                if file_metdata is not None:
+                    file = self._get_file_from_metadata(file_metdata)
+                    file.languages = section.languages
+                    sec.files.add(file)
+                else:
+                    logger.debug('No file node found with id "{}". Skipping!'.format(file_tag_id))
+
+            sec.guess_section_type()
+
+            for child in sec.sections:
+                resolve_file_pointers(child)
+
+        for section in self.structure:
+            resolve_file_pointers(section)
 
     class Section:
         """ A subdivision within a METS object. """
@@ -161,6 +202,10 @@ class MetsImporter(XMLImporter):
         METS_TAG_METADATA_SECTION_STRING = 'mets:dmdsec'
         METS_TAG_LANGUAGE_LIST_STRING = 'mods:language'
         METS_TAG_SPECIFIC_LANGUAGE_STRING = 'mods:languageterm'
+        XML_HEADER_STRING = 'header'
+        XML_HEADER_SPECIFICATION_STRING = 'setSpec'
+
+        XML_HEADER_SPECIFICATION_TYPES_LIST = ['']
 
         def __init__(self, mets_data: Soup, full_xml_data):
             self.id = mets_data.get(MetsImporter.ATTRIBUTE_ID_STRING)
@@ -169,9 +214,11 @@ class MetsImporter(XMLImporter):
             self.order = mets_data.get(self.ATTRIBUTE_ORDER)
             self.metadata = None
             self.languages = set()
+            self.files = set()
+            self.section_type = None
 
-            self.file_pointers = mets_data.find_all(self.METS_TAG_FILE_POINTER_STRING)
-            self.resource_pointer = mets_data.find_all(self.METS_TAG_RESOURCE_POINTER_STRING)
+            self.file_pointers_data = mets_data.find_all(self.METS_TAG_FILE_POINTER_STRING, recursive=False)
+            self.resource_pointer = mets_data.find_all(self.METS_TAG_RESOURCE_POINTER_STRING, recursive=False)
 
             subsections = mets_data.find_all(name=MetsImporter.METS_TAG_DIV_STRING,
                                              attrs=MetsImporter.ATTRIBUTE_FILTER_FOR_SECTIONS, recursive=False)
@@ -193,31 +240,17 @@ class MetsImporter(XMLImporter):
             self.metadata = xml_metadata.find(name=self.METS_TAG_METADATA_SECTION_STRING,
                                               attrs={MetsImporter.ATTRIBUTE_ID_STRING: self.metadata_id})
 
+        def guess_section_type(self):
+            """ Tries to find a journal type fitting the given attributes of the instance. """
+            
+            if not self.sections and self.files:
+                self.section_type = Article
+            elif self.sections:
+                if len(self.sections) > 1:
+                    self.section_type = Issue
+                else:
+                    self.section_type = Journal
 
-class File:
-    """ A class holding all information on a file. """
-
-    def __init__(self):
-        self.name = None
-        self.date_uploaded = None
-        self.date_modified = None
-        self.mime_type = None
-        self.languages = None
-        self.encoding = None
-        self.data = None
-
-        self._size = 0
-
-    def get_data_in_base64_encoding(self):
-        """ Transforms the data property into a base64-encoded string. """
-
-        encoded_bytes = base64.b64encode(self.data.encode(UTF8_ENCODING_STRING))
-        return str(encoded_bytes, UTF8_ENCODING_STRING)
-
-    @property
-    def size(self):
-        return self._size
-
-    @size.setter
-    def size(self, value):
-        self._size = int(value)
+            if self.section_type is not None:
+                logger.debug('Estimated section ID {id} to be a {instance_name}'.format(id=self.id,
+                                                                                        instance_name=self.section_type.__name__))
