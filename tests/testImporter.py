@@ -3,7 +3,6 @@ from datetime import datetime
 from pathlib import Path
 
 from importer.importer import File, MetsImporter, DEBUG_FILE_DATA_CONTENT_BYTE_STRING
-from exporter.journal import Article, Issue, Journal
 
 TEST_DATA_DIRECTORY = './data'
 
@@ -21,12 +20,10 @@ class TestImporter:
         assert len(journal.sections) == 1
         assert len(journal.resource_pointer) == 1
         assert journal.metadata is not None
-        assert journal.section_type == Journal
 
         issue = journal.sections[0]
         assert len(issue.resource_pointer) == 0
         assert issue.metadata is not None
-        assert issue.section_type == Issue
 
         articles = issue.sections
         pdf_creation_date = datetime.fromisoformat('2020-06-08')
@@ -51,10 +48,8 @@ class TestImporter:
                     assert f.languages == {'ger'}
                     assert f.data == DEBUG_FILE_DATA_CONTENT_BYTE_STRING
                     assert re.match(r'pdf_[0-9]*\.pdf', f.name)
-                    assert article.section_type == Article
             else:
                 assert len(article.files) == 0
-                assert article.section_type is None
 
             if article.id in articles_with_metadata:
                 assert article.metadata is not None
@@ -66,7 +61,7 @@ def get_oai_response_xml_string():
     oai_response_file_path = Path(TEST_DATA_DIRECTORY, 'oai-response.xml')
     with open(str(oai_response_file_path), 'r') as oai_response:
         oai_response_string = oai_response.read()
-    return  oai_response_string
+    return oai_response_string
 
 
 class TestFileClass:

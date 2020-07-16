@@ -5,9 +5,7 @@ from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup as Soup
 from datetime import datetime
 
-from exporter.exporter import InstanceExporter
 from .htmlhandler import get_content_from_url
-from exporter.journal import Article, Issue, Journal
 
 logger = logging.getLogger('Import')
 BASE64_ENCODING_STRING = 'base64'
@@ -63,8 +61,12 @@ class File:
         self.mime_type = None
         self.languages = None
         self.data = None
+        self.url = None
 
         self._size = 0
+
+    def download_file_data_from_source(self):
+        self.data = get_content_from_url(url)
 
     def get_data_in_base64_encoding(self):
         """ Transforms the data property into a base64-encoded string. """
@@ -81,7 +83,7 @@ class File:
         self._size = int(value)
 
 
-class MetsImporter(XMLImporter, InstanceExporter):
+class MetsImporter(XMLImporter):
     """ A class for importing METS data. """
 
     ATTRIBUTE_FILTER_FOR_SECTIONS = {
@@ -104,20 +106,36 @@ class MetsImporter(XMLImporter, InstanceExporter):
     METS_TAG_FILE_STRING = 'mets:file'
 
     URL_STRING = 'URL'
+    SECTION_ID_PREFIX_STRING = 'log'
+    LOGICAL_STRING = 'LOGICAL'
+    TYPE_STRING = 'type'
 
     def __init__(self, debug=False):
         super().__init__()
         self.structure = []
         self.debug_mode = debug
 
-    def get_next_instance(self):
-        for struct in self.structure:
-            pass
+    def get_section_by_id(self, section_id):
+        def search_section(section):
+            prefixed_section_id = '{section_id_prefix}{section_id}'.format(section_id_prefix=self.SECTION_ID_PREFIX_STRING,
+                                                                           section_id=section_id)
+            for sec in section:
+                if sec.id == prefixed_section_id:
+                    return sec
+
+                return search_section(sec.sections)
+
+        return search_section(self.structure)
 
     def update_data(self):
         """ Reads the structure of the given METS object recursively. """
 
-        mets_structure = self.xml_data.find(self.METS_TAG_OBJECT_STRUCTURE_STRING)
+        mets_structure = self.xml_data.find(self.METS_TAG_OBJECT_STRUCTURE_STRING, {self.TYPE_STRING: self.LOGICAL_STRING})
+
+        if mets_structure is None:
+            raise ImportError('The given URL or ID did not return METS-XML or could not find the searched data!\n'
+                              'XML Response:\n{xml_data}'.format(xml_data=self.xml_data))
+
         subsections = mets_structure.find_all(name=self.METS_TAG_DIV_STRING, attrs=self.ATTRIBUTE_FILTER_FOR_SECTIONS,
                                               recursive=False)
         self.structure = [self.Section(sec, self.xml_data) for sec in subsections]
@@ -148,10 +166,8 @@ class MetsImporter(XMLImporter, InstanceExporter):
                 url = location.get(self.ATTRIBUTE_LINK_STRING)
                 if url is not None:
                     logger.debug('Downloading data from URL: {}'.format(url))
-                    if not self.debug_mode:
-                        file.data = get_content_from_url(url)
-                    else:
-                        # Dummy data for testing purpose
+                    file.url = url
+                    if self.debug_mode:
                         file.data = DEBUG_FILE_DATA_CONTENT_BYTE_STRING
             else:
                 raise TypeError('The file location type {} is not implemented!'.format(location_type))
@@ -182,8 +198,6 @@ class MetsImporter(XMLImporter, InstanceExporter):
                 else:
                     logger.debug('No file node found with id "{}". Skipping!'.format(file_tag_id))
 
-            sec.guess_section_type()
-
             for child in sec.sections:
                 resolve_file_pointers(child)
 
@@ -200,12 +214,12 @@ class MetsImporter(XMLImporter, InstanceExporter):
         METS_TAG_FILE_POINTER_STRING = 'mets:fptr'
         METS_TAG_RESOURCE_POINTER_STRING = 'mets:mptr'
         METS_TAG_METADATA_SECTION_STRING = 'mets:dmdsec'
-        METS_TAG_LANGUAGE_LIST_STRING = 'mods:language'
-        METS_TAG_SPECIFIC_LANGUAGE_STRING = 'mods:languageterm'
-        XML_HEADER_STRING = 'header'
-        XML_HEADER_SPECIFICATION_STRING = 'setSpec'
 
-        XML_HEADER_SPECIFICATION_TYPES_LIST = ['']
+        MODS_TAG_LANGUAGE_LIST_STRING = 'mods:language'
+        MODS_TAG_SPECIFIC_LANGUAGE_STRING = 'mods:languageterm'
+        MODS_TAG_TITLE_INFO_STRING = 'mods:titleinfo'
+        MODS_TAG_TITLE_STRING = 'mods:title'
+        MODS_TAG_SUBTITLE_STRING = 'mods:subtitle'
 
         def __init__(self, mets_data: Soup, full_xml_data):
             self.id = mets_data.get(MetsImporter.ATTRIBUTE_ID_STRING)
@@ -215,7 +229,8 @@ class MetsImporter(XMLImporter, InstanceExporter):
             self.metadata = None
             self.languages = set()
             self.files = set()
-            self.section_type = None
+            self.title = None
+            self.subtitle = None
 
             self.file_pointers_data = mets_data.find_all(self.METS_TAG_FILE_POINTER_STRING, recursive=False)
             self.resource_pointer = mets_data.find_all(self.METS_TAG_RESOURCE_POINTER_STRING, recursive=False)
@@ -227,9 +242,14 @@ class MetsImporter(XMLImporter, InstanceExporter):
             if self.metadata_id:
                 self.extract_section_metadata_from_complete_dataset(full_xml_data)
 
-                language_list = self.metadata.find(self.METS_TAG_LANGUAGE_LIST_STRING)
+                language_list = self.metadata.find(self.MODS_TAG_LANGUAGE_LIST_STRING)
                 if language_list is not None:
-                    self.languages = set(lang.text for lang in language_list.find_all(self.METS_TAG_SPECIFIC_LANGUAGE_STRING))
+                    self.languages = set(lang.text for lang in language_list.find_all(self.MODS_TAG_SPECIFIC_LANGUAGE_STRING))
+
+            title_info = mets_data.find(self.MODS_TAG_TITLE_INFO_STRING)
+            if title_info is not None:
+                self.title = title_info.find(self.MODS_TAG_TITLE_STRING)
+                self.subtitle = title_info.find(self.MODS_TAG_SUBTITLE_STRING)
 
         def extract_section_metadata_from_complete_dataset(self, xml_metadata):
             """ Gets the metadata for this section from the overall metadataset.
@@ -239,18 +259,3 @@ class MetsImporter(XMLImporter, InstanceExporter):
 
             self.metadata = xml_metadata.find(name=self.METS_TAG_METADATA_SECTION_STRING,
                                               attrs={MetsImporter.ATTRIBUTE_ID_STRING: self.metadata_id})
-
-        def guess_section_type(self):
-            """ Tries to find a journal type fitting the given attributes of the instance. """
-            
-            if not self.sections and self.files:
-                self.section_type = Article
-            elif self.sections:
-                if len(self.sections) > 1:
-                    self.section_type = Issue
-                else:
-                    self.section_type = Journal
-
-            if self.section_type is not None:
-                logger.debug('Estimated section ID {id} to be a {instance_name}'.format(id=self.id,
-                                                                                        instance_name=self.section_type.__name__))
