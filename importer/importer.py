@@ -182,10 +182,6 @@ class MetsImporter(XMLImporter):
         file_group_attributes = {self.ATTRIBUTE_KEY_USE_STRING: self.ATTRIBUTE_DOWNLOAD_STRING.upper()}
         mets_file_group_download = self.xml_data.find(self.METS_TAG_FILE_GROUP_STRING, file_group_attributes)
 
-        assert mets_file_group_download, \
-            'No file group section with the tag <{tag}> and the attributes {attributes} identified!'.format(
-                tag=self.METS_TAG_FILE_GROUP_STRING, attributes=file_group_attributes)
-
         def resolve_file_pointers(sec):
             for file_pointer_data in sec.file_pointers_data:
                 logger.debug('Processing file pointer: {}'.format(file_pointer_data))
@@ -201,8 +197,9 @@ class MetsImporter(XMLImporter):
             for child in sec.sections:
                 resolve_file_pointers(child)
 
-        for section in self.structure:
-            resolve_file_pointers(section)
+        if mets_file_group_download is not None:
+            for section in self.structure:
+                resolve_file_pointers(section)
 
     class Section:
         """ A subdivision within a METS object. """

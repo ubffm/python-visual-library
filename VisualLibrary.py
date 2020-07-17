@@ -13,6 +13,13 @@ class VisualLibraryExportElement:
     MODS_TAG_PUBLICATION_DATE_STRING = 'mods:date'
     MODS_TAG_PUBLICATION_DATE_ISSUED_STRING = 'mods:dateissued'
     MODS_TAG_ORIGIN_INFO_STRING = 'mods:origininfo'
+    MODS_TAG_TITLE_INFO_STRING = 'mods:titleinfo'
+    MODS_TAG_TITLE_STRING = 'mods:title'
+    MODS_TAG_SUBTITLE_STRING = 'mods:subtitle'
+    MODS_TAG_LANGUAGE_STRING = 'mods:language'
+    MODS_TAG_LANGUAGE_TERM_STRING = 'mods:languageterm'
+    MODS_TAG_NAME_STRING = 'mods:name'
+    MODS_TAG_ROLE_STRING = 'mods:roleterm'
 
     SECTION_LABEL_STRING = 'LABEL'
     SECTION_ORDER_STRING = 'ORDER'
@@ -22,6 +29,9 @@ class VisualLibraryExportElement:
     LOCTYPE_STRING = 'loctype'
     URL_STRING = 'URL'
     HREF_LINK_STRING = 'xlink:href'
+    AUTHORITY_STRING = 'authority'
+    MARCRELATOR_STRING = 'marcrelator'
+    TYPE_STRING = 'type'
 
     def __init__(self, vl_id, xml_importer, parent):
         self.id = vl_id
@@ -29,7 +39,11 @@ class VisualLibraryExportElement:
         self.xml_data = xml_importer.xml_data
         self._own_section = self._get_own_sections()
         self.sections = self._own_section.sections
+        self.metadata = self._own_section.metadata
 
+        self.title = None
+        self.subtitle = None
+        self.languages = set()
         self.label = self._own_section.label
         self.order = self._own_section.order
         self.publication_date = None
@@ -37,6 +51,8 @@ class VisualLibraryExportElement:
         self.files = self._own_section.files
 
         self._extract_publication_date_from_metadata()
+        self._extract_titles_from_metadata()
+        self._extract_languages_from_metadata()
 
     def _extract_publication_date_from_metadata(self):
         def get_earliest_date():
@@ -55,11 +71,41 @@ class VisualLibraryExportElement:
                     else:
                         earliest_date_element = date
 
+            if earliest_date_element is not None:
+                earliest_date_element = str(earliest_date_element)
+
             return earliest_date_element
 
-        origin_info_elements = self._own_section.metadata.find_all([self.MODS_TAG_PUBLICATION_DATE_STRING,
-                                                                    self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING])
-        self.publication_date = get_earliest_date()
+        origin_info_elements = self.metadata.find_all([self.MODS_TAG_PUBLICATION_DATE_STRING,
+                                                       self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING])
+
+        if isinstance(self, Journal):
+            self._get_publication_duration(origin_info_elements)
+        else:
+            self.publication_date = get_earliest_date()
+
+    def _extract_languages_from_metadata(self):
+        languages_element = self.metadata.find(self.MODS_TAG_LANGUAGE_STRING)
+
+        if languages_element is None:
+            return
+
+        self.languages = set(language.text for language in languages_element.find_all(self.MODS_TAG_LANGUAGE_TERM_STRING))
+
+    def _extract_titles_from_metadata(self):
+        title_info_element = self.metadata.find(self.MODS_TAG_TITLE_INFO_STRING)
+
+        # Issues and Volumes may not have a title
+        if title_info_element is None:
+            return
+
+        title_element = title_info_element.find(self.MODS_TAG_TITLE_STRING)
+        if title_element is not None:
+            self.title = title_element.text
+
+        subtitle_element = title_info_element.find(self.MODS_TAG_SUBTITLE_STRING)
+        if subtitle_element is not None:
+            self.subtitle = subtitle_element.text
 
     def _get_own_sections(self):
         return self.xml_importer.get_section_by_id(self.id)
@@ -95,15 +141,63 @@ class VisualLibraryExportElement:
 
         return instantiated_sections
 
+    def _get_authority_element_by_role(self, role_type):
+        persons_in_metadata = self.metadata.find_all(self.MODS_TAG_NAME_STRING)
+        persons_in_given_role = [person_element
+                                for person_element in persons_in_metadata
+                                if person_element.find(self.MODS_TAG_ROLE_STRING,
+                                                       {self.AUTHORITY_STRING: self.MARCRELATOR_STRING}).text == role_type
+                                ]
+
+        return  persons_in_given_role
+
+
     @staticmethod
     def _function_is_read_only():
         Exception('This element may not be modified! Read only!')
 
 
 class Journal(VisualLibraryExportElement):
+    PUBLISHER_SHORT_STRING = 'isb'
+    MODS_TAG_DISPLAY_NAME_STRING = 'mods:displayform'
+
+    ATTRIBUTE_URI_VALUE_STRING = 'valueuri'
+
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
         self.volumes = []
+        self.publisher = None
+
+        self._extract_publisher_from_metadata()
+
+    @property
+    def volumes(self):
+        return self._resolve_depending_sections()
+
+    @volumes.setter
+    def volumes(self, val):
+        self._function_is_read_only()
+
+    def _get_publication_duration(self, date_elements):
+        for date_element in date_elements:
+            date_period = re.match(r'^[0-9]{4}-[0-9]{4}', date_element.text)
+            if date_period:
+                self.publication_date = date_period.group()
+                break
+
+    def _extract_publisher_from_metadata(self):
+        Publisher = namedtuple('Publisher', ['name', 'uri'])
+
+        publishers_in_metadata = self._get_authority_element_by_role(self.PUBLISHER_SHORT_STRING)
+        publishers = []
+        for publisher in publishers_in_metadata:
+            publisher_name = publisher.find(self.MODS_TAG_DISPLAY_NAME_STRING).text
+            publisher_uri = publisher.get(self.ATTRIBUTE_URI_VALUE_STRING, '')
+            publishers.append(
+                Publisher(publisher_name, publisher_uri)
+            )
+
+        self.publishers = publishers
 
 
 class ArticleHandlingExportElement(VisualLibraryExportElement):
@@ -124,6 +218,7 @@ class Volume(ArticleHandlingExportElement):
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
         self.issues = None
+        self.publisher = None
 
     @property
     def issues(self):
@@ -143,20 +238,8 @@ class Issue(ArticleHandlingExportElement):
 class Article(VisualLibraryExportElement):
 
     METS_TAG_SECTION_STRING = 'mets:dmdsec'
-
-    MODS_TAG_NAME_STRING = 'mods:name'
-    MODS_TAG_ROLE_STRING = 'mods:roleterm'
     MODS_TAG_NAME_PART_STRING = 'mods:namepart'
-    MODS_TAG_TITLE_INFO_STRING = 'mods:titleinfo'
-    MODS_TAG_TITLE_STRING = 'mods:title'
-    MODS_TAG_SUBTITLE_STRING = 'mods:subtitle'
-    MODS_TAG_LANGUAGE_STRING = 'mods:language'
-    MODS_TAG_LANGUAGE_TERM_STRING = 'mods:languageterm'
 
-    AUTHORITY_STRING = 'authority'
-    MARCRELATOR_STRING = 'marcrelator'
-    TYPE_STRING = 'type'
-    PERSONAL_STRING = 'personal'
     AUTHOR_SHORT_STRING = 'aut'
     ID_CAPITAL_STRING = 'ID'
     GIVEN_STRING = 'given'
@@ -165,51 +248,30 @@ class Article(VisualLibraryExportElement):
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
 
-        self.files = set()
         self.authors = self._extract_author_from_metadata()
-        self.title = None
-        self.subtitle = None
-        self.languages = set()
 
-        self._extract_titles_from_metadata()
-        self._extract_languages_from_metadata()
-
-    def _extract_author_from_metadata(self) -> set:
-        """ Returns a set of author namedtuples from the metadata. """
-
-        persons_in_metadata = self.xml_data.find_all(self.MODS_TAG_NAME_STRING, {self.TYPE_STRING:
-                                                                                 self.PERSONAL_STRING})
+    def _extract_author_from_metadata(self) -> list:
+        """ Returns a list of author namedtuples from the metadata. """
 
         Author = namedtuple('Person', ['given_name', 'family_name'])
 
-        authors = set()
-        for person in persons_in_metadata:
-            if person.find(self.MODS_TAG_ROLE_STRING,
-                           {self.AUTHORITY_STRING: self.MARCRELATOR_STRING}) == self.AUTHOR_SHORT_STRING:
-                given_name = person.find(self.MODS_TAG_NAME_PART_STRING, {self.TYPE_STRING: self.GIVEN_STRING})
-                family_name = person.find(self.MODS_TAG_NAME_PART_STRING, {self.TYPE_STRING: self.FAMILY_STRING})
+        authors = []
+        author_elements_in_metadata = self._get_authority_element_by_role(self.AUTHOR_SHORT_STRING)
+        for person in author_elements_in_metadata:
+            given_name = person.find(self.MODS_TAG_NAME_PART_STRING, {self.TYPE_STRING: self.GIVEN_STRING})
+            family_name = person.find(self.MODS_TAG_NAME_PART_STRING, {self.TYPE_STRING: self.FAMILY_STRING})
 
-                # Clean names
-                given_name = given_name if given_name is not None else ''
-                family_name = family_name if family_name is not None else ''
+            # Clean names
+            given_name = given_name.text if given_name is not None else ''
+            family_name = family_name.text if family_name is not None else ''
 
-                authors.add(Author(given_name, family_name))
+            authors.append(Author(given_name, family_name))
 
         return authors
 
-    def _extract_languages_from_metadata(self):
-        languages_element = self.xml_data.find(self.MODS_TAG_LANGUAGE_STRING)
-        self.languages = set(language.text for language in languages_element.find_all(self.MODS_TAG_LANGUAGE_TERM_STRING))
-
-    def _extract_titles_from_metadata(self):
-        title_info_element = self.xml_data.find(self.MODS_TAG_TITLE_INFO_STRING)
-        title_element = title_info_element.find(self.MODS_TAG_TITLE_STRING)
-        if title_element is not None:
-            self.title = title_element.text
-
-        subtitle_element = title_info_element.find(self.MODS_TAG_SUBTITLE_STRING)
-        if subtitle_element is not None:
-            self.subtitle = subtitle_element.text
+    def _is_person_element_author(self, person_element):
+        return person_element.find(self.MODS_TAG_ROLE_STRING,
+                                   {self.AUTHORITY_STRING: self.MARCRELATOR_STRING}).text == self.AUTHOR_SHORT_STRING
 
 
 RESPONSE_HEADER = 'header'
