@@ -226,8 +226,6 @@ class MetsImporter(XMLImporter):
             self.metadata = None
             self.languages = set()
             self.files = set()
-            self.title = None
-            self.subtitle = None
 
             self.file_pointers_data = mets_data.find_all(self.METS_TAG_FILE_POINTER_STRING, recursive=False)
             self.resource_pointer = mets_data.find_all(self.METS_TAG_RESOURCE_POINTER_STRING, recursive=False)
@@ -242,11 +240,6 @@ class MetsImporter(XMLImporter):
                 language_list = self.metadata.find(self.MODS_TAG_LANGUAGE_LIST_STRING)
                 if language_list is not None:
                     self.languages = set(lang.text for lang in language_list.find_all(self.MODS_TAG_SPECIFIC_LANGUAGE_STRING))
-
-            title_info = mets_data.find(self.MODS_TAG_TITLE_INFO_STRING)
-            if title_info is not None:
-                self.title = title_info.find(self.MODS_TAG_TITLE_STRING)
-                self.subtitle = title_info.find(self.MODS_TAG_SUBTITLE_STRING)
 
         def extract_section_metadata_from_complete_dataset(self, xml_metadata):
             """ Gets the metadata for this section from the overall metadataset.

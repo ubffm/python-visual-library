@@ -14,14 +14,16 @@ class TestVisualLibrary:
         assert vl_object.publication_date == '1937-1954'
         assert vl_object.languages == {'ger'}
         assert len(vl_object.publishers) == 1
+        assert not vl_object.files
 
         publisher = vl_object.publishers[0]
         assert publisher.name == 'Naturhistorischer Verein der Rheinlande und Westfalens'
         assert publisher.uri == 'http://d-nb.info/gnd/40094-4'
 
         counter = 0
-        for _ in vl_object.volumes:
+        for volume in vl_object.volumes:
             counter += 1
+            assert volume.parent is vl_object
 
         assert counter == 6
 
@@ -35,8 +37,10 @@ class TestVisualLibrary:
         assert vl_object.publication_date == '1937'
 
         counter = 0
-        for _ in vl_object.articles:
+        for article in vl_object.articles:
             counter += 1
+            assert len(article.files) == 1
+            assert article.parent is vl_object
 
         assert counter == 7
 
