@@ -1,4 +1,5 @@
 import os
+import pytest
 
 from bs4 import BeautifulSoup as Soup
 from datetime import datetime
@@ -8,6 +9,7 @@ from ..VisualLibrary import VisualLibrary, Volume, Journal, Article, Page, File
 
 
 IMAGE_MIME_TYPE = 'image/jpeg'
+
 
 class TestVisualLibrary:
     def test_call_for_journal(self):
@@ -109,19 +111,19 @@ class TestPage:
         mime_type_image_string = IMAGE_MIME_TYPE
 
         page_thumbnail_file = page.thumbnail
-        test_file(page_thumbnail_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/128/9660761',
+        file_test(page_thumbnail_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/128/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         page_default_res_file = page.image_default_resolution
-        test_file(page_default_res_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/1000/9660761',
+        file_test(page_default_res_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/1000/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         page_maximum_res_file = page.image_max_resolution
-        test_file(page_maximum_res_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/1504/9660761',
+        file_test(page_maximum_res_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/1504/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         page_minimum_res_file = page.image_min_resolution
-        test_file(page_minimum_res_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/600/9660761',
+        file_test(page_minimum_res_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/600/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         full_text = full_text_data.phys9660761_full_text
@@ -129,8 +131,10 @@ class TestPage:
         assert full_text == page_text
 
 
-def test_file(file: File, expected_url: str, expected_date: datetime, expected_mime_type: str):
+def file_test(file: File, expected_url: str, expected_date: datetime, expected_mime_type: str):
     assert file.url == expected_url
     assert file.date_uploaded.date() == expected_date.date()
     assert file.mime_type == expected_mime_type
+
+
 

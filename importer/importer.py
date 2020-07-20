@@ -21,7 +21,7 @@ class XMLImporter(ABC):
     ID_STRING = 'id'
 
     def __init__(self):
-        self.xml_data = Soup()
+        self.xml_data = None
 
     def parse_xml(self, xml):
         """ Import XML data.
