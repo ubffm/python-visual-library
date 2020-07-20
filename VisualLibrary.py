@@ -3,10 +3,15 @@ from collections import namedtuple
 import logging
 import re
 from bs4 import BeautifulSoup as Soup
+from bs4 import Tag
 
-from .importer.importer import MetsImporter
+from .importer.importer import MetsImporter, File
 
 logger = logging.getLogger('VL-Importer')
+
+
+def function_is_read_only():
+    Exception('This element may not be modified! Read only!')
 
 
 class VisualLibraryExportElement:
@@ -23,8 +28,7 @@ class VisualLibraryExportElement:
     MODS_TAG_NAME_STRING = 'mods:name'
     MODS_TAG_ROLE_STRING = 'mods:roleterm'
 
-    SECTION_LABEL_STRING = 'LABEL'
-    SECTION_ORDER_STRING = 'ORDER'
+    METS_TAG_STRUCTMAP_STRING = 'mets:structmap'
 
     YES_STRING = 'yes'
     KEY_DATE_STRING = 'keydate'
@@ -179,10 +183,6 @@ class VisualLibraryExportElement:
 
         return persons_in_given_role
 
-    @staticmethod
-    def _function_is_read_only():
-        Exception('This element may not be modified! Read only!')
-
 
 class Journal(VisualLibraryExportElement):
     """ A Journal class holds its volumes. """
@@ -205,7 +205,7 @@ class Journal(VisualLibraryExportElement):
 
     @volumes.setter
     def volumes(self, val):
-        self._function_is_read_only()
+        function_is_read_only()
 
     def _extract_publication_date_from_metadata(self):
         """ Sets a duration for the publication date.
@@ -256,7 +256,7 @@ class ArticleHandlingExportElement(VisualLibraryExportElement):
 
     @articles.setter
     def articles(self, val):
-        self._function_is_read_only()
+        function_is_read_only()
 
 
 class Volume(ArticleHandlingExportElement):
@@ -274,7 +274,7 @@ class Volume(ArticleHandlingExportElement):
     @issues.setter
     def issues(self, val):
         """ Disable setter """
-        self._function_is_read_only()
+        function_is_read_only()
 
 
 class Issue(ArticleHandlingExportElement):
@@ -284,22 +284,180 @@ class Issue(ArticleHandlingExportElement):
         super().__init__(vl_id, xml_importer, parent)
 
 
+class Page:
+    """ This class holds all data on a single page.
+        Only when a resource of this page (e.g. the text or a page scan), the respective resource is called
+        and generated.
+    """
+
+    CONTENT_STRING = 'content'
+    ID_STRING = 'id'
+    LABEL_STRING = 'label'
+    ORDER_STRING = 'order'
+    FILE_ID_STRING = 'fileid'
+
+    METS_TAG_FILE_STRING = 'mets:file'
+    METS_TAG_FILE_POINTER = 'mets:fptr'
+
+    ALTO_TAG_TEXT_LINE_STRING = 'textline'
+    ALTO_TAG_SPACE_STRING = 'sp'
+    ALTO_TAG_WORD_STRING = 'string'
+
+    SUBSTRING_IN_THUMBNAIL_ID = 'THUMBS'
+    SUBSTRING_IN_MAX_SCAN_IMAGE_ID = 'MAX'
+    SUBSTRING_IN_DEFAULT_SCAN_IMAGE_ID = 'DEFAULT'
+    SUBSTRING_IN_MIN_SCAN_IMAGE_ID = 'MIN'
+    SUBSTRING_IN_FULL_TEXT_ID = 'ALTO'
+
+    def __init__(self, page_element, xml_data):
+        self.thumbnail = None
+        self.image_max_resolution = None
+        self.image_min_resolution = None
+        self.image_default_resolution = None
+        self.full_text = None
+        self.full_text_xml = None
+        self.label = page_element.get(self.LABEL_STRING)
+        self.order = page_element.get(self.ORDER_STRING)
+
+        self._page_element = page_element
+        self._xml_data = xml_data
+        self._file_pointer = self._page_element.find_all(self.METS_TAG_FILE_POINTER)
+
+    @property
+    def thumbnail(self) -> File:
+        """ Returns a File object to the page's thumbnail. """
+        return self._get_file_from_id_substring(self.SUBSTRING_IN_THUMBNAIL_ID)
+
+    @property
+    def image_max_resolution(self) -> File:
+        """ Returns a File object to the page's maximum resolution page scan. """
+        return self._get_file_from_id_substring(self.SUBSTRING_IN_MAX_SCAN_IMAGE_ID)
+
+    @property
+    def image_min_resolution(self) -> File:
+        """ Returns a File object to the page's minimum resolution page scan. """
+        return self._get_file_from_id_substring(self.SUBSTRING_IN_MIN_SCAN_IMAGE_ID)
+
+    @property
+    def image_default_resolution(self) -> File:
+        """ Returns a File object to the page's default resolution page scan. """
+        return self._get_file_from_id_substring(self.SUBSTRING_IN_DEFAULT_SCAN_IMAGE_ID)
+
+    @property
+    def full_text(self) -> (str, None):
+        """ Returns the page's full text as string.
+            Returns None, if no full text could be found.
+        """
+
+        text_file = self._get_file_from_id_substring(self.SUBSTRING_IN_FULL_TEXT_ID)
+
+        if text_file is not None:
+            text_file.download_file_data_from_source()
+            return self._parse_alto_xml_to_full_text_string(Soup(text_file.data, MetsImporter.XML_IMPORT_PARSER))
+
+        return None
+
+    @property
+    def full_text_xml(self) -> File:
+        return self._get_resource_pointer_by_id_substring(self.SUBSTRING_IN_FULL_TEXT_ID)
+
+    @thumbnail.setter
+    def thumbnail(self, val):
+        function_is_read_only()
+
+    @image_max_resolution.setter
+    def image_max_resolution(self, val):
+        function_is_read_only()
+
+    @image_min_resolution.setter
+    def image_min_resolution(self, val):
+        function_is_read_only()
+
+    @image_default_resolution.setter
+    def image_default_resolution(self, val):
+        function_is_read_only()
+
+    @full_text.setter
+    def full_text(self, val):
+        function_is_read_only()
+
+    @full_text_xml.setter
+    def full_text_xml(self, val):
+        function_is_read_only()
+
+    def _get_file_from_resource_id(self, resource_id: str) -> File:
+        """ Creates a File object from resolving a given XML data internal ID. """
+
+        resource_element = self._xml_data.find(self.METS_TAG_FILE_STRING, {self.ID_STRING: resource_id})
+        try:
+            file = File()
+            file.parse_properties_from_xml_element(resource_element)
+            return file
+        except AttributeError:
+            raise ValueError('The given XML data refers to the ID {id} that is not given in the data!'.format(id=resource_id))
+
+    def _get_resource_pointer_by_id_substring(self, substring):
+        for file_pointer in self._file_pointer:
+            if substring in file_pointer.get(self.FILE_ID_STRING, ''):
+                return file_pointer
+
+    def _get_file_from_id_substring(self, substring):
+        resource_pointer = self._get_resource_pointer_by_id_substring(substring)
+        file_id = resource_pointer.get(self.FILE_ID_STRING)
+        return self._get_file_from_resource_id(file_id)
+
+    def _parse_alto_xml_to_full_text_string(self, alto_xml: Soup) -> str:
+        def extract_text_from_tag(word: Soup):
+            if isinstance(word, Tag):
+                return word.get(self.CONTENT_STRING, ' ')
+
+        text_lines = alto_xml.find_all(self.ALTO_TAG_TEXT_LINE_STRING)
+        full_text = ''
+        for line in text_lines:
+            line_text_array = [extract_text_from_tag(word) for word in line.children]
+            full_text = '{previous_text}{new_line}\n'.format(previous_text=full_text, new_line=''.join(line_text_array))
+
+        # Skip the last character (which is always a newline)
+        return full_text[:-1]
+
+
 class Article(VisualLibraryExportElement):
+    """ This class holds all article data. """
 
     METS_TAG_SECTION_STRING = 'mets:dmdsec'
     MODS_TAG_NAME_PART_STRING = 'mods:namepart'
 
     AUTHOR_SHORT_STRING = 'aut'
-    ID_CAPITAL_STRING = 'ID'
     GIVEN_STRING = 'given'
     FAMILY_STRING = 'family'
+    PHYSICAL_STRING = 'PHYSICAL'
 
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
 
-        self.authors = self._extract_author_from_metadata()
+        self.authors = self._extract_authors_from_metadata()
+        self.pages = []
+        self.full_text = None
 
-    def _extract_author_from_metadata(self) -> list:
+    @property
+    def pages(self):
+        pages_in_xml = self.xml_data.find_all(self.METS_TAG_STRUCTMAP_STRING, {self.TYPE_STRING: self.PHYSICAL_STRING})
+        for page in pages_in_xml:
+            yield Page(page, self.xml_data)
+
+    @property
+    def full_text(self):
+        return '\n'.join([page.full_text for page in self.pages])
+
+    @pages.setter
+    def pages(self, value):
+        function_is_read_only()
+
+    @full_text.setter
+    def full_text(self, value):
+        function_is_read_only()
+
+    def _extract_authors_from_metadata(self) -> list:
         """ Returns a list of author namedtuples from the metadata. """
 
         Author = namedtuple('Person', ['given_name', 'family_name'])

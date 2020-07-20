@@ -47,7 +47,7 @@ class TestImporter:
                     assert f.mime_type == 'application/pdf'
                     assert f.languages == {'ger'}
                     assert f.data == DEBUG_FILE_DATA_CONTENT_BYTE_STRING
-                    assert re.match(r'pdf_[0-9]*\.pdf', f.name)
+                    assert re.match(r'pdf_[0-9]*', f.name)
             else:
                 assert len(article.files) == 0
 

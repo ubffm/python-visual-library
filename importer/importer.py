@@ -18,6 +18,8 @@ class XMLImporter(ABC):
 
     XML_IMPORT_PARSER = 'lxml'
 
+    ID_STRING = 'id'
+
     def __init__(self):
         self.xml_data = Soup()
 
@@ -54,6 +56,17 @@ class XMLImporter(ABC):
 class File:
     """ A class holding all information on a file. """
 
+    ATTRIBUTE_MIMETYPE_STRING = 'mimetype'
+    ATTRIBUTE_FILE_SIZE_STRING = 'size'
+    ATTRIBUTE_ID_STRING = XMLImporter.ID_STRING
+    ATTRIBUTE_CREATION_DATE_STRING = 'created'
+    ATTRIBUTE_LOCATION_TYPE_STRING = 'loctype'
+    ATTRIBUTE_LINK_STRING = 'xlink:href'
+
+    METS_TAG_FILE_LOCATION_STRING = 'mets:flocat'
+
+    URL_STRING = 'URL'
+
     def __init__(self):
         self.name = None
         self.date_uploaded = None
@@ -66,7 +79,7 @@ class File:
         self._size = 0
 
     def download_file_data_from_source(self):
-        self.data = get_content_from_url(url)
+        self.data = get_content_from_url(self.url)
 
     def get_data_in_base64_encoding(self):
         """ Transforms the data property into a base64-encoded string. """
@@ -80,7 +93,30 @@ class File:
 
     @size.setter
     def size(self, value):
-        self._size = int(value)
+        if value is not None:
+            self._size = int(value)
+
+    def parse_properties_from_xml_element(self, xml_element):
+        self.mime_type = xml_element.get(self.ATTRIBUTE_MIMETYPE_STRING)
+        self.size = xml_element.get(self.ATTRIBUTE_FILE_SIZE_STRING)
+
+        name = xml_element.get(self.ATTRIBUTE_ID_STRING)
+        if name is not None:
+            self.name = name.lower()
+
+        date = xml_element.get(self.ATTRIBUTE_CREATION_DATE_STRING)
+        if date is not None:
+            self.date_uploaded = self.date_modified = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ')
+
+        file_locations = xml_element.find_all(self.METS_TAG_FILE_LOCATION_STRING)
+        for location in file_locations:
+            location_type = location.get(self.ATTRIBUTE_LOCATION_TYPE_STRING)
+            if location_type == self.URL_STRING:
+                url = location.get(self.ATTRIBUTE_LINK_STRING)
+                if url is not None:
+                    self.url = url
+            else:
+                raise TypeError('The file location type {} is not implemented!'.format(location_type))
 
 
 class MetsImporter(XMLImporter):
@@ -89,23 +125,15 @@ class MetsImporter(XMLImporter):
     ATTRIBUTE_FILTER_FOR_SECTIONS = {
         'type': 'section'
     }
-    ATTRIBUTE_CREATION_DATE_STRING = 'created'
     ATTRIBUTE_DOWNLOAD_STRING = 'download'
-    ATTRIBUTE_FILE_SIZE_STRING = 'size'
     ATTRIBUTE_FILE_ID_STRING = 'fileid'
-    ATTRIBUTE_LINK_STRING = 'xlink:href'
-    ATTRIBUTE_ID_STRING = 'id'
     ATTRIBUTE_KEY_USE_STRING = 'use'
-    ATTRIBUTE_LOCATION_TYPE_STRING = 'loctype'
-    ATTRIBUTE_MIMETYPE_STRING = 'mimetype'
 
     METS_TAG_OBJECT_STRUCTURE_STRING = 'mets:structmap'
     METS_TAG_DIV_STRING = 'mets:div'
     METS_TAG_FILE_GROUP_STRING = 'mets:filegrp'
-    METS_TAG_FILE_LOCATION_STRING = 'mets:flocat'
     METS_TAG_FILE_STRING = 'mets:file'
 
-    URL_STRING = 'URL'
     SECTION_ID_PREFIX_STRING = 'log'
     LOGICAL_STRING = 'LOGICAL'
     TYPE_STRING = 'type'
@@ -150,27 +178,10 @@ class MetsImporter(XMLImporter):
         """
 
         file = File()
-        file.mime_type = mets_data.get(self.ATTRIBUTE_MIMETYPE_STRING)
-        file.size = mets_data.get(self.ATTRIBUTE_FILE_SIZE_STRING)
-        name = mets_data.get(self.ATTRIBUTE_ID_STRING)
-        if name is not None:
-            file.name = '{}.pdf'.format(name.lower())
-        date = mets_data.get(self.ATTRIBUTE_CREATION_DATE_STRING)
-        if date is not None:
-            file.date_uploaded = file.date_modified = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ')
+        file.parse_properties_from_xml_element(mets_data)
 
-        file_locations = mets_data.find_all(self.METS_TAG_FILE_LOCATION_STRING)
-        for location in file_locations:
-            location_type = location.get(self.ATTRIBUTE_LOCATION_TYPE_STRING)
-            if location_type == self.URL_STRING:
-                url = location.get(self.ATTRIBUTE_LINK_STRING)
-                if url is not None:
-                    logger.debug('Downloading data from URL: {}'.format(url))
-                    file.url = url
-                    if self.debug_mode:
-                        file.data = DEBUG_FILE_DATA_CONTENT_BYTE_STRING
-            else:
-                raise TypeError('The file location type {} is not implemented!'.format(location_type))
+        if self.debug_mode:
+            file.data = DEBUG_FILE_DATA_CONTENT_BYTE_STRING
 
         return file
 
@@ -186,7 +197,7 @@ class MetsImporter(XMLImporter):
             for file_pointer_data in sec.file_pointers_data:
                 logger.debug('Processing file pointer: {}'.format(file_pointer_data))
                 file_tag_id = file_pointer_data.get(self.ATTRIBUTE_FILE_ID_STRING)
-                file_metdata = mets_file_group_download.find(attrs={self.ATTRIBUTE_ID_STRING: file_tag_id})
+                file_metdata = mets_file_group_download.find(attrs={self.ID_STRING: file_tag_id})
                 if file_metdata is not None:
                     file = self._get_file_from_metadata(file_metdata)
                     file.languages = section.languages
@@ -219,7 +230,7 @@ class MetsImporter(XMLImporter):
         MODS_TAG_SUBTITLE_STRING = 'mods:subtitle'
 
         def __init__(self, mets_data: Soup, full_xml_data):
-            self.id = mets_data.get(MetsImporter.ATTRIBUTE_ID_STRING)
+            self.id = mets_data.get(MetsImporter.ID_STRING)
             self.metadata_id = mets_data.get(self.ATTRIBUTE_METADATA_ID)
             self.label = mets_data.get(self.ATTRIBUTE_LABEL)
             self.order = mets_data.get(self.ATTRIBUTE_ORDER)
@@ -248,4 +259,4 @@ class MetsImporter(XMLImporter):
             """
 
             self.metadata = xml_metadata.find(name=self.METS_TAG_METADATA_SECTION_STRING,
-                                              attrs={MetsImporter.ATTRIBUTE_ID_STRING: self.metadata_id})
+                                              attrs={MetsImporter.ID_STRING: self.metadata_id})
