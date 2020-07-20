@@ -27,7 +27,7 @@ The current default URL is for the Visual Library of the University Library in F
 ## Install package
 Simply call
 
-```python
+```shell script
 source {path_to_your_virtual_environment}/bin/activate
 
 cd virtual-library/
