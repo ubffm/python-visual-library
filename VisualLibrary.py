@@ -5,7 +5,7 @@ import re
 from bs4 import BeautifulSoup as Soup
 from bs4 import Tag
 
-from .importer.importer import MetsImporter, File
+from importer.importer import MetsImporter, File
 
 logger = logging.getLogger('VL-Importer')
 

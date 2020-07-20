@@ -32,6 +32,8 @@ source {path_to_your_virtual_environment}/bin/activate
 
 cd virtual-library/
 pip3 install .
+
+pip3 install -r requirements.txt
 ```
 
 ## Testing
