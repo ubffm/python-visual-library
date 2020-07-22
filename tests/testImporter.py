@@ -7,7 +7,7 @@ from pathlib import Path
 from importer.importer import File, MetsImporter, DEBUG_FILE_DATA_CONTENT_BYTE_STRING
 
 CURRENT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-TEST_DATA_DIRECTORY = '{base_dir}/data'.format(base_dir=CURRENT_DIRECTORY)
+TEST_DATA_DIRECTORY = '{base_dir}/data/Importer'.format(base_dir=CURRENT_DIRECTORY)
 
 
 class TestImporter:
@@ -61,7 +61,7 @@ class TestImporter:
 
 
 def get_oai_response_xml_string():
-    oai_response_file_path = Path(TEST_DATA_DIRECTORY, 'oai-response.xml')
+    oai_response_file_path = Path(TEST_DATA_DIRECTORY, 'volume-oai-response.xml')
     with open(str(oai_response_file_path), 'r') as oai_response:
         oai_response_string = oai_response.read()
     return oai_response_string

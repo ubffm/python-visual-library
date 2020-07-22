@@ -1,0 +1,952 @@
+<OAI-PMH xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>2020-07-22T08:17:35Z</responseDate>
+    <request verb="GetRecord" metadataPrefix="mets" identifier="10771471">http://vl.ub.uni-frankfurt.de/oai/</request>
+    <GetRecord>
+        <record>
+            <header>
+                <identifier>oai:vl.ub.uni-frankfurt.de:10771471</identifier>
+                <datestamp>2020-06-04T14:06:11Z</datestamp>
+                <setSpec>ubffmbiodiv</setSpec>
+                <setSpec>journal_volume</setSpec>
+            </header>
+            <metadata>
+                <mets:mets xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version18/mets.xsd" OBJID="3" LABEL="Digitale Sammlungen">
+                    <mets:metsHdr CREATEDATE="2020-07-22T10:17:35">
+                        <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+                            <mets:name>vls/1807</mets:name>
+                        </mets:agent>
+                        <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="INSTANCE">
+                            <mets:name>ubffm</mets:name>
+                        </mets:agent>
+                        <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="REPOSITORY">
+                            <mets:name>vl.ub.uni-frankfurt.de</mets:name>
+                        </mets:agent>
+                        <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="BUILDER">
+                            <mets:name>periodical</mets:name>
+                        </mets:agent>
+                    </mets:metsHdr>
+                    <mets:dmdSec ID="md10773155">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.6" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd">
+                                    <mods:titleInfo>
+                                        <mods:title>
+                                            Anlagerung und Bildungsweise des Buntsandsteins bei Mettlach an der Saar
+                                        </mods:title>
+                                    </mods:titleInfo>
+                                    <mods:name type="personal">
+                                        <mods:displayForm>Rössle, Per</mods:displayForm>
+                                        <mods:namePart type="given">Per</mods:namePart>
+                                        <mods:namePart type="family">Rössle</mods:namePart>
+                                        <mods:role>
+                                            <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                                            <mods:roleTerm type="text">Verfasser</mods:roleTerm>
+                                        </mods:role>
+                                    </mods:name>
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:originInfo>
+                                        <mods:dateIssued keyDate="yes">1937</mods:dateIssued>
+                                    </mods:originInfo>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Frankfurt</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>
+                                            Universitätsbibliothek Johann Christian Senckenberg
+                                        </mods:publisher>
+                                        <mods:dateIssued encoding="w3cdtf">2019</mods:dateIssued>
+                                        <mods:edition>[Electronic ed.]</mods:edition>
+                                    </mods:originInfo>
+                                    <mods:language>
+                                        <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+                                    </mods:language>
+                                    <mods:note type="statement of responsibility">von Per Rössle (Kiel)</mods:note>
+                                    <mods:classification authority="dnb">550</mods:classification>
+                                    <mods:identifier type="urn">urn:nbn:de:hebis:30:4-171405</mods:identifier>
+                                    <mods:relatedItem type="host">
+                                        <mods:recordInfo>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451037030</mods:recordIdentifier>
+                                        </mods:recordInfo>
+                                    </mods:relatedItem>
+                                    <mods:part>
+                                        <mods:detail type="volume">
+                                            <mods:number>95 A</mods:number>
+                                        </mods:detail>
+                                        <mods:extent unit="page">
+                                            <mods:start>113</mods:start>
+                                            <mods:end>156</mods:end>
+                                        </mods:extent>
+                                        <mods:date encoding="iso8601">1937</mods:date>
+                                    </mods:part>
+                                    <mods:extension>
+                                        <vlz:externalType recordSyntax="pica" code="Oo"/>
+                                        <vlz:info version="0"/>
+                                    </mods:extension>
+                                    <mods:recordInfo>
+                                        <mods:recordCreationDate encoding="marc">28-11-19</mods:recordCreationDate>
+                                        <mods:recordChangeDate encoding="marc">05-06-20</mods:recordChangeDate>
+                                        <mods:recordIdentifier source="ubffmbiodiv">456198903</mods:recordIdentifier>
+                                        <mods:descriptionStandard>rda</mods:descriptionStandard>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:dmdSec ID="md10773161">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.6" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd">
+                                    <mods:titleInfo>
+                                        <mods:title>
+                                            Sedimentpetrographische Beiträge zur Gliederung des Tertiärs der südlichen niederrheinischen Bucht
+                                        </mods:title>
+                                    </mods:titleInfo>
+                                    <mods:name type="personal">
+                                        <mods:displayForm>Kahmann, Wilhelm</mods:displayForm>
+                                        <mods:namePart type="given">Wilhelm</mods:namePart>
+                                        <mods:namePart type="family">Kahmann</mods:namePart>
+                                        <mods:role>
+                                            <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                                            <mods:roleTerm type="text">Verfasser</mods:roleTerm>
+                                        </mods:role>
+                                    </mods:name>
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:originInfo>
+                                        <mods:dateIssued keyDate="yes">1937</mods:dateIssued>
+                                    </mods:originInfo>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Frankfurt</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>
+                                            Universitätsbibliothek Johann Christian Senckenberg
+                                        </mods:publisher>
+                                        <mods:dateIssued encoding="w3cdtf">2019</mods:dateIssued>
+                                        <mods:edition>[Electronic ed.]</mods:edition>
+                                    </mods:originInfo>
+                                    <mods:language>
+                                        <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+                                    </mods:language>
+                                    <mods:note type="statement of responsibility">von Wilhelm Kahmann (Badbergen)</mods:note>
+                                    <mods:classification authority="dnb">550</mods:classification>
+                                    <mods:identifier type="urn">urn:nbn:de:hebis:30:4-171410</mods:identifier>
+                                    <mods:relatedItem type="host">
+                                        <mods:recordInfo>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451037030</mods:recordIdentifier>
+                                        </mods:recordInfo>
+                                    </mods:relatedItem>
+                                    <mods:part>
+                                        <mods:detail type="volume">
+                                            <mods:number>95 A</mods:number>
+                                        </mods:detail>
+                                        <mods:extent unit="page">
+                                            <mods:start>157</mods:start>
+                                            <mods:end>206</mods:end>
+                                        </mods:extent>
+                                        <mods:date encoding="iso8601">1937</mods:date>
+                                    </mods:part>
+                                    <mods:extension>
+                                        <vlz:externalType recordSyntax="pica" code="Oo"/>
+                                        <vlz:info version="0"/>
+                                    </mods:extension>
+                                    <mods:recordInfo>
+                                        <mods:recordCreationDate encoding="marc">28-11-19</mods:recordCreationDate>
+                                        <mods:recordChangeDate encoding="marc">05-06-20</mods:recordChangeDate>
+                                        <mods:recordIdentifier source="ubffmbiodiv">456199063</mods:recordIdentifier>
+                                        <mods:descriptionStandard>rda</mods:descriptionStandard>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:dmdSec ID="md10773164">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.6" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd">
+                                    <mods:titleInfo>
+                                        <mods:title>
+                                            Pflanzenreste aus den diluvialen Ablagerungen im Ruhr-Emscher-Lippe-Gebiete
+                                        </mods:title>
+                                        <mods:subTitle>mit 3 Tafeln</mods:subTitle>
+                                    </mods:titleInfo>
+                                    <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/116355840">
+                                        <mods:displayForm>Kräusel, Richard</mods:displayForm>
+                                        <mods:namePart type="given">Richard</mods:namePart>
+                                        <mods:namePart type="family">Kräusel</mods:namePart>
+                                        <mods:role>
+                                            <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                                            <mods:roleTerm type="text">Verfasser</mods:roleTerm>
+                                        </mods:role>
+                                    </mods:name>
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:originInfo>
+                                        <mods:dateIssued keyDate="yes">1937</mods:dateIssued>
+                                    </mods:originInfo>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Frankfurt</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>
+                                            Universitätsbibliothek Johann Christian Senckenberg
+                                        </mods:publisher>
+                                        <mods:dateIssued encoding="w3cdtf">2019</mods:dateIssued>
+                                        <mods:edition>[Electronic ed.]</mods:edition>
+                                    </mods:originInfo>
+                                    <mods:language>
+                                        <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+                                    </mods:language>
+                                    <mods:note type="statement of responsibility">
+                                        von Richard Kräusel, Geol.-Pal. Inst. Univ. Frankfurt a.M.
+                                    </mods:note>
+                                    <mods:classification authority="dnb">580</mods:classification>
+                                    <mods:identifier type="urn">urn:nbn:de:hebis:30:4-171425</mods:identifier>
+                                    <mods:relatedItem type="host">
+                                        <mods:recordInfo>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451037030</mods:recordIdentifier>
+                                        </mods:recordInfo>
+                                    </mods:relatedItem>
+                                    <mods:part>
+                                        <mods:detail type="volume">
+                                            <mods:number>95 A</mods:number>
+                                        </mods:detail>
+                                        <mods:extent unit="page">
+                                            <mods:start>207</mods:start>
+                                            <mods:end>240</mods:end>
+                                        </mods:extent>
+                                        <mods:date encoding="iso8601">1937</mods:date>
+                                    </mods:part>
+                                    <mods:extension>
+                                        <vlz:externalType recordSyntax="pica" code="Oo"/>
+                                        <vlz:info version="0"/>
+                                    </mods:extension>
+                                    <mods:recordInfo>
+                                        <mods:recordCreationDate encoding="marc">28-11-19</mods:recordCreationDate>
+                                        <mods:recordChangeDate encoding="marc">05-06-20</mods:recordChangeDate>
+                                        <mods:recordIdentifier source="ubffmbiodiv">456199403</mods:recordIdentifier>
+                                        <mods:descriptionStandard>rda</mods:descriptionStandard>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:dmdSec ID="md10773134">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.6" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd">
+                                    <mods:titleInfo>
+                                        <mods:title>
+                                            Sedimentpetrographische Untersuchungen an rezenten Rheinsanden vom Mainzer Becken bis an die Holländische Grenze
+                                        </mods:title>
+                                    </mods:titleInfo>
+                                    <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/125278594">
+                                        <mods:displayForm>Erberich, Günther</mods:displayForm>
+                                        <mods:namePart type="given">Günther</mods:namePart>
+                                        <mods:namePart type="family">Erberich</mods:namePart>
+                                        <mods:role>
+                                            <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                                            <mods:roleTerm type="text">Verfasser</mods:roleTerm>
+                                        </mods:role>
+                                    </mods:name>
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:originInfo>
+                                        <mods:dateIssued keyDate="yes">1937</mods:dateIssued>
+                                    </mods:originInfo>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Frankfurt</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>
+                                            Universitätsbibliothek Johann Christian Senckenberg
+                                        </mods:publisher>
+                                        <mods:dateIssued encoding="w3cdtf">2019</mods:dateIssued>
+                                        <mods:edition>[Electronic ed.]</mods:edition>
+                                    </mods:originInfo>
+                                    <mods:language>
+                                        <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+                                    </mods:language>
+                                    <mods:note type="statement of responsibility">von Günther Erberich (Köln)</mods:note>
+                                    <mods:classification authority="dnb">550</mods:classification>
+                                    <mods:identifier type="urn">urn:nbn:de:hebis:30:4-171387</mods:identifier>
+                                    <mods:relatedItem type="host">
+                                        <mods:recordInfo>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451037030</mods:recordIdentifier>
+                                        </mods:recordInfo>
+                                    </mods:relatedItem>
+                                    <mods:part>
+                                        <mods:detail type="volume">
+                                            <mods:number>95 A</mods:number>
+                                        </mods:detail>
+                                        <mods:extent unit="page">
+                                            <mods:list>IV, 1-40</mods:list>
+                                        </mods:extent>
+                                        <mods:date encoding="iso8601">1937</mods:date>
+                                    </mods:part>
+                                    <mods:extension>
+                                        <vlz:externalType recordSyntax="pica" code="Oo"/>
+                                        <vlz:info version="0"/>
+                                    </mods:extension>
+                                    <mods:recordInfo>
+                                        <mods:recordCreationDate encoding="marc">28-11-19</mods:recordCreationDate>
+                                        <mods:recordChangeDate encoding="marc">05-06-20</mods:recordChangeDate>
+                                        <mods:recordIdentifier source="ubffmbiodiv">456198148</mods:recordIdentifier>
+                                        <mods:descriptionStandard>rda</mods:descriptionStandard>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:dmdSec ID="md10771471">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.6" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd">
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:part>
+                                        <mods:detail>
+                                            <mods:number>95 A</mods:number>
+                                        </mods:detail>
+                                        <mods:date encoding="w3cdtf">1937</mods:date>
+                                    </mods:part>
+                                    <mods:recordInfo>
+                                        <mods:recordIdentifier source="local">ubffm:10771471</mods:recordIdentifier>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:dmdSec ID="md10773171">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.6" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd">
+                                    <mods:titleInfo>
+                                        <mods:title>Die Transgression der Viséstufe in Nordwesteuropa</mods:title>
+                                        <mods:subTitle>
+                                            Mitteilungen aus dem Ruhrlandmuseum der Stadt Essen Nr. 89
+                                        </mods:subTitle>
+                                    </mods:titleInfo>
+                                    <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/116061030">
+                                        <mods:displayForm>Paul, Henry</mods:displayForm>
+                                        <mods:namePart type="given">Henry</mods:namePart>
+                                        <mods:namePart type="family">Paul</mods:namePart>
+                                        <mods:role>
+                                            <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                                            <mods:roleTerm type="text">Verfasser</mods:roleTerm>
+                                        </mods:role>
+                                    </mods:name>
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:originInfo>
+                                        <mods:dateIssued keyDate="yes">1937</mods:dateIssued>
+                                    </mods:originInfo>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Frankfurt</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>
+                                            Universitätsbibliothek Johann Christian Senckenberg
+                                        </mods:publisher>
+                                        <mods:dateIssued encoding="w3cdtf">2019</mods:dateIssued>
+                                        <mods:edition>[Electronic ed.]</mods:edition>
+                                    </mods:originInfo>
+                                    <mods:language>
+                                        <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+                                    </mods:language>
+                                    <mods:note type="statement of responsibility">von Henry Paul (Essen)</mods:note>
+                                    <mods:classification authority="dnb">550</mods:classification>
+                                    <mods:identifier type="urn">urn:nbn:de:hebis:30:4-171433</mods:identifier>
+                                    <mods:relatedItem type="host">
+                                        <mods:recordInfo>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451037030</mods:recordIdentifier>
+                                        </mods:recordInfo>
+                                    </mods:relatedItem>
+                                    <mods:part>
+                                        <mods:detail type="volume">
+                                            <mods:number>95 A</mods:number>
+                                        </mods:detail>
+                                        <mods:extent unit="page">
+                                            <mods:start>241</mods:start>
+                                            <mods:end>247</mods:end>
+                                        </mods:extent>
+                                        <mods:date encoding="iso8601">1937</mods:date>
+                                    </mods:part>
+                                    <mods:extension>
+                                        <vlz:externalType recordSyntax="pica" code="Oo"/>
+                                        <vlz:info version="0"/>
+                                    </mods:extension>
+                                    <mods:recordInfo>
+                                        <mods:recordCreationDate encoding="marc">28-11-19</mods:recordCreationDate>
+                                        <mods:recordChangeDate encoding="marc">05-06-20</mods:recordChangeDate>
+                                        <mods:recordIdentifier source="ubffmbiodiv">456199624</mods:recordIdentifier>
+                                        <mods:descriptionStandard>rda</mods:descriptionStandard>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:dmdSec ID="md10773142">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.6" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd">
+                                    <mods:titleInfo>
+                                        <mods:title>Quellen und Grundwasser in der SW-Eifel</mods:title>
+                                    </mods:titleInfo>
+                                    <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1071081012">
+                                        <mods:displayForm>Klein, Christian</mods:displayForm>
+                                        <mods:namePart type="given">Christian</mods:namePart>
+                                        <mods:namePart type="family">Klein</mods:namePart>
+                                        <mods:role>
+                                            <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                                            <mods:roleTerm type="text">Verfasser</mods:roleTerm>
+                                        </mods:role>
+                                    </mods:name>
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:originInfo>
+                                        <mods:dateIssued keyDate="yes">1937</mods:dateIssued>
+                                    </mods:originInfo>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Frankfurt</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>
+                                            Universitätsbibliothek Johann Christian Senckenberg
+                                        </mods:publisher>
+                                        <mods:dateIssued encoding="w3cdtf">2019</mods:dateIssued>
+                                        <mods:edition>[Electronic ed.]</mods:edition>
+                                    </mods:originInfo>
+                                    <mods:language>
+                                        <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+                                    </mods:language>
+                                    <mods:note type="statement of responsibility">von Christian Klein (Bonn)</mods:note>
+                                    <mods:classification authority="dnb">550</mods:classification>
+                                    <mods:identifier type="urn">urn:nbn:de:hebis:30:4-171395</mods:identifier>
+                                    <mods:relatedItem type="host">
+                                        <mods:recordInfo>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451037030</mods:recordIdentifier>
+                                        </mods:recordInfo>
+                                    </mods:relatedItem>
+                                    <mods:part>
+                                        <mods:detail type="volume">
+                                            <mods:number>95 A</mods:number>
+                                        </mods:detail>
+                                        <mods:extent unit="page">
+                                            <mods:start>41</mods:start>
+                                            <mods:end>112</mods:end>
+                                        </mods:extent>
+                                        <mods:date encoding="iso8601">1937</mods:date>
+                                    </mods:part>
+                                    <mods:extension>
+                                        <vlz:externalType recordSyntax="pica" code="Oo"/>
+                                        <vlz:info version="0"/>
+                                    </mods:extension>
+                                    <mods:recordInfo>
+                                        <mods:recordCreationDate encoding="marc">28-11-19</mods:recordCreationDate>
+                                        <mods:recordChangeDate encoding="marc">05-06-20</mods:recordChangeDate>
+                                        <mods:recordIdentifier source="ubffmbiodiv">456198296</mods:recordIdentifier>
+                                        <mods:descriptionStandard>rda</mods:descriptionStandard>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:dmdSec ID="md10773178">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.6" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd">
+                                    <mods:titleInfo>
+                                        <mods:title>
+                                            Neue Untersuchungen über den Kohlenkalk der Umgebung von Aachen
+                                        </mods:title>
+                                        <mods:subTitle>
+                                            Mitteilung aus dem Ruhrlandmuseum der Stadt Essen Nr. 94
+                                        </mods:subTitle>
+                                    </mods:titleInfo>
+                                    <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/116061030">
+                                        <mods:displayForm>Paul, Henry</mods:displayForm>
+                                        <mods:namePart type="given">Henry</mods:namePart>
+                                        <mods:namePart type="family">Paul</mods:namePart>
+                                        <mods:role>
+                                            <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                                            <mods:roleTerm type="text">Verfasser</mods:roleTerm>
+                                        </mods:role>
+                                    </mods:name>
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:originInfo>
+                                        <mods:dateIssued keyDate="yes">1937</mods:dateIssued>
+                                    </mods:originInfo>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Frankfurt</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>
+                                            Universitätsbibliothek Johann Christian Senckenberg
+                                        </mods:publisher>
+                                        <mods:dateIssued encoding="w3cdtf">2019</mods:dateIssued>
+                                        <mods:edition>[Electronic ed.]</mods:edition>
+                                    </mods:originInfo>
+                                    <mods:language>
+                                        <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+                                    </mods:language>
+                                    <mods:note type="statement of responsibility">von Henry Paul (Essen)</mods:note>
+                                    <mods:classification authority="dnb">550</mods:classification>
+                                    <mods:identifier type="urn">urn:nbn:de:hebis:30:4-171445</mods:identifier>
+                                    <mods:relatedItem type="host">
+                                        <mods:recordInfo>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451037030</mods:recordIdentifier>
+                                        </mods:recordInfo>
+                                    </mods:relatedItem>
+                                    <mods:part>
+                                        <mods:detail type="volume">
+                                            <mods:number>95 A</mods:number>
+                                        </mods:detail>
+                                        <mods:extent unit="page">
+                                            <mods:start>248</mods:start>
+                                            <mods:end>251</mods:end>
+                                        </mods:extent>
+                                        <mods:date encoding="iso8601">1937</mods:date>
+                                    </mods:part>
+                                    <mods:extension>
+                                        <vlz:externalType recordSyntax="pica" code="Oo"/>
+                                        <vlz:info version="0"/>
+                                    </mods:extension>
+                                    <mods:recordInfo>
+                                        <mods:recordCreationDate encoding="marc">28-11-19</mods:recordCreationDate>
+                                        <mods:recordChangeDate encoding="marc">05-06-20</mods:recordChangeDate>
+                                        <mods:recordIdentifier source="ubffmbiodiv">456200770</mods:recordIdentifier>
+                                        <mods:descriptionStandard>rda</mods:descriptionStandard>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:dmdSec ID="md10688403">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.6" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd">
+                                    <mods:titleInfo>
+                                        <mods:title>Decheniana</mods:title>
+                                        <mods:subTitle>
+                                            Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens
+                                        </mods:subTitle>
+                                        <mods:partName>Geologische Abteilung</mods:partName>
+                                    </mods:titleInfo>
+                                    <mods:name type="corporate" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/40094-4">
+                                        <mods:displayForm>
+                                            Naturhistorischer Verein der Rheinlande und Westfalens
+                                        </mods:displayForm>
+                                        <mods:role>
+                                            <mods:roleTerm type="code" authority="marcrelator">isb</mods:roleTerm>
+                                            <mods:roleTerm type="text">Herausgebendes Organ</mods:roleTerm>
+                                        </mods:role>
+                                    </mods:name>
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:genre authority="hebis">Zeitschrift</mods:genre>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Bonn</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>Im Selbstverlag des Naturhistorischen Vereins</mods:publisher>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Bonn</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>Verein</mods:publisher>
+                                        <mods:dateIssued>95.1937-100.1941</mods:dateIssued>
+                                        <mods:dateIssued>1937-1954</mods:dateIssued>
+                                    </mods:originInfo>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Frankfurt am Main</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>
+                                            Universitätsbibliothek Johann Christian Senckenberg
+                                        </mods:publisher>
+                                        <mods:dateIssued encoding="w3cdtf" point="start">2019</mods:dateIssued>
+                                        <mods:dateIssued encoding="w3cdtf" point="end">2019</mods:dateIssued>
+                                        <mods:edition>[Electronic ed.]</mods:edition>
+                                    </mods:originInfo>
+                                    <mods:language>
+                                        <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+                                    </mods:language>
+                                    <mods:note type="date/sequential designation">95.1937-100.1941</mods:note>
+                                    <mods:note>Reproduktion</mods:note>
+                                    <mods:identifier type="urn">urn:nbn:de:hebis:30:4-211075</mods:identifier>
+                                    <mods:relatedItem type="otherVersion">
+                                        <mods:note>Teilweise Fortsetzung von</mods:note>
+                                        <mods:recordInfo>
+                                            <mods:recordIdentifier source="ubffmbiodiv">45102219X</mods:recordIdentifier>
+                                        </mods:recordInfo>
+                                    </mods:relatedItem>
+                                    <mods:relatedItem type="otherVersion">
+                                        <mods:note>Fortgesetzt durch</mods:note>
+                                        <mods:recordInfo>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451149114</mods:recordIdentifier>
+                                        </mods:recordInfo>
+                                    </mods:relatedItem>
+                                    <mods:extension>
+                                        <vlz:externalType recordSyntax="pica" code="Ob"/>
+                                        <vlz:info version="0"/>
+                                    </mods:extension>
+                                    <mods:recordInfo>
+                                        <mods:recordCreationDate encoding="marc">24-07-19</mods:recordCreationDate>
+                                        <mods:recordChangeDate encoding="marc">18-06-20</mods:recordChangeDate>
+                                        <mods:recordIdentifier source="ubffmbiodiv">451037030</mods:recordIdentifier>
+                                        <mods:descriptionStandard>rda</mods:descriptionStandard>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:amdSec ID="amd10771471">
+                        <mets:rightsMD ID="rights10771471">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            http://vl.ub.uni-frankfurt.de//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov10771471">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>
+                                            https://hds.hebis.de/ubffm/Record/HEBubffm%3A10771471
+                                        </dv:reference>
+                                        <dv:presentation>http://vl.ub.uni-frankfurt.de/id/10771471</dv:presentation>
+                                        <dv:sru>
+                                            http://vl.ub.uni-frankfurt.de/proto_ftsearch/10771471
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:amdSec ID="amd10688403">
+                        <mets:rightsMD ID="rights10688403">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            http://vl.ub.uni-frankfurt.de//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov10688403">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>https://hds.hebis.de/ubffm/Record/HEB451037030</dv:reference>
+                                        <dv:presentation>http://vl.ub.uni-frankfurt.de/id/10688403</dv:presentation>
+                                        <dv:sru>
+                                            http://vl.ub.uni-frankfurt.de/proto_ftsearch/10688403
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:amdSec ID="amd10773178">
+                        <mets:rightsMD ID="rights10773178">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            http://vl.ub.uni-frankfurt.de//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov10773178">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>https://hds.hebis.de/ubffm/Record/HEB456200770</dv:reference>
+                                        <dv:presentation>http://vl.ub.uni-frankfurt.de/id/10773178</dv:presentation>
+                                        <dv:sru>
+                                            http://vl.ub.uni-frankfurt.de/proto_ftsearch/10773178
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:amdSec ID="amd10773134">
+                        <mets:rightsMD ID="rights10773134">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            http://vl.ub.uni-frankfurt.de//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov10773134">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>https://hds.hebis.de/ubffm/Record/HEB456198148</dv:reference>
+                                        <dv:presentation>http://vl.ub.uni-frankfurt.de/id/10773134</dv:presentation>
+                                        <dv:sru>
+                                            http://vl.ub.uni-frankfurt.de/proto_ftsearch/10773134
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:amdSec ID="amd10773142">
+                        <mets:rightsMD ID="rights10773142">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            http://vl.ub.uni-frankfurt.de//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov10773142">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>https://hds.hebis.de/ubffm/Record/HEB456198296</dv:reference>
+                                        <dv:presentation>http://vl.ub.uni-frankfurt.de/id/10773142</dv:presentation>
+                                        <dv:sru>
+                                            http://vl.ub.uni-frankfurt.de/proto_ftsearch/10773142
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:amdSec ID="amd10773155">
+                        <mets:rightsMD ID="rights10773155">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            http://vl.ub.uni-frankfurt.de//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov10773155">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>https://hds.hebis.de/ubffm/Record/HEB456198903</dv:reference>
+                                        <dv:presentation>http://vl.ub.uni-frankfurt.de/id/10773155</dv:presentation>
+                                        <dv:sru>
+                                            http://vl.ub.uni-frankfurt.de/proto_ftsearch/10773155
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:amdSec ID="amd10773171">
+                        <mets:rightsMD ID="rights10773171">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            http://vl.ub.uni-frankfurt.de//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov10773171">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>https://hds.hebis.de/ubffm/Record/HEB456199624</dv:reference>
+                                        <dv:presentation>http://vl.ub.uni-frankfurt.de/id/10773171</dv:presentation>
+                                        <dv:sru>
+                                            http://vl.ub.uni-frankfurt.de/proto_ftsearch/10773171
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:amdSec ID="amd10773164">
+                        <mets:rightsMD ID="rights10773164">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            http://vl.ub.uni-frankfurt.de//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov10773164">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>https://hds.hebis.de/ubffm/Record/HEB456199403</dv:reference>
+                                        <dv:presentation>http://vl.ub.uni-frankfurt.de/id/10773164</dv:presentation>
+                                        <dv:sru>
+                                            http://vl.ub.uni-frankfurt.de/proto_ftsearch/10773164
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:amdSec ID="amd10773161">
+                        <mets:rightsMD ID="rights10773161">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            http://vl.ub.uni-frankfurt.de//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov10773161">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>https://hds.hebis.de/ubffm/Record/HEB456199063</dv:reference>
+                                        <dv:presentation>http://vl.ub.uni-frankfurt.de/id/10773161</dv:presentation>
+                                        <dv:sru>
+                                            http://vl.ub.uni-frankfurt.de/proto_ftsearch/10773161
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:fileSec>
+                        <mets:fileGrp USE="FRONTIMAGE">
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:15:18.663800Z" ID="IMG_FRONTIMAGE_10769619">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/webcache/304/10769619" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:15:22.303800Z" ID="IMG_FRONTIMAGE_10769624">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/webcache/304/10769624" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:15:54.975800Z" ID="IMG_FRONTIMAGE_10769671">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/webcache/304/10769671" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:16:54.343800Z" ID="IMG_FRONTIMAGE_10769755">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/webcache/304/10769755" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:17:31.763800Z" ID="IMG_FRONTIMAGE_10769803">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/webcache/304/10769803" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:18:11.887700Z" ID="IMG_FRONTIMAGE_10769853">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/webcache/304/10769853" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:18:46.011700Z" ID="IMG_FRONTIMAGE_10769897">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/webcache/304/10769897" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:18:59.499700Z" ID="IMG_FRONTIMAGE_10769912">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/webcache/304/10769912" LOCTYPE="URL"/>
+                            </mets:file>
+                        </mets:fileGrp>
+                        <mets:fileGrp USE="DOWNLOAD">
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="86a8412f3299c60f62b06112b6b9337be17a7844" CREATED="2020-06-08T12:50:30.297400Z" CHECKSUMTYPE="SHA-1" SIZE="9920194" ID="PDF_10773134">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/pdf/10773134" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="857ee37fe0a83052cc9ecd581ef4562fb91c1e95" CREATED="2020-06-08T12:13:19.582300Z" CHECKSUMTYPE="SHA-1" SIZE="18187050" ID="PDF_10773142">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/pdf/10773142" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="09cc70e2cd21951002e758ce3b29a29c3e0afe67" CREATED="2020-06-08T12:21:55.994200Z" CHECKSUMTYPE="SHA-1" SIZE="10929592" ID="PDF_10773155">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/pdf/10773155" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="2e18a552cbd814aade297518489d704ab8a79926" CREATED="2020-06-08T12:25:32.127300Z" CHECKSUMTYPE="SHA-1" SIZE="12060057" ID="PDF_10773161">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/pdf/10773161" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="a38b3bc819804db624c928802c35514136ac0f63" CREATED="2020-06-08T12:50:27.603800Z" CHECKSUMTYPE="SHA-1" SIZE="8223070" ID="PDF_10773164">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/pdf/10773164" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="5097ab7e81dbf98b620d9846c2c173ea7fdd8781" CREATED="2020-06-08T12:27:00.568200Z" CHECKSUMTYPE="SHA-1" SIZE="2650063" ID="PDF_10773171">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/pdf/10773171" LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="f35c0682a626f96b0731ca0a2dbeccf4c180992b" CREATED="2020-06-08T12:37:16.801000Z" CHECKSUMTYPE="SHA-1" SIZE="1226298" ID="PDF_10773178">
+                                <mets:FLocat xlink:href="http://vl.ub.uni-frankfurt.de/download/pdf/10773178" LOCTYPE="URL"/>
+                            </mets:file>
+                        </mets:fileGrp>
+                    </mets:fileSec>
+                    <mets:structMap TYPE="LOGICAL">
+                        <mets:div ID="log10688403" DMDID="md10688403" ADMID="amd10688403" LABEL="Decheniana" TYPE="section" ORDER="208395">
+                            <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10688403"/>
+                            <mets:fptr FILEID="IMG_FRONTIMAGE_10769619"/>
+                            <mets:div ID="log10771471" DMDID="md10771471" ADMID="amd10771471" LABEL="95 A (1937)" TYPE="section" ORDER="2">
+                                <mets:fptr FILEID="IMG_FRONTIMAGE_10769619"/>
+                                <mets:div ID="log10773124" TYPE="section" ORDER="2">
+                                    <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10773124"/>
+                                </mets:div>
+                                <mets:div ID="log10773125" TYPE="section" ORDER="3">
+                                    <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10773125"/>
+                                </mets:div>
+                                <mets:div ID="log10773126" TYPE="section" ORDER="4">
+                                    <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10773126"/>
+                                </mets:div>
+                                <mets:div ID="log10773134" DMDID="md10773134" ADMID="amd10773134" LABEL="Sedimentpetrographische Untersuchungen an rezenten Rheinsanden vom Mainzer Becken bis an die Holländische Grenze" TYPE="section" ORDER="5">
+                                    <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10773134"/>
+                                    <mets:fptr FILEID="PDF_10773134"/>
+                                    <mets:fptr FILEID="IMG_FRONTIMAGE_10769624"/>
+                                </mets:div>
+                                <mets:div ID="log10773142" DMDID="md10773142" ADMID="amd10773142" LABEL="Quellen und Grundwasser in der SW-Eifel" TYPE="section" ORDER="6">
+                                    <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10773142"/>
+                                    <mets:fptr FILEID="PDF_10773142"/>
+                                    <mets:fptr FILEID="IMG_FRONTIMAGE_10769671"/>
+                                </mets:div>
+                                <mets:div ID="log10773155" DMDID="md10773155" ADMID="amd10773155" LABEL="Anlagerung und Bildungsweise des Buntsandsteins bei Mettlach an der Saar" TYPE="section" ORDER="7">
+                                    <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10773155"/>
+                                    <mets:fptr FILEID="PDF_10773155"/>
+                                    <mets:fptr FILEID="IMG_FRONTIMAGE_10769755"/>
+                                </mets:div>
+                                <mets:div ID="log10773161" DMDID="md10773161" ADMID="amd10773161" LABEL="Sedimentpetrographische Beiträge zur Gliederung des Tertiärs der südlichen niederrheinischen Bucht" TYPE="section" ORDER="8">
+                                    <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10773161"/>
+                                    <mets:fptr FILEID="PDF_10773161"/>
+                                    <mets:fptr FILEID="IMG_FRONTIMAGE_10769803"/>
+                                </mets:div>
+                                <mets:div ID="log10773164" DMDID="md10773164" ADMID="amd10773164" LABEL="Pflanzenreste aus den diluvialen Ablagerungen im Ruhr-Emscher-Lippe-Gebiete" TYPE="section" ORDER="9">
+                                    <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10773164"/>
+                                    <mets:fptr FILEID="PDF_10773164"/>
+                                    <mets:fptr FILEID="IMG_FRONTIMAGE_10769853"/>
+                                </mets:div>
+                                <mets:div ID="log10773171" DMDID="md10773171" ADMID="amd10773171" LABEL="Die Transgression der Viséstufe in Nordwesteuropa" TYPE="section" ORDER="10">
+                                    <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10773171"/>
+                                    <mets:fptr FILEID="PDF_10773171"/>
+                                    <mets:fptr FILEID="IMG_FRONTIMAGE_10769897"/>
+                                </mets:div>
+                                <mets:div ID="log10773178" DMDID="md10773178" ADMID="amd10773178" LABEL="Neue Untersuchungen über den Kohlenkalk der Umgebung von Aachen" TYPE="section" ORDER="11">
+                                    <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10773178"/>
+                                    <mets:fptr FILEID="PDF_10773178"/>
+                                    <mets:fptr FILEID="IMG_FRONTIMAGE_10769912"/>
+                                </mets:div>
+                                <mets:div ID="log10773176" TYPE="section" ORDER="312">
+                                    <mets:mptr LOCTYPE="URL" xlink:href="http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10773176"/>
+                                </mets:div>
+                            </mets:div>
+                        </mets:div>
+                    </mets:structMap>
+                </mets:mets>
+            </metadata>
+        </record>
+    </GetRecord>
+</OAI-PMH>

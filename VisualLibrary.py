@@ -29,6 +29,7 @@ class VisualLibraryExportElement:
     MODS_TAG_ROLE_STRING = 'mods:roleterm'
 
     METS_TAG_STRUCTMAP_STRING = 'mets:structmap'
+    METS_TAG_DIV_STRING = 'mets:div'
 
     YES_STRING = 'yes'
     KEY_DATE_STRING = 'keydate'
@@ -248,11 +249,16 @@ class ArticleHandlingExportElement(VisualLibraryExportElement):
 
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
-        self.articles = []
+        self._articles = []
+        self._articles_processed = False
 
     @property
     def articles(self):
-        return self._resolve_depending_sections()
+        if not self._articles_processed:
+            self._articles = self._resolve_depending_sections()
+            self._articles_processed = True
+
+        return self._articles
 
     @articles.setter
     def articles(self, val):
@@ -264,12 +270,17 @@ class Volume(ArticleHandlingExportElement):
 
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
-        self.issues = None
+        self._issues = []
+        self._issues_processed = False
         self.publisher = None
 
     @property
     def issues(self):
-        return self._resolve_depending_sections()
+        if not self._issues_processed:
+            self._issues = self._resolve_depending_sections()
+            self._issues_processed = True
+
+        return self._issues
 
     @issues.setter
     def issues(self, val):
@@ -425,12 +436,19 @@ class Article(VisualLibraryExportElement):
     """ This class holds all article data. """
 
     METS_TAG_SECTION_STRING = 'mets:dmdsec'
+
     MODS_TAG_NAME_PART_STRING = 'mods:namepart'
+    MODS_TAG_EXTEND_STRING = 'mods:extent'
+    MODS_TAG_START_STRING = 'mods:start'
+    MODS_TAG_END_STRING = 'mods:end'
+    MODS_TAG_LIST_STRING = 'mods:list'
 
     AUTHOR_SHORT_STRING = 'aut'
     GIVEN_STRING = 'given'
     FAMILY_STRING = 'family'
     PHYSICAL_STRING = 'PHYSICAL'
+    UNIT_STRING = 'unit'
+    PAGE_STRING = 'page'
 
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
@@ -438,15 +456,18 @@ class Article(VisualLibraryExportElement):
         self.authors = self._extract_authors_from_metadata()
         self.pages = []
         self.full_text = None
+        self.page_range = self._extract_page_range_from_metadata()
+        self.doi = None
 
     @property
     def pages(self):
-        pages_in_xml = self.xml_data.find_all(self.METS_TAG_STRUCTMAP_STRING, {self.TYPE_STRING: self.PHYSICAL_STRING})
-        for page in pages_in_xml:
+        pages_in_article = self.xml_data.find(self.METS_TAG_STRUCTMAP_STRING, {self.TYPE_STRING: self.PHYSICAL_STRING})
+        pages = pages_in_article.find_all(self.METS_TAG_DIV_STRING, attrs={self.TYPE_STRING: self.PAGE_STRING})
+        for page in pages:
             yield Page(page, self.xml_data)
 
     @property
-    def full_text(self):
+    def full_text(self) -> str:
         return '\n'.join([page.full_text for page in self.pages])
 
     @pages.setter
@@ -476,7 +497,27 @@ class Article(VisualLibraryExportElement):
 
         return authors
 
-    def _is_person_element_author(self, person_element):
+    def _extract_page_range_from_metadata(self) -> (namedtuple, None):
+        PageRange = namedtuple('PageRange', ['start', 'end'])
+        page_range_element = self.xml_data.find(self.MODS_TAG_EXTEND_STRING, attrs={self.UNIT_STRING: self.PAGE_STRING})
+        if page_range_element is not None:
+            start_element = page_range_element.find(self.MODS_TAG_START_STRING)
+            if start_element is not None:
+                start = start_element.text
+                end = page_range_element.find(self.MODS_TAG_END_STRING).text
+            else:
+                mods_list = page_range_element.find(self.MODS_TAG_LIST_STRING)
+                if mods_list is not None:
+                    start = mods_list.text
+                    end = ''
+                else:
+                    return None
+
+            return PageRange(start, end)
+        else:
+            return None
+
+    def _is_person_element_author(self, person_element: Soup):
         return person_element.find(self.MODS_TAG_ROLE_STRING,
                                    {self.AUTHORITY_STRING: self.MARCRELATOR_STRING}).text == self.AUTHOR_SHORT_STRING
 
@@ -523,6 +564,10 @@ class VisualLibrary:
 
     VISUAL_LIBRARY_OAI_URL = 'http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix={xml_response_format}&identifier={identifier}'
     METS_STRING = 'mets'
+    SOUP_XML_ENCODING = 'lxml'
+
+    REQUEST_TAG_STRING = 'request'
+    IDENTIFIER_STRING = 'identifier'
 
     VL_OBJECT_TYPES = VL_OBJECT_TYPES
     logger.setLevel(logging.DEBUG)
@@ -550,13 +595,39 @@ class VisualLibrary:
             :param vl_id: The ID of the object in the Visual Library
             :type vl_id: str
             :rtype VisualLibraryExportElement
-            Returns None, if the element could not be found.
+            :returns: An object containing Visual Library metadata. None, if the element could not be found.
         """
 
         xml_data = self.get_data_for_id(vl_id)
-        header = get_xml_header_from_vl_response(xml_data)
-        object_type = get_object_type_from_xml_header(header)
+        return self._create_vl_export_object(vl_id, xml_data)
 
+    def get_element_from_xml_file(self, xml_file_path_string):
+        """ Reads a given XML file and converts it's content to a VisualLibraryExport object.
+            :param xml_file_path_string: The path to a local xml file.
+            :type xml_file_path_string: str
+            :returns: An object containing Visual Library metadata. None, if the element could not be found.
+            :rtype: VisualLibraryExportElement
+
+            The XML file has to contain a local copy of a Visual Library response!
+        """
+        with open(xml_file_path_string) as xml_file:
+            xml_data_string = xml_file.read()
+
+        xml_data = Soup(xml_data_string, self.SOUP_XML_ENCODING)
+        request_element = xml_data.find(self.REQUEST_TAG_STRING)
+        if request_element is None:
+            raise ValueError('A "request" tag was expected and not found!')
+
+        vl_id = request_element[self.IDENTIFIER_STRING]
+
+        return self._create_vl_export_object(vl_id, xml_data)
+
+    def _get_object_type(self, xml_data: Soup) -> (VisualLibraryExportElement, None):
+        header = get_xml_header_from_vl_response(xml_data)
+        return get_object_type_from_xml_header(header)
+
+    def _create_vl_export_object(self, vl_id: str, xml_data: Soup) -> (VisualLibraryExportElement, None):
+        object_type = self._get_object_type(xml_data)
         if object_type is not None:
             xml_importer = MetsImporter()
             xml_importer.parse_xml(xml_data)

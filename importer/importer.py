@@ -16,10 +16,7 @@ DEBUG_FILE_DATA_CONTENT_BYTE_STRING = b'Here could be your PDF file!'
 class XMLImporter(ABC):
     """ An abstract class that provides a simple XML import interface. """
 
-    XML_IMPORT_PARSER = 'lxml'
-
-    ID_STRING = 'id'
-
+    @abstractmethod
     def __init__(self):
         self.xml_data = None
 
@@ -47,10 +44,12 @@ class XMLImporter(ABC):
         xml_data = get_content_from_url(url)
         self.parse_xml(xml_data.decode())
 
-    @abstractmethod
     def update_data(self):
         """ This function is called automatically when XML data has been imported. """
         pass
+    ID_STRING = 'id'
+
+    XML_IMPORT_PARSER = 'lxml'
 
 
 class File:
@@ -82,7 +81,10 @@ class File:
         self.data = get_content_from_url(self.url)
 
     def get_data_in_base64_encoding(self):
-        """ Transforms the data property into a base64-encoded string. """
+        """ Transforms the data property into a base64-encoded string.
+            :returns: A base64-encoded representation of the file data.
+            :rtype: str
+        """
 
         encoded_bytes = base64.b64encode(self.data)
         return str(encoded_bytes, UTF8_ENCODING_STRING)
@@ -97,6 +99,11 @@ class File:
             self._size = int(value)
 
     def parse_properties_from_xml_element(self, xml_element):
+        """ Reads data from XML to set the file data.
+        :param xml_element: An XML element (METS) containing the file data.
+        :type xml_element: BeautifulSoup
+        """
+
         self.mime_type = xml_element.get(self.ATTRIBUTE_MIMETYPE_STRING)
         self.size = xml_element.get(self.ATTRIBUTE_FILE_SIZE_STRING)
 
