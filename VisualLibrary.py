@@ -27,9 +27,14 @@ class VisualLibraryExportElement:
     MODS_TAG_LANGUAGE_TERM_STRING = 'mods:languageterm'
     MODS_TAG_NAME_STRING = 'mods:name'
     MODS_TAG_ROLE_STRING = 'mods:roleterm'
+    MODS_TAG_PART_STRING = 'mods:part'
+    MODS_TAG_DETAIL_STRING = 'mods:detail'
+    MODS_TAG_NUMBER_STRING = 'mods:number'
 
     METS_TAG_STRUCTMAP_STRING = 'mets:structmap'
     METS_TAG_DIV_STRING = 'mets:div'
+    METS_TAG_RESOURCE_POINTER_STRING = 'mets:mptr'
+    METS_TAG_XML_DATA_STRING = 'mets:xmldata'
 
     YES_STRING = 'yes'
     KEY_DATE_STRING = 'keydate'
@@ -39,6 +44,7 @@ class VisualLibraryExportElement:
     AUTHORITY_STRING = 'authority'
     MARCRELATOR_STRING = 'marcrelator'
     TYPE_STRING = 'type'
+    ID_STRING = 'id'
 
     def __init__(self, vl_id, xml_importer, parent):
         self.id = vl_id
@@ -53,13 +59,59 @@ class VisualLibraryExportElement:
         self.languages = set()
         self.label = self._own_section.label
         self.order = self._own_section.order
+        self._number = None
         self.publication_date = None
-        self.parent = parent
+        self._parent = parent
         self.files = self._own_section.files
 
         self._extract_publication_date_from_metadata()
         self._extract_titles_from_metadata()
         self._extract_languages_from_metadata()
+
+    @property
+    def parent(self):
+        """ This gives the parent of the current object.
+            For an Issue this would be a Volume.
+        """
+        if self._parent is None:
+            self._parent = self._get_parent()
+
+        return self._parent
+
+    @property
+    def number(self):
+        """ If overriden, this should return the publication number of the object.
+            :rtype: str
+        """
+        return None
+
+    def _create_section_instance(self, xml_importer: MetsImporter, url: str):
+        """ Finds the appropriate class for a section.
+            :returns: A section instance. None, if the section could not be resolved.
+        """
+
+        try:
+            xml_importer.parse_xml_from_url(url)
+        except ImportError:
+            logger.info('The URL {url} could not be resolved -> Skipping!'.format(url=url))
+            # The given VL ID is not valid (could be an image).
+            return None
+        header = get_xml_header_from_vl_response(xml_importer.xml_data)
+        section_type = get_object_type_from_xml_header(header)
+        if section_type is not None:
+            section_id = re.search(r'(?<=identifier=)[0-9]*', url).group()
+            return section_type(section_id, xml_importer, parent=self)
+
+    def _extract_languages_from_metadata(self):
+        """ Sets the language property with the appropriate data. """
+
+        languages_element = self.metadata.find(self.MODS_TAG_LANGUAGE_STRING)
+
+        if languages_element is None:
+            return
+
+        self.languages = set(language.text for language in languages_element.find_all(
+            self.MODS_TAG_LANGUAGE_TERM_STRING))
 
     def _extract_publication_date_from_metadata(self):
         """ Search for the earliest date in the metadata and use it as publication date.
@@ -94,20 +146,6 @@ class VisualLibraryExportElement:
         origin_info_elements = self._get_date_elements_from_metadata()
         self.publication_date = get_earliest_date()
 
-    def _get_date_elements_from_metadata(self) -> list:
-        return self.metadata.find_all([self.MODS_TAG_PUBLICATION_DATE_STRING,
-                                       self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING])
-
-    def _extract_languages_from_metadata(self):
-        """ Sets the language property with the appropriate data. """
-
-        languages_element = self.metadata.find(self.MODS_TAG_LANGUAGE_STRING)
-
-        if languages_element is None:
-            return
-
-        self.languages = set(language.text for language in languages_element.find_all(self.MODS_TAG_LANGUAGE_TERM_STRING))
-
     def _extract_titles_from_metadata(self):
         """ Sets both the title and subtitle data with the appropriate data. """
 
@@ -125,8 +163,41 @@ class VisualLibraryExportElement:
         if subtitle_element is not None:
             self.subtitle = subtitle_element.text
 
+    def _get_authority_element_by_role(self, role_type: str) -> list:
+        """ Finds all metadata elements having the given role.
+            This function is used for finding e.g. authors and publishers.
+        """
+        persons_in_metadata = self.metadata.find_all(self.MODS_TAG_NAME_STRING)
+        persons_in_given_role = [person_element
+                                 for person_element in persons_in_metadata
+                                 if person_element.find(self.MODS_TAG_ROLE_STRING,
+                                                        {self.AUTHORITY_STRING: self.MARCRELATOR_STRING}).text == role_type
+                                 ]
+
+        return persons_in_given_role
+
+    def _get_date_elements_from_metadata(self) -> list:
+        return self.metadata.find_all([self.MODS_TAG_PUBLICATION_DATE_STRING,
+                                       self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING])
+
     def _get_own_sections(self) -> MetsImporter.Section:
         return self.xml_importer.get_section_by_id(self.id)
+
+    def _get_parent(self):
+        section_id = self._own_section.id
+        parent_element = self.xml_data.find(attrs={self.ID_STRING: section_id}).parent
+        parent_url_element = parent_element.find(self.METS_TAG_RESOURCE_POINTER_STRING, {self.LOCTYPE_STRING:
+                                                                                         self.URL_STRING},
+                                                 recursive=False)
+        if parent_url_element is not None:
+            parent_url = parent_url_element.get(self.HREF_LINK_STRING)
+            parent_id_result = re.search(r'(?<=identifier=)[0-9]*', parent_url, re.IGNORECASE)
+            if parent_id_result is not None:
+                parent_id = parent_id_result.group()
+                vl = VisualLibrary()
+                return vl.get_element_from_url(parent_id, parent_url)
+            else:
+                return None
 
     def _resolve_depending_sections(self):
         """ Returns a generator that iterates this object's sections.
@@ -136,23 +207,6 @@ class VisualLibraryExportElement:
         for section in self.sections:
             for instance in self._resolve_resource_pointers(section):
                 yield instance
-
-    def _create_section_instance(self, xml_importer: MetsImporter, url: str):
-        """ Finds the appropriate class for a section.
-            :returns: A section instance. None, if the section could not be resolved.
-        """
-
-        try:
-            xml_importer.parse_xml_from_url(url)
-        except ImportError:
-            logger.info('The URL {url} could not be resolved -> Skipping!'.format(url=url))
-            # The given VL ID is not valid (could be an image).
-            return None
-        header = get_xml_header_from_vl_response(xml_importer.xml_data)
-        section_type = get_object_type_from_xml_header(header)
-        if section_type is not None:
-            section_id = re.search(r'(?<=identifier=)[0-9]*', url).group()
-            return section_type(section_id, xml_importer, parent=self)
 
     def _resolve_resource_pointers(self, section: MetsImporter.Section) -> list:
         """ Resolves any subsection's URL references to other Visual Library objects.
@@ -171,18 +225,14 @@ class VisualLibraryExportElement:
 
         return instantiated_sections
 
-    def _get_authority_element_by_role(self, role_type: str) -> list:
-        """ Finds all metadata elements having the given role.
-            This function is used for finding e.g. authors and publishers.
-        """
-        persons_in_metadata = self.metadata.find_all(self.MODS_TAG_NAME_STRING)
-        persons_in_given_role = [person_element
-                                 for person_element in persons_in_metadata
-                                 if person_element.find(self.MODS_TAG_ROLE_STRING,
-                                                        {self.AUTHORITY_STRING: self.MARCRELATOR_STRING}).text == role_type
-                                 ]
+    def _get_number_from_metadata_details_by_attribute(self, detail_node_attributes: dict) -> (str, None):
+        try:
+            info_node = self.metadata.find(self.MODS_TAG_PART_STRING).find(
+                self.MODS_TAG_DETAIL_STRING, detail_node_attributes)
 
-        return persons_in_given_role
+            return info_node.find(self.MODS_TAG_NUMBER_STRING).text
+        except AttributeError:
+            return None
 
 
 class Journal(VisualLibraryExportElement):
@@ -216,17 +266,6 @@ class Journal(VisualLibraryExportElement):
         date_elements = self._get_date_elements_from_metadata()
         self._get_publication_duration(date_elements)
 
-    def _get_publication_duration(self, date_elements):
-        """ Searches the elements' texts for a duration.
-            The duration has to fit the format YYYY-YYYY.
-        """
-
-        for date_element in date_elements:
-            date_period = re.match(r'^[0-9]{4}\s*?-\s*?[0-9]{4}', date_element.text)
-            if date_period:
-                self.publication_date = date_period.group()
-                break
-
     def _extract_publisher_from_metadata(self):
         """ Sets the display name of the publisher from the metadata. """
 
@@ -242,6 +281,17 @@ class Journal(VisualLibraryExportElement):
             )
 
         self.publishers = publishers
+
+    def _get_publication_duration(self, date_elements):
+        """ Searches the elements' texts for a duration.
+            The duration has to fit the format YYYY-YYYY.
+        """
+
+        for date_element in date_elements:
+            date_period = re.match(r'^[0-9]{4}\s*?-\s*?[0-9]{4}', date_element.text)
+            if date_period:
+                self.publication_date = date_period.group()
+                break
 
 
 class ArticleHandlingExportElement(VisualLibraryExportElement):
@@ -268,6 +318,8 @@ class ArticleHandlingExportElement(VisualLibraryExportElement):
 class Volume(ArticleHandlingExportElement):
     """ A Volume class can hold both Issues OR articles. """
 
+    VOLUME_STRING = 'volume'
+
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
         self._issues = []
@@ -282,6 +334,13 @@ class Volume(ArticleHandlingExportElement):
 
         return self._issues
 
+    @property
+    def number(self):
+        if self._number is None:
+            self._number = self._get_number_from_metadata_details_by_attribute({})
+
+        return self._number
+
     @issues.setter
     def issues(self, val):
         """ Disable setter """
@@ -291,8 +350,17 @@ class Volume(ArticleHandlingExportElement):
 class Issue(ArticleHandlingExportElement):
     """ An Issue class holds only articles. """
 
+    ISSUE_STRING = 'issue'
+
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
+
+    @property
+    def number(self):
+        if self._number is None:
+            self._number = self._get_number_from_metadata_details_by_attribute({self.TYPE_STRING: self.ISSUE_STRING})
+
+        return self._number
 
 
 class Page:
@@ -610,6 +678,7 @@ class VisualLibrary:
 
             The XML file has to contain a local copy of a Visual Library response!
         """
+
         with open(xml_file_path_string) as xml_file:
             xml_data_string = xml_file.read()
 
@@ -621,6 +690,21 @@ class VisualLibrary:
         vl_id = request_element[self.IDENTIFIER_STRING]
 
         return self._create_vl_export_object(vl_id, xml_data)
+
+    def get_element_from_url(self, vl_id, url):
+        """ Calls the OAI XML data from a given URL.
+            :param vl_id: The VL ID of the object to call the metadata for.
+            :type vl_id: str
+            :param url: The URL to call for the metadata.
+            :type url: str
+            :returns: The response OAI XML in a BeautifulSoup element.
+            :rtype: BeautifulSoup
+        """
+
+        xml_importer = MetsImporter()
+        xml_importer.parse_xml_from_url(url)
+
+        return self._create_vl_export_object(vl_id, xml_importer.xml_data)
 
     def _get_object_type(self, xml_data: Soup) -> (VisualLibraryExportElement, None):
         header = get_xml_header_from_vl_response(xml_data)
