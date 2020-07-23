@@ -393,12 +393,12 @@ class Page:
         self.image_default_resolution = None
         self.image_max_resolution = None
         self.image_min_resolution = None
+        self._page_element = page_element
         self.label = page_element.get(self.LABEL_STRING)
         self.order = page_element.get(self.ORDER_STRING)
         self.thumbnail = None
 
         self._file_pointer = self._page_element.find_all(self.METS_TAG_FILE_POINTER)
-        self._page_element = page_element
         self._xml_data = xml_data
 
     @property
