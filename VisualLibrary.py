@@ -369,58 +369,37 @@ class Page:
         and generated.
     """
 
-    CONTENT_STRING = 'content'
-    ID_STRING = 'id'
-    LABEL_STRING = 'label'
-    ORDER_STRING = 'order'
-    FILE_ID_STRING = 'fileid'
-
-    METS_TAG_FILE_STRING = 'mets:file'
-    METS_TAG_FILE_POINTER = 'mets:fptr'
-
-    ALTO_TAG_TEXT_LINE_STRING = 'textline'
     ALTO_TAG_SPACE_STRING = 'sp'
+    ALTO_TAG_TEXT_LINE_STRING = 'textline'
     ALTO_TAG_WORD_STRING = 'string'
 
-    SUBSTRING_IN_THUMBNAIL_ID = 'THUMBS'
-    SUBSTRING_IN_MAX_SCAN_IMAGE_ID = 'MAX'
+    CONTENT_STRING = 'content'
+    FILE_ID_STRING = 'fileid'
+    ID_STRING = 'id'
+    LABEL_STRING = 'label'
+    METS_TAG_FILE_POINTER = 'mets:fptr'
+    METS_TAG_FILE_STRING = 'mets:file'
+    ORDER_STRING = 'order'
+
     SUBSTRING_IN_DEFAULT_SCAN_IMAGE_ID = 'DEFAULT'
-    SUBSTRING_IN_MIN_SCAN_IMAGE_ID = 'MIN'
     SUBSTRING_IN_FULL_TEXT_ID = 'ALTO'
+    SUBSTRING_IN_MAX_SCAN_IMAGE_ID = 'MAX'
+    SUBSTRING_IN_MIN_SCAN_IMAGE_ID = 'MIN'
+    SUBSTRING_IN_THUMBNAIL_ID = 'THUMBS'
 
     def __init__(self, page_element, xml_data):
-        self.thumbnail = None
-        self.image_max_resolution = None
-        self.image_min_resolution = None
-        self.image_default_resolution = None
         self.full_text = None
         self.full_text_xml = None
+        self.image_default_resolution = None
+        self.image_max_resolution = None
+        self.image_min_resolution = None
         self.label = page_element.get(self.LABEL_STRING)
         self.order = page_element.get(self.ORDER_STRING)
+        self.thumbnail = None
 
+        self._file_pointer = self._page_element.find_all(self.METS_TAG_FILE_POINTER)
         self._page_element = page_element
         self._xml_data = xml_data
-        self._file_pointer = self._page_element.find_all(self.METS_TAG_FILE_POINTER)
-
-    @property
-    def thumbnail(self) -> File:
-        """ Returns a File object to the page's thumbnail. """
-        return self._get_file_from_id_substring(self.SUBSTRING_IN_THUMBNAIL_ID)
-
-    @property
-    def image_max_resolution(self) -> File:
-        """ Returns a File object to the page's maximum resolution page scan. """
-        return self._get_file_from_id_substring(self.SUBSTRING_IN_MAX_SCAN_IMAGE_ID)
-
-    @property
-    def image_min_resolution(self) -> File:
-        """ Returns a File object to the page's minimum resolution page scan. """
-        return self._get_file_from_id_substring(self.SUBSTRING_IN_MIN_SCAN_IMAGE_ID)
-
-    @property
-    def image_default_resolution(self) -> File:
-        """ Returns a File object to the page's default resolution page scan. """
-        return self._get_file_from_id_substring(self.SUBSTRING_IN_DEFAULT_SCAN_IMAGE_ID)
 
     @property
     def full_text(self) -> (str, None):
@@ -440,8 +419,36 @@ class Page:
     def full_text_xml(self) -> File:
         return self._get_resource_pointer_by_id_substring(self.SUBSTRING_IN_FULL_TEXT_ID)
 
-    @thumbnail.setter
-    def thumbnail(self, val):
+    @property
+    def image_default_resolution(self) -> File:
+        """ Returns a File object to the page's default resolution page scan. """
+        return self._get_file_from_id_substring(self.SUBSTRING_IN_DEFAULT_SCAN_IMAGE_ID)
+
+    @property
+    def image_max_resolution(self) -> File:
+        """ Returns a File object to the page's maximum resolution page scan. """
+        return self._get_file_from_id_substring(self.SUBSTRING_IN_MAX_SCAN_IMAGE_ID)
+
+    @property
+    def image_min_resolution(self) -> File:
+        """ Returns a File object to the page's minimum resolution page scan. """
+        return self._get_file_from_id_substring(self.SUBSTRING_IN_MIN_SCAN_IMAGE_ID)
+
+    @property
+    def thumbnail(self) -> File:
+        """ Returns a File object to the page's thumbnail. """
+        return self._get_file_from_id_substring(self.SUBSTRING_IN_THUMBNAIL_ID)
+
+    @full_text.setter
+    def full_text(self, val):
+        function_is_read_only()
+
+    @full_text_xml.setter
+    def full_text_xml(self, val):
+        function_is_read_only()
+
+    @image_default_resolution.setter
+    def image_default_resolution(self, val):
         function_is_read_only()
 
     @image_max_resolution.setter
@@ -452,16 +459,8 @@ class Page:
     def image_min_resolution(self, val):
         function_is_read_only()
 
-    @image_default_resolution.setter
-    def image_default_resolution(self, val):
-        function_is_read_only()
-
-    @full_text.setter
-    def full_text(self, val):
-        function_is_read_only()
-
-    @full_text_xml.setter
-    def full_text_xml(self, val):
+    @thumbnail.setter
+    def thumbnail(self, val):
         function_is_read_only()
 
     def _get_file_from_resource_id(self, resource_id: str) -> File:
@@ -503,29 +502,33 @@ class Page:
 class Article(VisualLibraryExportElement):
     """ This class holds all article data. """
 
-    METS_TAG_SECTION_STRING = 'mets:dmdsec'
-
-    MODS_TAG_NAME_PART_STRING = 'mods:namepart'
-    MODS_TAG_EXTEND_STRING = 'mods:extent'
-    MODS_TAG_START_STRING = 'mods:start'
-    MODS_TAG_END_STRING = 'mods:end'
-    MODS_TAG_LIST_STRING = 'mods:list'
-
     AUTHOR_SHORT_STRING = 'aut'
-    GIVEN_STRING = 'given'
     FAMILY_STRING = 'family'
+    GIVEN_STRING = 'given'
+
+    METS_TAG_SECTION_STRING = 'mets:dmdsec'
+    MODS_TAG_END_STRING = 'mods:end'
+    MODS_TAG_EXTEND_STRING = 'mods:extent'
+    MODS_TAG_LIST_STRING = 'mods:list'
+    MODS_TAG_NAME_PART_STRING = 'mods:namepart'
+    MODS_TAG_START_STRING = 'mods:start'
+
+    PAGE_STRING = 'page'
     PHYSICAL_STRING = 'PHYSICAL'
     UNIT_STRING = 'unit'
-    PAGE_STRING = 'page'
 
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
 
         self.authors = self._extract_authors_from_metadata()
-        self.pages = []
+        self.doi = None
         self.full_text = None
         self.page_range = self._extract_page_range_from_metadata()
-        self.doi = None
+        self.pages = []
+
+    @property
+    def full_text(self) -> str:
+        return '\n'.join([page.full_text for page in self.pages])
 
     @property
     def pages(self):
@@ -534,16 +537,12 @@ class Article(VisualLibraryExportElement):
         for page in pages:
             yield Page(page, self.xml_data)
 
-    @property
-    def full_text(self) -> str:
-        return '\n'.join([page.full_text for page in self.pages])
+    @full_text.setter
+    def full_text(self, value):
+        function_is_read_only()
 
     @pages.setter
     def pages(self, value):
-        function_is_read_only()
-
-    @full_text.setter
-    def full_text(self, value):
         function_is_read_only()
 
     def _extract_authors_from_metadata(self) -> list:
@@ -595,11 +594,11 @@ class Article(VisualLibraryExportElement):
 RESPONSE_HEADER = 'header'
 VL_OBJECT_SPECIFICATION = 'setspec'
 VL_OBJECT_TYPES = {
+    'article': Article,
+    'journal': Journal,
+    'journal_issue': Issue,
     'journal_volume': Volume,
     'periodical': Journal,
-    'journal_issue': Issue,
-    'article': Article,
-    'journal': Journal
 }
 
 
@@ -630,14 +629,13 @@ class VisualLibrary:
         Currently, the class supports only METS XML data.
     """
 
-    VISUAL_LIBRARY_OAI_URL = 'http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix={xml_response_format}&identifier={identifier}'
-    METS_STRING = 'mets'
-    SOUP_XML_ENCODING = 'lxml'
-
-    REQUEST_TAG_STRING = 'request'
     IDENTIFIER_STRING = 'identifier'
-
+    METS_STRING = 'mets'
+    REQUEST_TAG_STRING = 'request'
+    SOUP_XML_ENCODING = 'lxml'
+    VISUAL_LIBRARY_OAI_URL = 'http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix={xml_response_format}&identifier={identifier}'
     VL_OBJECT_TYPES = VL_OBJECT_TYPES
+
     logger.setLevel(logging.DEBUG)
 
     def get_data_for_id(self, vl_id, xml_response_format=METS_STRING):
@@ -669,6 +667,21 @@ class VisualLibrary:
         xml_data = self.get_data_for_id(vl_id)
         return self._create_vl_export_object(vl_id, xml_data)
 
+    def get_element_from_url(self, vl_id, url):
+        """ Calls the OAI XML data from a given URL.
+            :param vl_id: The VL ID of the object to call the metadata for.
+            :type vl_id: str
+            :param url: The URL to call for the metadata.
+            :type url: str
+            :returns: The response OAI XML in a BeautifulSoup element.
+            :rtype: BeautifulSoup
+        """
+
+        xml_importer = MetsImporter()
+        xml_importer.parse_xml_from_url(url)
+
+        return self._create_vl_export_object(vl_id, xml_importer.xml_data)
+
     def get_element_from_xml_file(self, xml_file_path_string):
         """ Reads a given XML file and converts it's content to a VisualLibraryExport object.
             :param xml_file_path_string: The path to a local xml file.
@@ -691,25 +704,6 @@ class VisualLibrary:
 
         return self._create_vl_export_object(vl_id, xml_data)
 
-    def get_element_from_url(self, vl_id, url):
-        """ Calls the OAI XML data from a given URL.
-            :param vl_id: The VL ID of the object to call the metadata for.
-            :type vl_id: str
-            :param url: The URL to call for the metadata.
-            :type url: str
-            :returns: The response OAI XML in a BeautifulSoup element.
-            :rtype: BeautifulSoup
-        """
-
-        xml_importer = MetsImporter()
-        xml_importer.parse_xml_from_url(url)
-
-        return self._create_vl_export_object(vl_id, xml_importer.xml_data)
-
-    def _get_object_type(self, xml_data: Soup) -> (VisualLibraryExportElement, None):
-        header = get_xml_header_from_vl_response(xml_data)
-        return get_object_type_from_xml_header(header)
-
     def _create_vl_export_object(self, vl_id: str, xml_data: Soup) -> (VisualLibraryExportElement, None):
         object_type = self._get_object_type(xml_data)
         if object_type is not None:
@@ -718,3 +712,7 @@ class VisualLibrary:
             return object_type(vl_id, xml_importer, parent=None)
         else:
             return None
+
+    def _get_object_type(self, xml_data: Soup) -> (VisualLibraryExportElement, None):
+        header = get_xml_header_from_vl_response(xml_data)
+        return get_object_type_from_xml_header(header)
