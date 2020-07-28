@@ -19,6 +19,11 @@ article = vl.get_element_for_id('87453')
 
 # Get only the XML data from the VL as a BeautifulSoup object
 xml_data = vl.get_data_for_id('12345')
+
+# You can also call for data of a single page. However, this is a very
+# "expensive" task, because Python has to look up to which article the
+# given page belongs.
+page = vl.get_page_by_id('10823391')
 ```
 
 ## Customize called URL
