@@ -5,7 +5,7 @@ import re
 from bs4 import BeautifulSoup as Soup
 from bs4 import Tag
 
-from importer.importer import MetsImporter, File
+from importer.importer import MetsImporter, File, HtmlImporter
 
 logger = logging.getLogger('VL-Importer')
 
@@ -83,6 +83,41 @@ class VisualLibraryExportElement:
         """ If overriden, this should return the publication number of the object.
             :rtype: str
         """
+        return None
+
+    def find_section_by_label(self, section_label, parent_labels=None, recursive=False):
+        """ Returns a section that has the given label.
+            :param section_label: A section label for the section that should be returned.
+            :type section_label: str
+            :param parent_labels: Either a list of section labels of a single section label string that should be used
+            to make the search more efficient and be compared to the available section labels. If no label fits any of
+            the current section labels, None is returned.
+            :type parent_labels: list or str
+            :param recursive: If the search should be recursive (True) or not (False). False is default.
+            :type recursive: bool
+            :returns: A single section with the given label. None, if there is no section with the given label.
+            :rtype: MetsImporter.Section
+        """
+
+        if parent_labels is None:
+            parent_labels = []
+
+        if self.label == section_label:
+            return self._own_section
+
+        for section in self.sections:
+            if section.label is None:
+                continue
+
+            if section.label in section_label:
+                return section
+            elif recursive and section.label in parent_labels:
+                resource_url = section.resource_pointer.get(self.HREF_LINK_STRING)
+                resource_id_match = re.match(r'(?<=identifier=)[0-9]*', resource_url)
+                if resource_id_match:
+                    parent_element = VisualLibrary().get_element_for_id(resource_id_match.group())
+                    return parent_element.find_section_by_label(section_label, parent_labels, recursive=True)
+
         return None
 
     def _create_section_instance(self, xml_importer: MetsImporter, url: str):
@@ -214,7 +249,7 @@ class VisualLibraryExportElement:
         """
 
         instantiated_sections = []
-        for resource in section.resource_pointer:
+        for resource in section.resource_pointers:
             if resource.get(self.LOCTYPE_STRING) == self.URL_STRING:
                 url = resource.get(self.HREF_LINK_STRING)
                 xml_importer = MetsImporter()
@@ -397,6 +432,8 @@ class Page:
         self.label = page_element.get(self.LABEL_STRING)
         self.order = page_element.get(self.ORDER_STRING)
         self.thumbnail = None
+        self.id = self._extract_page_id_from_metadata(page_element)
+        self.vl_id = self._extract_vl_page_id_from_metadata(page_element)
 
         self._file_pointer = self._page_element.find_all(self.METS_TAG_FILE_POINTER)
         self._xml_data = xml_data
@@ -462,6 +499,14 @@ class Page:
     @thumbnail.setter
     def thumbnail(self, val):
         function_is_read_only()
+
+    def _extract_page_id_from_metadata(self, page_metadata: Soup) -> str:
+        return page_metadata.get(self.ID_STRING)
+
+    def _extract_vl_page_id_from_metadata(self, page_metadata: Soup) -> str:
+        page_id = self._extract_page_id_from_metadata(page_metadata)
+        return re.sub(r'^phys', '', page_id)
+
 
     def _get_file_from_resource_id(self, resource_id: str) -> File:
         """ Creates a File object from resolving a given XML data internal ID. """
@@ -595,6 +640,7 @@ RESPONSE_HEADER = 'header'
 VL_OBJECT_SPECIFICATION = 'setspec'
 VL_OBJECT_TYPES = {
     'article': Article,
+    'document': Article,
     'journal': Journal,
     'journal_issue': Issue,
     'journal_volume': Volume,
@@ -629,10 +675,15 @@ class VisualLibrary:
         Currently, the class supports only METS XML data.
     """
 
+    HREF_STRING = 'href'
+    HTML_ELEMENT_LINK = 'a'
     IDENTIFIER_STRING = 'identifier'
     METS_STRING = 'mets'
     REQUEST_TAG_STRING = 'request'
     SOUP_XML_ENCODING = 'lxml'
+    TITLE_CONTENT_ELEMENT_ID = 'tab-content-titleinfo'
+    TITLE_INFO_ELEMENT_ID = 'tab-periodical-titleinfo'
+    VISUAL_LIBRARY_BASE_URL = 'http://vl.ub.uni-frankfurt.de'
     VISUAL_LIBRARY_OAI_URL = 'http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix={xml_response_format}&identifier={identifier}'
     VL_OBJECT_TYPES = VL_OBJECT_TYPES
 
@@ -703,6 +754,42 @@ class VisualLibrary:
         vl_id = request_element[self.IDENTIFIER_STRING]
 
         return self._create_vl_export_object(vl_id, xml_data)
+
+    def get_page_by_id(self, page_id):
+        """ Returns a single Page object.
+            :param page_id: The ID of the page to call.
+            :type page_id: str
+            :returns: A page object of the given ID. None, if it could not be found.
+            :rtype Page
+
+            It may be that some old data cannot return a page, because internal links are not set/are broken or because
+            of other reasons.
+            This is a very expensive and time consuming task!
+        """
+
+        page_url = '{base_url}/{page_id}'.format(base_url=self.VISUAL_LIBRARY_BASE_URL, page_id=page_id)
+
+        html_importer = HtmlImporter()
+        html_importer.parse_xml_from_url(page_url)
+
+        title_info_element = html_importer.get_element_by_id([self.TITLE_INFO_ELEMENT_ID, self.TITLE_CONTENT_ELEMENT_ID])
+        title_info_link_element = title_info_element.find(self.HTML_ELEMENT_LINK)
+        title_vl_id = re.search(r'[0-9]+$', title_info_link_element[self.HREF_STRING])
+
+        title_vl_object = self.get_element_for_id(title_vl_id.group())
+
+        page_hierarchy_labels = html_importer.get_navigation_hierarchy_labels()
+        article_section_containing_page = title_vl_object.find_section_by_label(page_hierarchy_labels[-1],
+                                                                                page_hierarchy_labels, recursive=True)
+
+        article_id = re.sub('^log', '', article_section_containing_page.id)
+
+        article_object_containing_page = VisualLibrary().get_element_for_id(article_id)
+        for page in article_object_containing_page.pages:
+            if page.vl_id == page_id:
+                return page
+
+        return None
 
     def _create_vl_export_object(self, vl_id: str, xml_data: Soup) -> (VisualLibraryExportElement, None):
         object_type = self._get_object_type(xml_data)

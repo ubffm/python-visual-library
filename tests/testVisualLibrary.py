@@ -1,6 +1,6 @@
 import os
 
-from ..VisualLibrary import VisualLibrary, Volume, Journal, Article
+from ..VisualLibrary import VisualLibrary, Volume, Journal, Article, Page
 
 IMAGE_MIME_TYPE = 'image/jpeg'
 
@@ -90,3 +90,16 @@ class TestVisualLibrary:
             assert len(page.full_text) > 0
 
         assert len(vl_object.full_text) == 8020
+
+    def test_call_for_single_page(self):
+        single_page_id = '10769418'
+
+        vl = VisualLibrary()
+        page = vl.get_page_by_id(single_page_id)
+
+        full_text_snippet = 'in Mitteleuropa ist durch den Menschen nachhaltig verändert\n'
+
+        assert isinstance(page, Page)
+        assert full_text_snippet in page.full_text
+        assert page.label == 'Seite 1'
+        assert page.order == '11'

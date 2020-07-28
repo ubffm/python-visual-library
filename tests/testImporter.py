@@ -21,11 +21,11 @@ class TestImporter:
 
         journal = mets_importer.structure[0]
         assert len(journal.sections) == 1
-        assert len(journal.resource_pointer) == 1
+        assert len(journal.resource_pointers) == 1
         assert journal.metadata is not None
 
         issue = journal.sections[0]
-        assert len(issue.resource_pointer) == 0
+        assert len(issue.resource_pointers) == 0
         assert issue.metadata is not None
 
         articles = issue.sections
@@ -38,9 +38,9 @@ class TestImporter:
 
         for article in articles:
             if article.id in articles_with_resources:
-                assert len(article.resource_pointer) >= 1
+                assert len(article.resource_pointers) >= 1
             else:
-                assert len(article.resource_pointer) == 0
+                assert len(article.resource_pointers) == 0
 
             if article.id in articles_with_files:
                 for f in article.files:

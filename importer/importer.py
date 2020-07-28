@@ -16,7 +16,9 @@ DEBUG_FILE_DATA_CONTENT_BYTE_STRING = b'Here could be your PDF file!'
 class XMLImporter(ABC):
     """ An abstract class that provides a simple XML import interface. """
 
-    @abstractmethod
+    ID_STRING = 'id'
+    XML_IMPORT_PARSER = 'lxml'
+
     def __init__(self):
         self.xml_data = None
 
@@ -44,12 +46,10 @@ class XMLImporter(ABC):
         xml_data = get_content_from_url(url)
         self.parse_xml(xml_data.decode())
 
+    @abstractmethod
     def update_data(self):
         """ This function is called automatically when XML data has been imported. """
         pass
-    ID_STRING = 'id'
-
-    XML_IMPORT_PARSER = 'lxml'
 
 
 class File:
@@ -85,6 +85,9 @@ class File:
             :returns: A base64-encoded representation of the file data.
             :rtype: str
         """
+
+        if self.data is None:
+            self.download_file_data_from_source()
 
         encoded_bytes = base64.b64encode(self.data)
         return str(encoded_bytes, UTF8_ENCODING_STRING)
@@ -124,6 +127,41 @@ class File:
                     self.url = url
             else:
                 raise TypeError('The file location type {} is not implemented!'.format(location_type))
+
+
+class HtmlImporter(XMLImporter):
+    """ A class for importing HTML pages. """
+
+    HTML_ELEMENT_LINK_STRING = 'a'
+    NAVIGATION_ELEMENT_ID = 'navPath'
+
+    def get_element_by_id(self, element_id):
+        """ Return an HTML element from the called page by it's ID.
+            :param element_id: The ID of an element or a list of elements on the page (in the XML data).
+            :type element_id: str or list
+            :returns: The first element having this ID. None, otherwise.
+            :rtype: BeautifulSoup or None
+        """
+
+        return self.xml_data.find(attrs={self.ID_STRING: element_id})
+
+    def update_data(self):
+        pass
+
+    def get_navigation_hierarchy_labels(self):
+        """ Returns the labels of the navigation of the current HTML.
+            :returns: A list of labels in hierarchical order. The list if empty, if none could be found
+            :rtype: list
+        """
+
+        navigation_element = self.get_element_by_id(self.NAVIGATION_ELEMENT_ID)
+
+        labels = []
+        if navigation_element is not None:
+            hierarchy_elements = navigation_element.find_all(self.HTML_ELEMENT_LINK_STRING)
+            labels = [element.text for element in hierarchy_elements]
+
+        return labels
 
 
 class MetsImporter(XMLImporter):
@@ -222,8 +260,10 @@ class MetsImporter(XMLImporter):
     class Section:
         """ A subdivision within a METS object. """
 
-        ATTRIBUTE_METADATA_ID = 'dmdid'
+        ATTRIBUTE_HREF = 'xlink:href'
         ATTRIBUTE_LABEL = 'label'
+        ATTRIBUTE_LOCTYPE = 'loctype'
+        ATTRIBUTE_METADATA_ID = 'dmdid'
         ATTRIBUTE_ORDER = 'order'
 
         METS_TAG_FILE_POINTER_STRING = 'mets:fptr'
@@ -236,6 +276,8 @@ class MetsImporter(XMLImporter):
         MODS_TAG_TITLE_STRING = 'mods:title'
         MODS_TAG_SUBTITLE_STRING = 'mods:subtitle'
 
+        URL_STRING = 'URL'
+
         def __init__(self, mets_data: Soup, full_xml_data):
             self.id = mets_data.get(MetsImporter.ID_STRING)
             self.metadata_id = mets_data.get(self.ATTRIBUTE_METADATA_ID)
@@ -246,7 +288,7 @@ class MetsImporter(XMLImporter):
             self.files = set()
 
             self.file_pointers_data = mets_data.find_all(self.METS_TAG_FILE_POINTER_STRING, recursive=False)
-            self.resource_pointer = mets_data.find_all(self.METS_TAG_RESOURCE_POINTER_STRING, recursive=False)
+            self.resource_pointers = mets_data.find_all(self.METS_TAG_RESOURCE_POINTER_STRING, recursive=False)
 
             subsections = mets_data.find_all(name=MetsImporter.METS_TAG_DIV_STRING,
                                              attrs=MetsImporter.ATTRIBUTE_FILTER_FOR_SECTIONS, recursive=False)
