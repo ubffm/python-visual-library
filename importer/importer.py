@@ -206,7 +206,7 @@ class MetsImporter(XMLImporter):
         mets_structure = self.xml_data.find(self.METS_TAG_OBJECT_STRUCTURE_STRING, {self.TYPE_STRING: self.LOGICAL_STRING})
 
         if mets_structure is None:
-            raise ImportError('The given URL or ID did not return METS-XML or could not find the searched data!\n'
+            raise ImportError('The given URL or ID (given: ) did not return METS-XML or could not find the searched data!\n'
                               'XML Response:\n{xml_data}'.format(xml_data=self.xml_data))
 
         subsections = mets_structure.find_all(name=self.METS_TAG_DIV_STRING, attrs=self.ATTRIBUTE_FILTER_FOR_SECTIONS,

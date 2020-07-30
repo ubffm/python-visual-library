@@ -103,3 +103,27 @@ class TestVisualLibrary:
         assert full_text_snippet in page.full_text
         assert page.label == 'Seite 1'
         assert page.order == '11'
+
+    def test_deriving_types(self):
+        journal_id = '10827059'
+
+        vl = VisualLibrary()
+        vl_journal = vl.get_element_for_id(journal_id)
+
+        issues = vl_journal.issues
+        assert len(issues) == 2
+        assert issues[0].label == '1'
+        assert issues[0].number == '1'  # This is a bug in the submitted data! Should be 31!
+        assert issues[1].label == '2'
+        assert issues[1].number == '35'
+
+        issue = issues[1]
+        assert len(issue.articles) == 37
+
+    def test_keywords_in_issue(self):
+        issue_id = '10750063'
+
+        vl = VisualLibrary()
+        vl_issue = vl.get_element_for_id(issue_id)
+
+

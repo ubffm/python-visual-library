@@ -2,19 +2,55 @@ from collections import namedtuple
 
 import logging
 import re
+import sys
+from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup as Soup
 from bs4 import Tag
 
 from importer.importer import MetsImporter, File, HtmlImporter
 
-logger = logging.getLogger('VL-Importer')
+log_format = logging.Formatter('[%(asctime)s] [%(levelname)s] - %(message)s')
+logger = logging.getLogger('VisualLibrary')
+logger.setLevel(logging.DEBUG)
+
+# writing to stdout
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.DEBUG)
+handler.setFormatter(log_format)
+logger.addHandler(handler)
 
 
 def function_is_read_only():
     Exception('This element may not be modified! Read only!')
 
 
-class VisualLibraryExportElement:
+def get_list_by_type(container, filter_type: type):
+    return [element
+            for element in container
+            if isinstance(element, filter_type)
+            ]
+
+
+def remove_letters_from_alphanumeric_string(string):
+    """ This functions removes letters from the beginning and the end of a given string.
+        :param string: A string containing both letters and numbers.
+        :type string: str
+        :returns: The string without any letters.
+        :rtype: int
+        :except: A ValueException is thrown if the returned value is not numeric (i.e. also if it is empty!).
+
+        This function helps to normalize e.g. issue labels like '101 AB', which is not accepted by OJS Import XML.
+    """
+
+    if string is None:
+        return None
+
+    cleanded_string = re.sub(r'\D*', '', string, re.MULTILINE)
+
+    return cleanded_string
+
+
+class VisualLibraryExportElement(ABC):
     """ A base class for all classes that can be instantiated from Visual Library XML data. """
 
     MODS_TAG_PUBLICATION_DATE_STRING = 'mods:date'
@@ -47,26 +83,29 @@ class VisualLibraryExportElement:
     ID_STRING = 'id'
 
     def __init__(self, vl_id, xml_importer, parent):
-        self.id = vl_id
-        self.xml_importer = xml_importer
-        self.xml_data = xml_importer.xml_data
-        self._own_section = self._get_own_sections()
-        self.sections = self._own_section.sections
-        self.metadata = self._own_section.metadata
-
-        self.title = None
-        self.subtitle = None
-        self.languages = set()
-        self.label = self._own_section.label
-        self.order = self._own_section.order
         self._number = None
-        self.publication_date = None
+        self._own_section = self._get_own_sections()
         self._parent = parent
+
         self.files = self._own_section.files
+        self.id = vl_id
+        self.keywords = []
+        self.label = self._own_section.label
+        self.languages = set()
+        self.metadata = self._own_section.metadata
+        self.order = self._own_section.order
+        self.publication_date = None
+        self.sections = self._own_section.sections
+        self.subtitle = None
+        self.title = None
+        self.xml_data = xml_importer.xml_data
+        self.xml_importer = xml_importer
 
         self._extract_publication_date_from_metadata()
         self._extract_titles_from_metadata()
         self._extract_languages_from_metadata()
+
+        logger.info('Created new {class_name}. ID: {id}'.format(class_name=self.__class__.__name__, id=vl_id))
 
     @property
     def parent(self):
@@ -84,6 +123,12 @@ class VisualLibraryExportElement:
             :rtype: str
         """
         return None
+
+    @property
+    @abstractmethod
+    def elements(self):
+        """ A common getter for all subclasses to access the relevant list. """
+        pass
 
     def find_section_by_label(self, section_label, parent_labels=None, recursive=False):
         """ Returns a section that has the given label.
@@ -131,8 +176,7 @@ class VisualLibraryExportElement:
             logger.info('The URL {url} could not be resolved -> Skipping!'.format(url=url))
             # The given VL ID is not valid (could be an image).
             return None
-        header = get_xml_header_from_vl_response(xml_importer.xml_data)
-        section_type = get_object_type_from_xml_header(header)
+        section_type = get_object_type_from_xml(xml_importer.xml_data)
         if section_type is not None:
             section_id = re.search(r'(?<=identifier=)[0-9]*', url).group()
             return section_type(section_id, xml_importer, parent=self)
@@ -161,10 +205,14 @@ class VisualLibraryExportElement:
                 if date is None:
                     date = origin_info if origin_info.name == self.MODS_TAG_PUBLICATION_DATE_STRING else None
 
+                if date is None:
+                    date = origin_info if origin_info.name == self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING and \
+                        not re.match(r'[0-9]{4}-[0-9]{4}', origin_info.text) else None
+
                 if date is not None:
                     try:
-                        date = int(date.text)
-                    except AttributeError:
+                        date = int(remove_letters_from_alphanumeric_string(date.text))
+                    except (AttributeError, ValueError):
                         continue
 
                     if earliest_date_element is not None:
@@ -270,7 +318,29 @@ class VisualLibraryExportElement:
             return None
 
 
-class Journal(VisualLibraryExportElement):
+class ArticleHandlingExportElement(VisualLibraryExportElement, ABC):
+    """ All classes handling article lists should inherit from this class. """
+
+    def __init__(self, vl_id, xml_importer, parent):
+        super().__init__(vl_id, xml_importer, parent)
+        self._articles = []
+        self._articles_processed = False
+
+    @property
+    def articles(self):
+        if not self._articles_processed:
+            logger.debug('Reading all articles!')
+            self._articles = get_list_by_type(self._resolve_depending_sections(), Article)
+            self._articles_processed = True
+
+        return self._articles
+
+    @articles.setter
+    def articles(self, val):
+        function_is_read_only()
+
+
+class Journal(ArticleHandlingExportElement):
     """ A Journal class holds its volumes. """
 
     PUBLISHER_SHORT_STRING = 'isb'
@@ -280,14 +350,29 @@ class Journal(VisualLibraryExportElement):
 
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
-        self.volumes = []
+        self._volumes = []
+        self._volumes_processed = False
         self.publisher = None
 
         self._extract_publisher_from_metadata()
 
     @property
-    def volumes(self):
-        return self._resolve_depending_sections()
+    def volumes(self) -> list:
+        if not self._volumes_processed:
+            logger.debug('Reading all volumes')
+            self._volumes = get_list_by_type(self._resolve_depending_sections(), Volume)
+            self._volumes_processed = True
+
+        return self._volumes
+
+    @property
+    def elements(self) -> list:
+        if self.volumes:
+            return self.volumes
+        elif self.articles:
+            return self.articles
+        else:
+            return []
 
     @volumes.setter
     def volumes(self, val):
@@ -329,27 +414,6 @@ class Journal(VisualLibraryExportElement):
                 break
 
 
-class ArticleHandlingExportElement(VisualLibraryExportElement):
-    """ All classes handling article lists should inherit from this class. """
-
-    def __init__(self, vl_id, xml_importer, parent):
-        super().__init__(vl_id, xml_importer, parent)
-        self._articles = []
-        self._articles_processed = False
-
-    @property
-    def articles(self):
-        if not self._articles_processed:
-            self._articles = self._resolve_depending_sections()
-            self._articles_processed = True
-
-        return self._articles
-
-    @articles.setter
-    def articles(self, val):
-        function_is_read_only()
-
-
 class Volume(ArticleHandlingExportElement):
     """ A Volume class can hold both Issues OR articles. """
 
@@ -364,7 +428,8 @@ class Volume(ArticleHandlingExportElement):
     @property
     def issues(self):
         if not self._issues_processed:
-            self._issues = self._resolve_depending_sections()
+            logger.debug('Reading all issues!')
+            self._issues = list(self._resolve_depending_sections())
             self._issues_processed = True
 
         return self._issues
@@ -375,6 +440,15 @@ class Volume(ArticleHandlingExportElement):
             self._number = self._get_number_from_metadata_details_by_attribute({})
 
         return self._number
+
+    @property
+    def elements(self):
+        if self.issues:
+            return self.issues
+        elif self.articles:
+            return self.articles
+        else:
+            return []
 
     @issues.setter
     def issues(self, val):
@@ -396,6 +470,10 @@ class Issue(ArticleHandlingExportElement):
             self._number = self._get_number_from_metadata_details_by_attribute({self.TYPE_STRING: self.ISSUE_STRING})
 
         return self._number
+
+    @property
+    def elements(self):
+        return self.articles
 
 
 class Page:
@@ -437,6 +515,8 @@ class Page:
 
         self._file_pointer = self._page_element.find_all(self.METS_TAG_FILE_POINTER)
         self._xml_data = xml_data
+
+        logger.debug('Created new Page object. ID {id}'.format(id=self.id))
 
     @property
     def full_text(self) -> (str, None):
@@ -506,7 +586,6 @@ class Page:
     def _extract_vl_page_id_from_metadata(self, page_metadata: Soup) -> str:
         page_id = self._extract_page_id_from_metadata(page_metadata)
         return re.sub(r'^phys', '', page_id)
-
 
     def _get_file_from_resource_id(self, resource_id: str) -> File:
         """ Creates a File object from resolving a given XML data internal ID. """
@@ -582,6 +661,10 @@ class Article(VisualLibraryExportElement):
         for page in pages:
             yield Page(page, self.xml_data)
 
+    @property
+    def elements(self):
+        return self.pages
+
     @full_text.setter
     def full_text(self, value):
         function_is_read_only()
@@ -640,11 +723,13 @@ RESPONSE_HEADER = 'header'
 VL_OBJECT_SPECIFICATION = 'setspec'
 VL_OBJECT_TYPES = {
     'article': Article,
-    'document': Article,
+#    'document': Issue,
     'journal': Journal,
     'journal_issue': Issue,
     'journal_volume': Volume,
-    'periodical': Journal,
+#    'multivolumework': Journal,
+#    'periodical': Journal,
+#    'series': Journal
 }
 
 
@@ -670,6 +755,21 @@ def get_object_type_from_xml_header(xml_header: Soup) -> (VisualLibraryExportEle
     return None
 
 
+def get_object_type_from_xml(xml_data: Soup):
+    header = get_xml_header_from_vl_response(xml_data)
+    type_from_header = get_object_type_from_xml_header(header)
+
+    if type_from_header is not None:
+        return type_from_header
+
+    sections = xml_data.find_all('mets:div', attrs={'type': 'section'})
+    if sections:
+        if sections[-1].find('mets:mptr') is None:
+            return Article
+        else:
+            return Volume
+
+
 class VisualLibrary:
     """ This class corresponds with the Visual Library OAI and reads the XML response into Python objects.
         Currently, the class supports only METS XML data.
@@ -686,8 +786,6 @@ class VisualLibrary:
     VISUAL_LIBRARY_BASE_URL = 'http://vl.ub.uni-frankfurt.de'
     VISUAL_LIBRARY_OAI_URL = 'http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix={xml_response_format}&identifier={identifier}'
     VL_OBJECT_TYPES = VL_OBJECT_TYPES
-
-    logger.setLevel(logging.DEBUG)
 
     def get_data_for_id(self, vl_id, xml_response_format=METS_STRING):
         """ Get the OAI XML data from the Visual Library.
@@ -715,6 +813,7 @@ class VisualLibrary:
             :returns: An object containing Visual Library metadata. None, if the element could not be found.
         """
 
+        logger.info('Creating new VL element')
         xml_data = self.get_data_for_id(vl_id)
         return self._create_vl_export_object(vl_id, xml_data)
 
@@ -792,14 +891,10 @@ class VisualLibrary:
         return None
 
     def _create_vl_export_object(self, vl_id: str, xml_data: Soup) -> (VisualLibraryExportElement, None):
-        object_type = self._get_object_type(xml_data)
+        object_type = get_object_type_from_xml(xml_data)
         if object_type is not None:
             xml_importer = MetsImporter()
             xml_importer.parse_xml(xml_data)
             return object_type(vl_id, xml_importer, parent=None)
         else:
             return None
-
-    def _get_object_type(self, xml_data: Soup) -> (VisualLibraryExportElement, None):
-        header = get_xml_header_from_vl_response(xml_data)
-        return get_object_type_from_xml_header(header)
