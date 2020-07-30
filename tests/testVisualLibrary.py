@@ -125,3 +125,17 @@ class TestVisualLibrary:
 
         assert len(vl_issue.keywords) == 5
         assert vl_issue.keywords == ['Köln', 'Pollenanalyse', 'Wald', 'Waldgesellschaft', 'Flussterrasse']
+
+    def test_root_has_articles(self):
+        journal_id = '10773114'
+
+        vl = VisualLibrary()
+        vl_root = vl.get_element_for_id(journal_id)
+
+        assert vl_root.title == 'Decheniana'
+        assert vl_root.publication_date == '1955-'
+        publisher = vl_root.publishers[0]
+        assert publisher.name == 'Naturhistorischer Verein der Rheinlande und Westfalens'
+
+        issues = vl_root.issues
+        assert len(issues) == 38

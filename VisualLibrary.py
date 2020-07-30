@@ -86,7 +86,6 @@ class VisualLibraryExportElement(ABC):
     MODS_TAG_TITLE_INFO_STRING = 'mods:titleinfo'
     MODS_TAG_TITLE_STRING = 'mods:title'
 
-
     def __init__(self, vl_id, xml_importer, parent):
         self.xml_importer = xml_importer
         self.xml_data = xml_importer.xml_data
@@ -103,7 +102,7 @@ class VisualLibraryExportElement(ABC):
         self.metadata = self._own_section.metadata
         self.order = self._own_section.order
         self.publication_date = None
-        self.publisher = None
+        self.publishers = None
         self.sections = self._own_section.sections
         self.subtitle = None
         self.title = None
@@ -226,7 +225,7 @@ class VisualLibraryExportElement(ABC):
                         else None
 
                 if date_string is None and origin_info.name == self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING:
-                    re_date_period = re.match(r'[0-9]{4}-[0-9]{4}', origin_info.text)
+                    re_date_period = re.match(r'[0-9]{4}-(?:[0-9]{4})?', origin_info.text)
                     if re_date_period:
                         date_period = re_date_period.group()
                     else:
