@@ -15,7 +15,6 @@ class TestVisualLibrary:
         vl = VisualLibrary()
         vl_object = vl.get_element_from_xml_file(xml_test_file_path)
 
-        assert isinstance(vl_object, Journal)
         assert vl_object.label == 'Decheniana'
         assert vl_object.title == 'Decheniana'
         assert vl_object.subtitle == 'Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
@@ -32,7 +31,7 @@ class TestVisualLibrary:
         assert publisher.uri == 'http://d-nb.info/gnd/40094-4'
 
         counter = 0
-        for volume in vl_object.volumes:
+        for volume in vl_object.elements:
             counter += 1
             assert volume.parent is vl_object
 
@@ -48,8 +47,6 @@ class TestVisualLibrary:
         assert vl_object.label == '95 A (1937)'
         assert vl_object.publication_date == '1937'
         assert vl_object.number == '95 A'
-
-        assert isinstance(vl_object.parent, Journal)
 
         counter = 0
         for article in vl_object.articles:
@@ -126,4 +123,5 @@ class TestVisualLibrary:
         vl = VisualLibrary()
         vl_issue = vl.get_element_for_id(issue_id)
 
-
+        assert len(vl_issue.keywords) == 5
+        assert vl_issue.keywords == ['Köln', 'Pollenanalyse', 'Wald', 'Waldgesellschaft', 'Flussterrasse']

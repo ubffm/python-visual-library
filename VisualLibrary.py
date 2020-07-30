@@ -53,57 +53,66 @@ def remove_letters_from_alphanumeric_string(string):
 class VisualLibraryExportElement(ABC):
     """ A base class for all classes that can be instantiated from Visual Library XML data. """
 
-    MODS_TAG_PUBLICATION_DATE_STRING = 'mods:date'
-    MODS_TAG_PUBLICATION_DATE_ISSUED_STRING = 'mods:dateissued'
-    MODS_TAG_ORIGIN_INFO_STRING = 'mods:origininfo'
-    MODS_TAG_TITLE_INFO_STRING = 'mods:titleinfo'
-    MODS_TAG_TITLE_STRING = 'mods:title'
-    MODS_TAG_SUBTITLE_STRING = 'mods:subtitle'
+    ATTRIBUTE_URI_VALUE_STRING = 'valueuri'
+    AUTHORITY_STRING = 'authority'
+    HREF_LINK_STRING = 'xlink:href'
+    ID_STRING = 'id'
+    KEY_DATE_STRING = 'keydate'
+    LOCTYPE_STRING = 'loctype'
+    MARCRELATOR_STRING = 'marcrelator'
+    PUBLISHER_SHORT_STRING = 'isb'
+    TYPE_STRING = 'type'
+    URL_STRING = 'URL'
+    YES_STRING = 'yes'
+
+    METS_TAG_DIV_STRING = 'mets:div'
+    METS_TAG_RESOURCE_POINTER_STRING = 'mets:mptr'
+    METS_TAG_STRUCTMAP_STRING = 'mets:structmap'
+    METS_TAG_XML_DATA_STRING = 'mets:xmldata'
+
+    MODS_TAG_DETAIL_STRING = 'mods:detail'
+    MODS_TAG_DISPLAY_NAME_STRING = 'mods:displayform'
     MODS_TAG_LANGUAGE_STRING = 'mods:language'
     MODS_TAG_LANGUAGE_TERM_STRING = 'mods:languageterm'
     MODS_TAG_NAME_STRING = 'mods:name'
-    MODS_TAG_ROLE_STRING = 'mods:roleterm'
-    MODS_TAG_PART_STRING = 'mods:part'
-    MODS_TAG_DETAIL_STRING = 'mods:detail'
     MODS_TAG_NUMBER_STRING = 'mods:number'
+    MODS_TAG_ORIGIN_INFO_STRING = 'mods:origininfo'
+    MODS_TAG_PART_STRING = 'mods:part'
+    MODS_TAG_PUBLICATION_DATE_ISSUED_STRING = 'mods:dateissued'
+    MODS_TAG_PUBLICATION_DATE_STRING = 'mods:date'
+    MODS_TAG_ROLE_STRING = 'mods:roleterm'
+    MODS_TAG_SUBJECT_STRING = 'mods:subject'
+    MODS_TAG_SUBTITLE_STRING = 'mods:subtitle'
+    MODS_TAG_TITLE_INFO_STRING = 'mods:titleinfo'
+    MODS_TAG_TITLE_STRING = 'mods:title'
 
-    METS_TAG_STRUCTMAP_STRING = 'mets:structmap'
-    METS_TAG_DIV_STRING = 'mets:div'
-    METS_TAG_RESOURCE_POINTER_STRING = 'mets:mptr'
-    METS_TAG_XML_DATA_STRING = 'mets:xmldata'
-
-    YES_STRING = 'yes'
-    KEY_DATE_STRING = 'keydate'
-    LOCTYPE_STRING = 'loctype'
-    URL_STRING = 'URL'
-    HREF_LINK_STRING = 'xlink:href'
-    AUTHORITY_STRING = 'authority'
-    MARCRELATOR_STRING = 'marcrelator'
-    TYPE_STRING = 'type'
-    ID_STRING = 'id'
 
     def __init__(self, vl_id, xml_importer, parent):
+        self.xml_importer = xml_importer
+        self.xml_data = xml_importer.xml_data
+        self.id = vl_id
+
         self._number = None
         self._own_section = self._get_own_sections()
         self._parent = parent
 
         self.files = self._own_section.files
-        self.id = vl_id
         self.keywords = []
         self.label = self._own_section.label
         self.languages = set()
         self.metadata = self._own_section.metadata
         self.order = self._own_section.order
         self.publication_date = None
+        self.publisher = None
         self.sections = self._own_section.sections
         self.subtitle = None
         self.title = None
-        self.xml_data = xml_importer.xml_data
-        self.xml_importer = xml_importer
 
-        self._extract_publication_date_from_metadata()
-        self._extract_titles_from_metadata()
+        self._extract_keywords_from_metadata()
         self._extract_languages_from_metadata()
+        self._extract_publication_date_from_metadata()
+        self._extract_publisher_from_metadata()
+        self._extract_titles_from_metadata()
 
         logger.info('Created new {class_name}. ID: {id}'.format(class_name=self.__class__.__name__, id=vl_id))
 
@@ -181,6 +190,13 @@ class VisualLibraryExportElement(ABC):
             section_id = re.search(r'(?<=identifier=)[0-9]*', url).group()
             return section_type(section_id, xml_importer, parent=self)
 
+    def _extract_keywords_from_metadata(self):
+        """ If keywords a re present, they will be set. """
+
+        subject_elements = self.metadata.find_all(self.MODS_TAG_SUBJECT_STRING)
+
+        self.keywords = [subject.text for subject in subject_elements]
+
     def _extract_languages_from_metadata(self):
         """ Sets the language property with the appropriate data. """
 
@@ -199,35 +215,64 @@ class VisualLibraryExportElement(ABC):
 
         def get_earliest_date():
             earliest_date_element = None
+            date_period = None
+
             for origin_info in origin_info_elements:
-                date = origin_info.find(self.MODS_TAG_PUBLICATION_DATE_STRING, {self.KEY_DATE_STRING: self.YES_STRING})
+                date_string = origin_info.find(self.MODS_TAG_PUBLICATION_DATE_STRING, {self.KEY_DATE_STRING:
+                                                                                       self.YES_STRING})
 
-                if date is None:
-                    date = origin_info if origin_info.name == self.MODS_TAG_PUBLICATION_DATE_STRING else None
+                if date_string is None:
+                    date_string = origin_info.text if origin_info.name == self.MODS_TAG_PUBLICATION_DATE_STRING \
+                        else None
 
-                if date is None:
-                    date = origin_info if origin_info.name == self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING and \
-                        not re.match(r'[0-9]{4}-[0-9]{4}', origin_info.text) else None
+                if date_string is None and origin_info.name == self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING:
+                    re_date_period = re.match(r'[0-9]{4}-[0-9]{4}', origin_info.text)
+                    if re_date_period:
+                        date_period = re_date_period.group()
+                    else:
+                        date_string = origin_info.text
 
-                if date is not None:
+                if date_string is not None:
                     try:
-                        date = int(remove_letters_from_alphanumeric_string(date.text))
+                        date = int(remove_letters_from_alphanumeric_string(date_string))
                     except (AttributeError, ValueError):
                         continue
 
                     if earliest_date_element is not None:
-                        if earliest_date_element > date:
+                        if earliest_date_element < date:
                             earliest_date_element = date
                     else:
                         earliest_date_element = date
 
+                if origin_info.get(self.KEY_DATE_STRING) == self.YES_STRING:
+                    return str(date)
+
             if earliest_date_element is not None:
                 earliest_date_element = str(earliest_date_element)
 
-            return earliest_date_element
+            if date_period is not None:
+                return date_period
+            else:
+                return earliest_date_element
 
         origin_info_elements = self._get_date_elements_from_metadata()
         self.publication_date = get_earliest_date()
+
+    def _extract_publisher_from_metadata(self):
+        """ Sets the display name of the publisher from the metadata. """
+
+        Publisher = namedtuple('Publisher', ['name', 'uri'])
+
+        publishers_in_metadata = self._get_authority_element_by_role(self.PUBLISHER_SHORT_STRING)
+        publishers = []
+        for publisher in publishers_in_metadata:
+            publisher_name = publisher.find(self.MODS_TAG_DISPLAY_NAME_STRING).text
+            publisher_uri = publisher.get(self.ATTRIBUTE_URI_VALUE_STRING, '')
+            publishers.append(
+                Publisher(publisher_name, publisher_uri)
+            )
+
+        self.publishers = publishers
 
     def _extract_titles_from_metadata(self):
         """ Sets both the title and subtitle data with the appropriate data. """
@@ -260,8 +305,10 @@ class VisualLibraryExportElement(ABC):
         return persons_in_given_role
 
     def _get_date_elements_from_metadata(self) -> list:
-        return self.metadata.find_all([self.MODS_TAG_PUBLICATION_DATE_STRING,
-                                       self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING])
+        dates = self.metadata.find_all(self.MODS_TAG_PUBLICATION_DATE_STRING)
+        if not dates:
+            dates = self.metadata.find_all(self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING)
+        return dates
 
     def _get_own_sections(self) -> MetsImporter.Section:
         return self.xml_importer.get_section_by_id(self.id)
@@ -343,18 +390,12 @@ class ArticleHandlingExportElement(VisualLibraryExportElement, ABC):
 class Journal(ArticleHandlingExportElement):
     """ A Journal class holds its volumes. """
 
-    PUBLISHER_SHORT_STRING = 'isb'
-    MODS_TAG_DISPLAY_NAME_STRING = 'mods:displayform'
 
-    ATTRIBUTE_URI_VALUE_STRING = 'valueuri'
 
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
         self._volumes = []
         self._volumes_processed = False
-        self.publisher = None
-
-        self._extract_publisher_from_metadata()
 
     @property
     def volumes(self) -> list:
@@ -386,21 +427,7 @@ class Journal(ArticleHandlingExportElement):
         date_elements = self._get_date_elements_from_metadata()
         self._get_publication_duration(date_elements)
 
-    def _extract_publisher_from_metadata(self):
-        """ Sets the display name of the publisher from the metadata. """
 
-        Publisher = namedtuple('Publisher', ['name', 'uri'])
-
-        publishers_in_metadata = self._get_authority_element_by_role(self.PUBLISHER_SHORT_STRING)
-        publishers = []
-        for publisher in publishers_in_metadata:
-            publisher_name = publisher.find(self.MODS_TAG_DISPLAY_NAME_STRING).text
-            publisher_uri = publisher.get(self.ATTRIBUTE_URI_VALUE_STRING, '')
-            publishers.append(
-                Publisher(publisher_name, publisher_uri)
-            )
-
-        self.publishers = publishers
 
     def _get_publication_duration(self, date_elements):
         """ Searches the elements' texts for a duration.
