@@ -212,50 +212,23 @@ class VisualLibraryExportElement(ABC):
             The date is expected to be in the format 'YYYY' and be convertable into an int for comparison.
         """
 
-        def get_earliest_date():
-            earliest_date_element = None
-            date_period = None
-
-            for origin_info in origin_info_elements:
-                date_string = origin_info.find(self.MODS_TAG_PUBLICATION_DATE_STRING, {self.KEY_DATE_STRING:
-                                                                                       self.YES_STRING})
-
-                if date_string is None:
-                    date_string = origin_info.text if origin_info.name == self.MODS_TAG_PUBLICATION_DATE_STRING \
-                        else None
-
-                if date_string is None and origin_info.name == self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING:
-                    re_date_period = re.match(r'[0-9]{4}-(?:[0-9]{4})?', origin_info.text)
-                    if re_date_period:
-                        date_period = re_date_period.group()
-                    else:
-                        date_string = origin_info.text
-
-                if date_string is not None:
-                    try:
-                        date = int(remove_letters_from_alphanumeric_string(date_string))
-                    except (AttributeError, ValueError):
-                        continue
-
-                    if earliest_date_element is not None:
-                        if earliest_date_element < date:
-                            earliest_date_element = date
-                    else:
-                        earliest_date_element = date
-
-                if origin_info.get(self.KEY_DATE_STRING) == self.YES_STRING:
-                    return str(date)
-
-            if earliest_date_element is not None:
-                earliest_date_element = str(earliest_date_element)
-
-            if date_period is not None:
-                return date_period
-            else:
-                return earliest_date_element
-
         origin_info_elements = self._get_date_elements_from_metadata()
-        self.publication_date = get_earliest_date()
+
+        re_year_only = re.compile(r'\D*[0-9]{4}(?!-)\D*')
+        re_date_period = re.compile(r'(?<!.)[0-9]{4}-(?:[0-9]{4})?')
+        for origin_element in origin_info_elements:
+            dates = origin_element.find_all([self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING,
+                                             self.MODS_TAG_PUBLICATION_DATE_STRING])
+            for date_element in dates:
+                date_period = re_date_period.match(date_element.text)
+                if date_period:
+                    self.publication_date = date_period.group()
+                    return
+
+                year_only = re_year_only.match(date_element.text)
+                if year_only:
+                    self.publication_date = remove_letters_from_alphanumeric_string(year_only.group())
+                    return
 
     def _extract_publisher_from_metadata(self):
         """ Sets the display name of the publisher from the metadata. """
@@ -304,10 +277,13 @@ class VisualLibraryExportElement(ABC):
         return persons_in_given_role
 
     def _get_date_elements_from_metadata(self) -> list:
-        dates = self.metadata.find_all(self.MODS_TAG_PUBLICATION_DATE_STRING)
-        if not dates:
-            dates = self.metadata.find_all(self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING)
-        return dates
+        mods_data = self.metadata.find('mods:mods')
+        relevant_elements = mods_data.find_all(self.MODS_TAG_ORIGIN_INFO_STRING, recursive=False)
+        if not relevant_elements:
+            relevant_elements = self.metadata.find_all(self.MODS_TAG_PART_STRING)
+
+        return relevant_elements
+
 
     def _get_own_sections(self) -> MetsImporter.Section:
         return self.xml_importer.get_section_by_id(self.id)
@@ -425,8 +401,6 @@ class Journal(ArticleHandlingExportElement):
 
         date_elements = self._get_date_elements_from_metadata()
         self._get_publication_duration(date_elements)
-
-
 
     def _get_publication_duration(self, date_elements):
         """ Searches the elements' texts for a duration.

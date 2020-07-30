@@ -9,6 +9,13 @@ TEST_DATA_FOLDER = '{base_dir}/data/VisualLibrary'.format(base_dir=this_files_di
 
 
 class TestVisualLibrary:
+    def test_publication_year_hard_to_fetch(self):
+        issue_id = '10823380'
+        vl = VisualLibrary()
+        vl_issue = vl.get_element_for_id(issue_id)
+
+        assert vl_issue.publication_date == '1992'
+
     def test_call_for_journal(self):
         xml_test_file_path = '{test_data_folder}/journal-oai-response.xml'.format(test_data_folder=TEST_DATA_FOLDER)
 
@@ -139,3 +146,4 @@ class TestVisualLibrary:
 
         issues = vl_root.issues
         assert len(issues) == 38
+
