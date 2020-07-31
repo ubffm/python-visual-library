@@ -184,9 +184,10 @@ class VisualLibraryExportElement(ABC):
             logger.info('The URL {url} could not be resolved -> Skipping!'.format(url=url))
             # The given VL ID is not valid (could be an image).
             return None
-        section_type = get_object_type_from_xml(xml_importer.xml_data)
+
+        section_id = re.search(r'(?<=identifier=)[0-9]*', url).group()
+        section_type = get_object_type_from_xml(xml_importer.xml_data, section_id)
         if section_type is not None:
-            section_id = re.search(r'(?<=identifier=)[0-9]*', url).group()
             return section_type(section_id, xml_importer, parent=self)
 
     def _extract_keywords_from_metadata(self):
@@ -284,7 +285,6 @@ class VisualLibraryExportElement(ABC):
 
         return relevant_elements
 
-
     def _get_own_sections(self) -> MetsImporter.Section:
         return self.xml_importer.get_section_by_id(self.id)
 
@@ -365,8 +365,6 @@ class ArticleHandlingExportElement(VisualLibraryExportElement, ABC):
 class Journal(ArticleHandlingExportElement):
     """ A Journal class holds its volumes. """
 
-
-
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
         self._volumes = []
@@ -383,35 +381,30 @@ class Journal(ArticleHandlingExportElement):
 
     @property
     def elements(self) -> list:
-        if self.volumes:
-            return self.volumes
-        elif self.articles:
-            return self.articles
-        else:
-            return []
+        return self.volumes + self.articles
 
     @volumes.setter
     def volumes(self, val):
         function_is_read_only()
-
-    def _extract_publication_date_from_metadata(self):
-        """ Sets a duration for the publication date.
-            Journals rarely have a single year but more often a duration when they were published.
-        """
-
-        date_elements = self._get_date_elements_from_metadata()
-        self._get_publication_duration(date_elements)
-
-    def _get_publication_duration(self, date_elements):
-        """ Searches the elements' texts for a duration.
-            The duration has to fit the format YYYY-YYYY.
-        """
-
-        for date_element in date_elements:
-            date_period = re.match(r'^[0-9]{4}\s*?-\s*?[0-9]{4}', date_element.text)
-            if date_period:
-                self.publication_date = date_period.group()
-                break
+    #
+    # def _extract_publication_date_from_metadata(self):
+    #     """ Sets a duration for the publication date.
+    #         Journals rarely have a single year but more often a duration when they were published.
+    #     """
+    #
+    #     date_elements = self._get_date_elements_from_metadata()
+    #     self._get_publication_duration(date_elements)
+    #
+    # def _get_publication_duration(self, date_elements):
+    #     """ Searches the elements' texts for a duration.
+    #         The duration has to fit the format YYYY-YYYY.
+    #     """
+    #
+    #     for date_element in date_elements:
+    #         date_period = re.match(r'^[0-9]{4}\s*?-\s*?[0-9]{4}', date_element.text)
+    #         if date_period:
+    #             self.publication_date = date_period.group()
+    #             break
 
 
 class Volume(ArticleHandlingExportElement):
@@ -422,15 +415,20 @@ class Volume(ArticleHandlingExportElement):
     def __init__(self, vl_id, xml_importer, parent):
         super().__init__(vl_id, xml_importer, parent)
         self._issues = []
-        self._issues_processed = False
+        self._sections_resolved = False
         self.publisher = None
 
     @property
+    def articles(self):
+        _ = self.issues
+        return self._articles
+
+    @property
     def issues(self):
-        if not self._issues_processed:
-            logger.debug('Reading all issues!')
-            self._issues = list(self._resolve_depending_sections())
-            self._issues_processed = True
+        if not self._sections_resolved:
+            logger.debug('Reading all sections!')
+            self._resolve_sections()
+            self._sections_resolved = self._articles_processed = True
 
         return self._issues
 
@@ -443,17 +441,17 @@ class Volume(ArticleHandlingExportElement):
 
     @property
     def elements(self):
-        if self.issues:
-            return self.issues
-        elif self.articles:
-            return self.articles
-        else:
-            return []
+        return self.issues + self.articles
 
     @issues.setter
     def issues(self, val):
         """ Disable setter """
         function_is_read_only()
+
+    def _resolve_sections(self):
+        sections = list(self._resolve_depending_sections())
+        self._issues = get_list_by_type(sections, Issue)
+        self._articles = get_list_by_type(sections, Article)
 
 
 class Issue(ArticleHandlingExportElement):
@@ -467,7 +465,7 @@ class Issue(ArticleHandlingExportElement):
     @property
     def number(self):
         if self._number is None:
-            self._number = self._get_number_from_metadata_details_by_attribute({self.TYPE_STRING: self.ISSUE_STRING})
+            self._number = self._get_number_from_metadata_details_by_attribute({})
 
         return self._number
 
@@ -627,6 +625,7 @@ class Article(VisualLibraryExportElement):
     """ This class holds all article data. """
 
     AUTHOR_SHORT_STRING = 'aut'
+    PARTICIPATING_PERSON_SHORT_STRING = 'asn'
     FAMILY_STRING = 'family'
     GIVEN_STRING = 'given'
 
@@ -723,13 +722,9 @@ RESPONSE_HEADER = 'header'
 VL_OBJECT_SPECIFICATION = 'setspec'
 VL_OBJECT_TYPES = {
     'article': Article,
-#    'document': Issue,
     'journal': Journal,
     'journal_issue': Issue,
     'journal_volume': Volume,
-#    'multivolumework': Journal,
-#    'periodical': Journal,
-#    'series': Journal
 }
 
 
@@ -755,20 +750,52 @@ def get_object_type_from_xml_header(xml_header: Soup) -> (VisualLibraryExportEle
     return None
 
 
-def get_object_type_from_xml(xml_data: Soup):
+def is_author_in_metadata(metadata: Soup):
+    role_element = metadata.find(VisualLibraryExportElement.MODS_TAG_ROLE_STRING,
+                                 {VisualLibraryExportElement.AUTHORITY_STRING:
+                                      VisualLibraryExportElement.MARCRELATOR_STRING})
+
+    return role_element is not None and (role_element.text == Article.AUTHOR_SHORT_STRING or
+                                     role_element.text == Article.PARTICIPATING_PERSON_SHORT_STRING)
+
+
+def get_object_type_from_xml(xml_data: Soup, vl_id: str):
     header = get_xml_header_from_vl_response(xml_data)
     type_from_header = get_object_type_from_xml_header(header)
 
     if type_from_header is not None:
         return type_from_header
 
-    sections = xml_data.find_all('mets:div', attrs={'type': 'section'})
+    metadata = xml_data.find(Article.METS_TAG_SECTION_STRING,
+                             {VisualLibraryExportElement.ID_STRING: 'md{id}'.format(id=vl_id)})
+
+    if is_author_in_metadata(metadata):
+        return Article
+
+    sections = xml_data.find_all(VisualLibraryExportElement.METS_TAG_DIV_STRING,
+                                 attrs={VisualLibraryExportElement.TYPE_STRING: 'section'})
     if sections:
-        if sections[-1].find('mets:mptr') is None:
-            return Article
+        nesting_deepness_of_corresponding_section = _get_nesting_deepness_for_section(sections, vl_id)
+        if nesting_deepness_of_corresponding_section == 1:
+            return Journal
+        elif nesting_deepness_of_corresponding_section >= 3:
+            return Issue
         else:
             return Volume
 
+    raise TypeError('For the given ID {id} no appropriate Type could be found!'.format(id=vl_id))
+
+
+def _get_nesting_deepness_for_section(sections: list, id_search_string: str) -> int:
+    nesting_deepness_of_corresponding_section = 0
+    last_parent = None
+    for section in sections:
+        nesting_deepness_of_corresponding_section += 1
+        if id_search_string in section.get(VisualLibraryExportElement.ID_STRING) or last_parent == section.parent:
+            break
+        last_parent = section.parent
+
+    return nesting_deepness_of_corresponding_section
 
 class VisualLibrary:
     """ This class corresponds with the Visual Library OAI and reads the XML response into Python objects.
@@ -891,7 +918,7 @@ class VisualLibrary:
         return None
 
     def _create_vl_export_object(self, vl_id: str, xml_data: Soup) -> (VisualLibraryExportElement, None):
-        object_type = get_object_type_from_xml(xml_data)
+        object_type = get_object_type_from_xml(xml_data, vl_id)
         if object_type is not None:
             xml_importer = MetsImporter()
             xml_importer.parse_xml(xml_data)

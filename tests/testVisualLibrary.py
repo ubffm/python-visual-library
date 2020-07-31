@@ -22,6 +22,7 @@ class TestVisualLibrary:
         vl = VisualLibrary()
         vl_object = vl.get_element_from_xml_file(xml_test_file_path)
 
+        assert isinstance(vl_object, Journal)
         assert vl_object.label == 'Decheniana'
         assert vl_object.title == 'Decheniana'
         assert vl_object.subtitle == 'Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
@@ -114,6 +115,7 @@ class TestVisualLibrary:
         vl = VisualLibrary()
         vl_journal = vl.get_element_for_id(journal_id)
 
+        assert isinstance(vl_journal, Volume)
         issues = vl_journal.issues
         assert len(issues) == 2
         assert issues[0].label == '1'
@@ -139,11 +141,15 @@ class TestVisualLibrary:
         vl = VisualLibrary()
         vl_root = vl.get_element_for_id(journal_id)
 
+        assert isinstance(vl_root, Journal)
         assert vl_root.title == 'Decheniana'
         assert vl_root.publication_date == '1955-'
         publisher = vl_root.publishers[0]
         assert publisher.name == 'Naturhistorischer Verein der Rheinlande und Westfalens'
 
-        issues = vl_root.issues
-        assert len(issues) == 38
+        articles = vl_root.articles
+        assert len(articles) == 31
+        volumes = vl_root.volumes
+        assert len(volumes) == 7
+
 
