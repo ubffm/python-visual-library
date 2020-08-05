@@ -1,6 +1,6 @@
 import os
 
-from ..VisualLibrary import VisualLibrary, Volume, Journal, Article, Page
+from ..VisualLibrary import VisualLibrary, Volume, Journal, Article, Page, remove_letters_from_alphanumeric_string
 
 IMAGE_MIME_TYPE = 'image/jpeg'
 
@@ -153,3 +153,7 @@ class TestVisualLibrary:
         assert len(volumes) == 7
 
 
+def test_remove_letters_from_alphanumeric_string():
+    assert remove_letters_from_alphanumeric_string('1071953)') == '1071953'
+    assert remove_letters_from_alphanumeric_string('107 (1953)') == '1071953'
+    assert remove_letters_from_alphanumeric_string('1. Lieferung') == '1'

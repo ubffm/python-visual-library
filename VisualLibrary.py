@@ -45,7 +45,7 @@ def remove_letters_from_alphanumeric_string(string):
     if string is None:
         return None
 
-    cleanded_string = re.sub(r'\D*', '', string, re.MULTILINE)
+    cleanded_string = re.sub(r'\D+', '', string, re.MULTILINE)
 
     return cleanded_string
 
@@ -386,25 +386,6 @@ class Journal(ArticleHandlingExportElement):
     @volumes.setter
     def volumes(self, val):
         function_is_read_only()
-    #
-    # def _extract_publication_date_from_metadata(self):
-    #     """ Sets a duration for the publication date.
-    #         Journals rarely have a single year but more often a duration when they were published.
-    #     """
-    #
-    #     date_elements = self._get_date_elements_from_metadata()
-    #     self._get_publication_duration(date_elements)
-    #
-    # def _get_publication_duration(self, date_elements):
-    #     """ Searches the elements' texts for a duration.
-    #         The duration has to fit the format YYYY-YYYY.
-    #     """
-    #
-    #     for date_element in date_elements:
-    #         date_period = re.match(r'^[0-9]{4}\s*?-\s*?[0-9]{4}', date_element.text)
-    #         if date_period:
-    #             self.publication_date = date_period.group()
-    #             break
 
 
 class Volume(ArticleHandlingExportElement):
@@ -679,13 +660,20 @@ class Article(VisualLibraryExportElement):
 
         authors = []
         author_elements_in_metadata = self._get_authority_element_by_role(self.AUTHOR_SHORT_STRING)
-        for person in author_elements_in_metadata:
+        participate_elements_in_metadata = self._get_authority_element_by_role(self.PARTICIPATING_PERSON_SHORT_STRING)
+        for person in author_elements_in_metadata + participate_elements_in_metadata:
             given_name = person.find(self.MODS_TAG_NAME_PART_STRING, {self.TYPE_STRING: self.GIVEN_STRING})
             family_name = person.find(self.MODS_TAG_NAME_PART_STRING, {self.TYPE_STRING: self.FAMILY_STRING})
+            display_name = person.find(self.MODS_TAG_DISPLAY_NAME_STRING)
 
             # Clean names
             given_name = given_name.text if given_name is not None else ''
             family_name = family_name.text if family_name is not None else ''
+            display_name = display_name.text if display_name is not None else ''
+
+            # In the XML the given name is required while the family name is NOT!
+            if not given_name and display_name:
+                given_name = display_name
 
             authors.append(Author(given_name, family_name))
 
@@ -797,6 +785,7 @@ def _get_nesting_deepness_for_section(sections: list, id_search_string: str) -> 
 
     return nesting_deepness_of_corresponding_section
 
+
 class VisualLibrary:
     """ This class corresponds with the Visual Library OAI and reads the XML response into Python objects.
         Currently, the class supports only METS XML data.
@@ -881,7 +870,7 @@ class VisualLibrary:
 
         return self._create_vl_export_object(vl_id, xml_data)
 
-    def get_page_by_id(self, page_id):
+    def get_page_by_id(self, page_id, partent_article_id=None):
         """ Returns a single Page object.
             :param page_id: The ID of the page to call.
             :type page_id: str
@@ -898,19 +887,22 @@ class VisualLibrary:
         html_importer = HtmlImporter()
         html_importer.parse_xml_from_url(page_url)
 
-        title_info_element = html_importer.get_element_by_id([self.TITLE_INFO_ELEMENT_ID, self.TITLE_CONTENT_ELEMENT_ID])
-        title_info_link_element = title_info_element.find(self.HTML_ELEMENT_LINK)
-        title_vl_id = re.search(r'[0-9]+$', title_info_link_element[self.HREF_STRING])
+        if partent_article_id is None:
+            title_info_element = html_importer.get_element_by_id([self.TITLE_INFO_ELEMENT_ID, self.TITLE_CONTENT_ELEMENT_ID])
+            title_info_link_element = title_info_element.find(self.HTML_ELEMENT_LINK)
+            title_vl_id = re.search(r'[0-9]+$', title_info_link_element[self.HREF_STRING])
 
-        title_vl_object = self.get_element_for_id(title_vl_id.group())
+            title_vl_object = self.get_element_for_id(title_vl_id.group())
 
-        page_hierarchy_labels = html_importer.get_navigation_hierarchy_labels()
-        article_section_containing_page = title_vl_object.find_section_by_label(page_hierarchy_labels[-1],
-                                                                                page_hierarchy_labels, recursive=True)
+            page_hierarchy_labels = html_importer.get_navigation_hierarchy_labels()
+            article_section_containing_page = title_vl_object.find_section_by_label(page_hierarchy_labels[-1],
+                                                                                    page_hierarchy_labels, recursive=True)
 
-        article_id = re.sub('^log', '', article_section_containing_page.id)
+            article_id = re.sub('^log', '', article_section_containing_page.id)
+            article_object_containing_page = VisualLibrary().get_element_for_id(article_id)
+        else:
+            article_object_containing_page = VisualLibrary().get_element_for_id(partent_article_id)
 
-        article_object_containing_page = VisualLibrary().get_element_for_id(article_id)
         for page in article_object_containing_page.pages:
             if page.vl_id == page_id:
                 return page
