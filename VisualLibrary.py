@@ -629,6 +629,7 @@ class Article(VisualLibraryExportElement):
         self.full_text = None
         self.page_range = self._extract_page_range_from_metadata()
         self.pages = []
+        self.is_standalone = False
 
     @property
     def full_text(self) -> str:
