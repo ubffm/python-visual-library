@@ -61,9 +61,14 @@ class VisualLibraryExportElement(ABC):
     LOCTYPE_STRING = 'loctype'
     MARCRELATOR_STRING = 'marcrelator'
     PUBLISHER_SHORT_STRING = 'isb'
+    TRANSLATED_STRING = 'translated'
     TYPE_STRING = 'type'
     URL_STRING = 'URL'
     YES_STRING = 'yes'
+
+    ISO_LANGUAGE_GERMAN = 'deu'
+    ISO_LANGUAGE_ENGLISH = 'eng'
+    ISO_LANGUAGE_FRENCH = 'fra'
 
     METS_TAG_DIV_STRING = 'mets:div'
     METS_TAG_RESOURCE_POINTER_STRING = 'mets:mptr'
@@ -98,7 +103,7 @@ class VisualLibraryExportElement(ABC):
         self.files = self._own_section.files
         self.keywords = []
         self.label = self._own_section.label
-        self.languages = set()
+        self.languages = []
         self.metadata = self._own_section.metadata
         self.order = self._own_section.order
         self.publication_date = None
@@ -173,6 +178,30 @@ class VisualLibraryExportElement(ABC):
 
         return None
 
+    def _add_translated_titles_to_title(self, translated_title_elements):
+        primary_language = self._guess_primary_language()
+
+        title = self.title
+        subtitle = self.subtitle
+
+        self.title = {primary_language: title}
+        self.subtitle = {primary_language: subtitle}
+
+        if primary_language is not self.ISO_LANGUAGE_GERMAN:
+            language = self.ISO_LANGUAGE_GERMAN
+        else:
+            # Assumes that a translated title of a german article is always in English
+            language = self.ISO_LANGUAGE_ENGLISH
+
+        translated_title_element = translated_title_elements[0]
+        self.title[language] = translated_title_element.find(self.MODS_TAG_TITLE_STRING).text
+
+        translated_subtitle_element = translated_title_element.find(self.MODS_TAG_SUBTITLE_STRING)
+        if translated_subtitle_element is not None:
+            self.subtitle[language] = translated_subtitle_element.text
+        else:
+            self.subtitle[language] = None
+
     def _create_section_instance(self, xml_importer: MetsImporter, url: str):
         """ Finds the appropriate class for a section.
             :returns: A section instance. None, if the section could not be resolved.
@@ -205,8 +234,8 @@ class VisualLibraryExportElement(ABC):
         if languages_element is None:
             return
 
-        self.languages = set(language.text for language in languages_element.find_all(
-            self.MODS_TAG_LANGUAGE_TERM_STRING))
+        self.languages = [language.text for language in languages_element.find_all(
+            self.MODS_TAG_LANGUAGE_TERM_STRING)]
 
     def _extract_publication_date_from_metadata(self):
         """ Search for the earliest date in the metadata and use it as publication date.
@@ -264,6 +293,12 @@ class VisualLibraryExportElement(ABC):
         if subtitle_element is not None:
             self.subtitle = subtitle_element.text
 
+        translated_title_elements = self.metadata.find_all(self.MODS_TAG_TITLE_INFO_STRING,
+                                                           {self.TYPE_STRING: self.TRANSLATED_STRING})
+
+        if translated_title_elements:
+            self._add_translated_titles_to_title(translated_title_elements)
+
     def _get_authority_element_by_role(self, role_type: str) -> list:
         """ Finds all metadata elements having the given role.
             This function is used for finding e.g. authors and publishers.
@@ -303,6 +338,12 @@ class VisualLibraryExportElement(ABC):
                 return vl.get_element_from_url(parent_id, parent_url)
             else:
                 return None
+
+    def _guess_primary_language(self):
+        if self.languages:
+            return self.languages[0]
+        else:
+            return None
 
     def _resolve_depending_sections(self):
         """ Returns a generator that iterates this object's sections.

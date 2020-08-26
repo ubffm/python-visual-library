@@ -152,6 +152,20 @@ class TestVisualLibrary:
         volumes = vl_root.volumes
         assert len(volumes) == 7
 
+    def test_article_with_translated_title(self):
+        article_id = '10799758'
+
+        vl = VisualLibrary()
+        vl_article = vl.get_element_for_id(article_id)
+
+        assert isinstance(vl_article.title, dict)
+        assert vl_article.title['deu'] == 'Artzusammensetzung von Körbchenmuscheln Corbicula im Niederrhein'
+        assert vl_article.title['eng'] == 'On the composition of species of the Asian Clams Corbicula in the Lower' \
+                                            ' Rhine Mollusca: Bivalvia: Corbiculidae'
+
+        assert vl_article.subtitle['deu'] is None
+        assert vl_article.subtitle['eng'] == 'mit 1 Tabelle und 2 Abbildungen'
+
 
 def test_remove_letters_from_alphanumeric_string():
     assert remove_letters_from_alphanumeric_string('1071953)') == '1071953'
