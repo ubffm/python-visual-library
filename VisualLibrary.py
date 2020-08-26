@@ -609,6 +609,7 @@ class Article(VisualLibraryExportElement):
     PARTICIPATING_PERSON_SHORT_STRING = 'asn'
     FAMILY_STRING = 'family'
     GIVEN_STRING = 'given'
+    TITLE_STRING = 'termsOfAddress'
 
     METS_TAG_SECTION_STRING = 'mets:dmdsec'
     MODS_TAG_END_STRING = 'mods:end'
@@ -657,7 +658,7 @@ class Article(VisualLibraryExportElement):
     def _extract_authors_from_metadata(self) -> list:
         """ Returns a list of author namedtuples from the metadata. """
 
-        Author = namedtuple('Person', ['given_name', 'family_name'])
+        Author = namedtuple('Person', ['given_name', 'family_name', 'title'])
 
         authors = []
         author_elements_in_metadata = self._get_authority_element_by_role(self.AUTHOR_SHORT_STRING)
@@ -666,17 +667,19 @@ class Article(VisualLibraryExportElement):
             given_name = person.find(self.MODS_TAG_NAME_PART_STRING, {self.TYPE_STRING: self.GIVEN_STRING})
             family_name = person.find(self.MODS_TAG_NAME_PART_STRING, {self.TYPE_STRING: self.FAMILY_STRING})
             display_name = person.find(self.MODS_TAG_DISPLAY_NAME_STRING)
+            title_of_address = person.find(attrs={self.TYPE_STRING: self.TITLE_STRING})
 
             # Clean names
             given_name = given_name.text if given_name is not None else ''
             family_name = family_name.text if family_name is not None else ''
+            title = title_of_address.text if title_of_address is not None else ''
             display_name = display_name.text if display_name is not None else ''
 
             # In the XML the given name is required while the family name is NOT!
             if not given_name and display_name:
                 given_name = display_name
 
-            authors.append(Author(given_name, family_name))
+            authors.append(Author(given_name, family_name, title))
 
         return authors
 
