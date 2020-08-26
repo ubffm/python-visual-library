@@ -20,7 +20,6 @@ class TestImporter:
         assert len(mets_importer.structure) == 1
 
         journal = mets_importer.structure[0]
-        assert len(journal.sections) == 1
         assert len(journal.resource_pointers) == 1
         assert journal.metadata is not None
 

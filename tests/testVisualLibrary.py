@@ -174,7 +174,7 @@ class TestVisualLibrary:
 
         articles = vl_issue.articles
         assert len(articles) == 20
-        
+
 
 def test_remove_letters_from_alphanumeric_string():
     assert remove_letters_from_alphanumeric_string('1071953)') == '1071953'
