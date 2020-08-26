@@ -66,9 +66,9 @@ class VisualLibraryExportElement(ABC):
     URL_STRING = 'URL'
     YES_STRING = 'yes'
 
-    ISO_LANGUAGE_GERMAN = 'deu'
+    ISO_LANGUAGE_GERMAN = 'ger'
     ISO_LANGUAGE_ENGLISH = 'eng'
-    ISO_LANGUAGE_FRENCH = 'fra'
+    ISO_LANGUAGE_FRENCH = 'fre'
 
     METS_TAG_DIV_STRING = 'mets:div'
     METS_TAG_RESOURCE_POINTER_STRING = 'mets:mptr'
