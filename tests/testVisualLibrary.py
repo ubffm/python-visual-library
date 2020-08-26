@@ -27,7 +27,7 @@ class TestVisualLibrary:
         assert vl_object.title == 'Decheniana'
         assert vl_object.subtitle == 'Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
         assert vl_object.publication_date == '1937-1954'
-        assert vl_object.languages == {'ger'}
+        assert vl_object.languages == ['ger']
         assert len(vl_object.publishers) == 1
         assert not vl_object.files
         assert vl_object.number is None
@@ -83,7 +83,7 @@ class TestVisualLibrary:
         assert author.family_name == 'Richter'
 
         assert vl_object.publication_date == '1937'
-        assert vl_object.languages == {'ger'}
+        assert vl_object.languages == ['ger']
         assert vl_object.page_range.start == '283'
         assert vl_object.page_range.end == '287'
 
@@ -159,13 +159,22 @@ class TestVisualLibrary:
         vl_article = vl.get_element_for_id(article_id)
 
         assert isinstance(vl_article.title, dict)
-        assert vl_article.title['deu'] == 'Artzusammensetzung von Körbchenmuscheln Corbicula im Niederrhein'
+        assert vl_article.title['ger'] == 'Artzusammensetzung von Körbchenmuscheln Corbicula im Niederrhein'
         assert vl_article.title['eng'] == 'On the composition of species of the Asian Clams Corbicula in the Lower' \
                                             ' Rhine Mollusca: Bivalvia: Corbiculidae'
 
-        assert vl_article.subtitle['deu'] is None
+        assert vl_article.subtitle['ger'] is None
         assert vl_article.subtitle['eng'] == 'mit 1 Tabelle und 2 Abbildungen'
 
+    def test_articles_below_blob_node(self):
+        issue_id = '11017998'
+
+        vl = VisualLibrary()
+        vl_issue = vl.get_element_for_id(issue_id)
+
+        articles = vl_issue.articles
+        assert len(articles) == 20
+        
 
 def test_remove_letters_from_alphanumeric_string():
     assert remove_letters_from_alphanumeric_string('1071953)') == '1071953'

@@ -291,7 +291,7 @@ class MetsImporter(XMLImporter):
             self.resource_pointers = mets_data.find_all(self.METS_TAG_RESOURCE_POINTER_STRING, recursive=False)
 
             subsections = mets_data.find_all(name=MetsImporter.METS_TAG_DIV_STRING,
-                                             attrs=MetsImporter.ATTRIBUTE_FILTER_FOR_SECTIONS, recursive=False)
+                                             attrs=MetsImporter.ATTRIBUTE_FILTER_FOR_SECTIONS, recursive=True)
             self.sections = [MetsImporter.Section(sec, full_xml_data) for sec in subsections]
 
             if self.metadata_id:
