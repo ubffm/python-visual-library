@@ -148,9 +148,9 @@ class TestVisualLibrary:
         assert publisher.name == 'Naturhistorischer Verein der Rheinlande und Westfalens'
 
         articles = vl_root.articles
-        assert len(articles) == 31
+        assert len(articles) == 25
         volumes = vl_root.volumes
-        assert len(volumes) == 7
+        assert len(volumes) == 13
 
     def test_article_with_translated_title(self):
         article_id = '10799758'
@@ -174,6 +174,15 @@ class TestVisualLibrary:
 
         articles = vl_issue.articles
         assert len(articles) == 20
+
+    def test_issue_with_articles_not_recognized(self):
+        issue_id = '10821674'
+
+        vl = VisualLibrary()
+        vl_issue = vl.get_element_for_id(issue_id)
+
+        articles = vl_issue.articles
+        assert len(articles) == 8
 
 
 def test_remove_letters_from_alphanumeric_string():

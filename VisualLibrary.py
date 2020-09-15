@@ -802,21 +802,37 @@ def get_object_type_from_xml(xml_data: Soup, vl_id: str):
     metadata = xml_data.find(Article.METS_TAG_SECTION_STRING,
                              {VisualLibraryExportElement.ID_STRING: 'md{id}'.format(id=vl_id)})
 
-    if is_author_in_metadata(metadata):
+    if is_author_in_metadata(metadata) and has_pages(metadata):
         return Article
 
     sections = xml_data.find_all(VisualLibraryExportElement.METS_TAG_DIV_STRING,
                                  attrs={VisualLibraryExportElement.TYPE_STRING: 'section'})
+
     if sections:
         nesting_deepness_of_corresponding_section = _get_nesting_deepness_for_section(sections, vl_id)
         if nesting_deepness_of_corresponding_section == 1:
             return Journal
         elif nesting_deepness_of_corresponding_section >= 3:
             return Issue
+        elif not subsections_have_resource_pointer(xml_data, vl_id):
+            return Article
         else:
             return Volume
 
     raise TypeError('For the given ID {id} no appropriate Type could be found!'.format(id=vl_id))
+
+
+def subsections_have_resource_pointer(metdata: Soup, vl_id: str):
+    own_section = metdata.find(attrs={'id': 'log{}'.format(vl_id)})
+    subsections = own_section.find_all(attrs={VisualLibraryExportElement.TYPE_STRING: 'section'})
+
+    return any(section.find(VisualLibraryExportElement.METS_TAG_RESOURCE_POINTER_STRING) is not None
+               for section in subsections
+               )
+
+
+def has_pages(metadata: Soup):
+    return metadata.find(Article.MODS_TAG_EXTEND_STRING, {Article.UNIT_STRING: Article.PAGE_STRING}) is not None
 
 
 def _get_nesting_deepness_for_section(sections: list, id_search_string: str) -> int:
