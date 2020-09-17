@@ -184,6 +184,20 @@ class TestVisualLibrary:
         articles = vl_issue.articles
         assert len(articles) == 8
 
+    def test_multilanguage_issue(self):
+        issue_id = '10804777'
+
+        vl = VisualLibrary()
+        vl_issue = vl.get_element_for_id(issue_id)
+
+        assert vl_issue.title['ger'] == 'Geologie und Paläontologie im Devon und Tertiär der ICE-Trasse im ' \
+                                        'Siebengebirge'
+        assert vl_issue.subtitle['ger'] == 'Ergebnisse der baubegleitenden Untersuchungen in zwei Tunnelbauwerken ' \
+                                           'der ICE-Neubaustrecke Köln-Rhein/Main'
+        assert vl_issue.title['eng'] == 'Geology and paleontology of the Devonian and Tertiary at the ICE line in ' \
+                                        'the Siebengebirge (Bonn, FRG)'
+        assert vl_issue.subtitle['eng'] is None
+
 
 def test_remove_letters_from_alphanumeric_string():
     assert remove_letters_from_alphanumeric_string('1071953)') == '1071953'

@@ -80,6 +80,7 @@ class VisualLibraryExportElement(ABC):
     MODS_TAG_LANGUAGE_STRING = 'mods:language'
     MODS_TAG_LANGUAGE_TERM_STRING = 'mods:languageterm'
     MODS_TAG_NAME_STRING = 'mods:name'
+    MODS_TAG_NON_SORT_STRING = 'mods:nonsort'
     MODS_TAG_NUMBER_STRING = 'mods:number'
     MODS_TAG_ORIGIN_INFO_STRING = 'mods:origininfo'
     MODS_TAG_PART_STRING = 'mods:part'
@@ -111,6 +112,7 @@ class VisualLibraryExportElement(ABC):
         self.sections = self._own_section.sections
         self.subtitle = None
         self.title = None
+        self.prefix = None
 
         self._extract_keywords_from_metadata()
         self._extract_languages_from_metadata()
@@ -183,24 +185,33 @@ class VisualLibraryExportElement(ABC):
 
         title = self.title
         subtitle = self.subtitle
+        prefix = self.prefix
 
         self.title = {primary_language: title}
         self.subtitle = {primary_language: subtitle}
+        self.prefix = {primary_language: prefix}
 
-        if primary_language is not self.ISO_LANGUAGE_GERMAN:
-            language = self.ISO_LANGUAGE_GERMAN
+        if primary_language != self.ISO_LANGUAGE_GERMAN:
+            translated_language = self.ISO_LANGUAGE_GERMAN
         else:
             # Assumes that a translated title of a german article is always in English
-            language = self.ISO_LANGUAGE_ENGLISH
+            translated_language = self.ISO_LANGUAGE_ENGLISH
 
         translated_title_element = translated_title_elements[0]
-        self.title[language] = translated_title_element.find(self.MODS_TAG_TITLE_STRING).text
+        self.title[translated_language] = translated_title_element.find(self.MODS_TAG_TITLE_STRING).text
+
+        prefix_translated_title = translated_title_element.find(self.MODS_TAG_NON_SORT_STRING)
+        prefix = prefix_translated_title.text if prefix_translated_title is not None else None
+        self.prefix[translated_language] = prefix
+        if prefix is not None:
+            self.title[translated_language] = '{prefix} {title}'.format(prefix=prefix,
+                                                                        title=self.title[translated_language])
 
         translated_subtitle_element = translated_title_element.find(self.MODS_TAG_SUBTITLE_STRING)
         if translated_subtitle_element is not None:
-            self.subtitle[language] = translated_subtitle_element.text
+            self.subtitle[translated_language] = translated_subtitle_element.text
         else:
-            self.subtitle[language] = None
+            self.subtitle[translated_language] = None
 
     def _create_section_instance(self, xml_importer: MetsImporter, url: str):
         """ Finds the appropriate class for a section.
@@ -283,11 +294,16 @@ class VisualLibraryExportElement(ABC):
 
         # Issues and Volumes may not have a title
         if title_info_element is None:
-            return
+            return None
 
         title_element = title_info_element.find(self.MODS_TAG_TITLE_STRING)
         if title_element is not None:
             self.title = title_element.text
+
+            prefix_tag = title_element.find(self.MODS_TAG_NON_SORT_STRING)
+            if prefix_tag is not None:
+                self.prefix = prefix_tag.text
+                self.title = '{prefix} {title}'.format(prefix=self.prefix, title=self.title)
 
         subtitle_element = title_info_element.find(self.MODS_TAG_SUBTITLE_STRING)
         if subtitle_element is not None:
