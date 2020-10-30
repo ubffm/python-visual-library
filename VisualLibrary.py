@@ -20,6 +20,10 @@ handler.setFormatter(log_format)
 logger.addHandler(handler)
 
 
+def clean_up_string(string: str) -> str:
+    return ' '.join(string.split())
+
+
 def function_is_read_only():
     Exception('This element may not be modified! Read only!')
 
@@ -53,6 +57,7 @@ def remove_letters_from_alphanumeric_string(string):
 class VisualLibraryExportElement(ABC):
     """ A base class for all classes that can be instantiated from Visual Library XML data. """
 
+    ATTRIBUTE_METADATA_ID = 'DMDID'.lower()
     ATTRIBUTE_URI_VALUE_STRING = 'valueuri'
     AUTHORITY_STRING = 'authority'
     HREF_LINK_STRING = 'xlink:href'
@@ -102,6 +107,8 @@ class VisualLibraryExportElement(ABC):
         self._parent = parent
 
         self.files = self._own_section.files
+        self.journal_label = None
+        self.journal_id = None
         self.keywords = []
         self.label = self._own_section.label
         self.languages = []
@@ -114,6 +121,7 @@ class VisualLibraryExportElement(ABC):
         self.title = None
         self.prefix = None
 
+        self._extract_top_parent_data_from_metadata()
         self._extract_keywords_from_metadata()
         self._extract_languages_from_metadata()
         self._extract_publication_date_from_metadata()
@@ -230,8 +238,32 @@ class VisualLibraryExportElement(ABC):
         if section_type is not None:
             return section_type(section_id, xml_importer, parent=self)
 
+    def _extract_top_parent_data_from_metadata(self):
+        """ Gets the label of the top most parent.
+            In the most cases, this should be the journal name.
+        """
+
+        top_parent_node = self.xml_data.find(
+            self.METS_TAG_STRUCTMAP_STRING, {MetsImporter.TYPE_STRING: MetsImporter.LOGICAL_STRING}
+        ).find(self.METS_TAG_DIV_STRING)
+
+        top_parent_metadata_id = top_parent_node[self.ATTRIBUTE_METADATA_ID]
+        top_parent_metadata = self.xml_data.find(id=top_parent_metadata_id)
+
+        title = top_parent_metadata.find(self.MODS_TAG_TITLE_STRING)
+        subtitle = top_parent_metadata.find(self.MODS_TAG_SUBTITLE_STRING)
+
+        journal_label = ''
+        if title is not None:
+            journal_label = clean_up_string(title.text)
+        if subtitle is not None:
+            journal_label = f'{journal_label}: {clean_up_string(subtitle.text)}'
+
+        self.journal_label = journal_label
+        self.journal_id = re.search(r'md([0-9]*)]', top_parent_metadata_id)
+
     def _extract_keywords_from_metadata(self):
-        """ If keywords a re present, they will be set. """
+        """ If keywords are present, they will be set. """
 
         subject_elements = self.metadata.find_all(self.MODS_TAG_SUBJECT_STRING)
 

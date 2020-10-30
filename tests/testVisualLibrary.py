@@ -21,6 +21,7 @@ class TestVisualLibrary:
 
         vl = VisualLibrary()
         vl_object = vl.get_element_from_xml_file(xml_test_file_path)
+        journal_label = 'Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
 
         assert isinstance(vl_object, Journal)
         assert vl_object.label == 'Decheniana'
@@ -31,6 +32,7 @@ class TestVisualLibrary:
         assert len(vl_object.publishers) == 1
         assert not vl_object.files
         assert vl_object.number is None
+        assert vl_object.journal_label == journal_label
 
         assert vl_object.parent is None
 
@@ -50,17 +52,20 @@ class TestVisualLibrary:
 
         vl = VisualLibrary()
         vl_object = vl.get_element_from_xml_file(xml_test_file_path)
+        journal_label = 'Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
 
         assert isinstance(vl_object, Volume)
         assert vl_object.label == '95 A (1937)'
         assert vl_object.publication_date == '1937'
         assert vl_object.number == '95 A'
+        assert vl_object.journal_label == journal_label
 
         counter = 0
         for article in vl_object.articles:
             counter += 1
             assert len(article.files) == 1
             assert article.parent is vl_object
+            assert article.journal_label == journal_label
 
         assert counter == 7
 
@@ -69,12 +74,14 @@ class TestVisualLibrary:
 
         vl = VisualLibrary()
         vl_object = vl.get_element_from_xml_file(xml_test_file_path)
+        journal_label = 'Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
 
         assert isinstance(vl_object, Article)
         assert vl_object.title == 'Diluvialer Gehängeschutt südlich von Bonn'
         assert vl_object.subtitle == 'mit 3 Textfiguren'
         assert len(vl_object.authors) == 1
         assert vl_object.number is None
+        assert vl_object.journal_label == journal_label
 
         assert isinstance(vl_object.parent, Volume)
 
