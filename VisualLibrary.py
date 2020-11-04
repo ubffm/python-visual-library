@@ -54,6 +54,9 @@ def remove_letters_from_alphanumeric_string(string):
     return cleanded_string
 
 
+Author = namedtuple('Person', ['given_name', 'family_name', 'title'])
+
+
 class VisualLibraryExportElement(ABC):
     """ A base class for all classes that can be instantiated from Visual Library XML data. """
 
@@ -746,8 +749,6 @@ class Article(VisualLibraryExportElement):
 
     def _extract_authors_from_metadata(self) -> list:
         """ Returns a list of author namedtuples from the metadata. """
-
-        Author = namedtuple('Person', ['given_name', 'family_name', 'title'])
 
         authors = []
         author_elements_in_metadata = self._get_authority_element_by_role(self.AUTHOR_SHORT_STRING)
