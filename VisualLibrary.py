@@ -652,7 +652,8 @@ class Page:
         function_is_read_only()
 
     def _extract_page_id_from_metadata(self, page_metadata: Soup) -> str:
-        return page_metadata.get(self.ID_STRING)
+        page_id_string = page_metadata.get(self.ID_STRING)
+        return page_id_string.replace('phys', '')
 
     def _extract_vl_page_id_from_metadata(self, page_metadata: Soup) -> str:
         page_id = self._extract_page_id_from_metadata(page_metadata)

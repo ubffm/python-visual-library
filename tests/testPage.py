@@ -28,6 +28,7 @@ class TestPage:
 
         assert page.label == 'Seite 61'
         assert page.order == '57'
+        assert page.id == '9660761'
 
         creation_date = datetime.fromisoformat('2018-05-08')
         mime_type_image_string = IMAGE_MIME_TYPE
