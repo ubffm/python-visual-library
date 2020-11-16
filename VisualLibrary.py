@@ -110,6 +110,7 @@ class VisualLibraryExportElement(ABC):
 
         self._number = None
         self._own_section = self._get_own_sections()
+        self._pages = []
         self._parent = parent
 
         self.files = self._own_section.files
@@ -175,7 +176,9 @@ class VisualLibraryExportElement(ABC):
         pages_in_article = self.xml_data.find(self.METS_TAG_STRUCTMAP_STRING, {self.TYPE_STRING: self.PHYSICAL_STRING})
         pages = pages_in_article.find_all(self.METS_TAG_DIV_STRING, attrs={self.TYPE_STRING: self.PAGE_STRING})
         for page in pages:
-            yield Page(page, self.xml_data)
+            page_obj = Page(page, self.xml_data)
+            self._pages.append(page_obj)
+            yield page_obj
 
     @pages.setter
     def pages(self, value):
