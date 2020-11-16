@@ -1,5 +1,4 @@
 from collections import namedtuple
-from collections.abc import Generator
 
 import logging
 import re
@@ -169,7 +168,7 @@ class VisualLibraryExportElement(ABC):
         function_is_read_only()
 
     @property
-    def pages(self) -> [Page]:
+    def pages(self) -> list:
         """ Returns a list of Page objects for this element.
             Every element in the Visual Library could hold pages. That's why it is in the parent class.
         """
