@@ -110,7 +110,7 @@ class VisualLibraryExportElement(ABC):
 
         self._number = None
         self._own_section = self._get_own_sections()
-        self._pages = []
+        self._pages: list = None
         self._parent = parent
 
         self.files = self._own_section.files
@@ -169,16 +169,17 @@ class VisualLibraryExportElement(ABC):
         function_is_read_only()
 
     @property
-    def pages(self) -> Generator:
-        """ Returns a generator to access all pages of this element.
+    def pages(self) -> [Page]:
+        """ Returns a list of Page objects for this element.
             Every element in the Visual Library could hold pages. That's why it is in the parent class.
         """
-        pages_in_article = self.xml_data.find(self.METS_TAG_STRUCTMAP_STRING, {self.TYPE_STRING: self.PHYSICAL_STRING})
-        pages = pages_in_article.find_all(self.METS_TAG_DIV_STRING, attrs={self.TYPE_STRING: self.PAGE_STRING})
-        for page in pages:
-            page_obj = Page(page, self.xml_data)
-            self._pages.append(page_obj)
-            yield page_obj
+        if self._pages is None:
+            self._pages = []
+            pages_in_article = self.xml_data.find(self.METS_TAG_STRUCTMAP_STRING, {self.TYPE_STRING: self.PHYSICAL_STRING})
+            pages = pages_in_article.find_all(self.METS_TAG_DIV_STRING, attrs={self.TYPE_STRING: self.PAGE_STRING})
+            self._pages = ([Page(page, self.xml_data) for page in pages])
+
+        return self._pages
 
     @pages.setter
     def pages(self, value):
