@@ -193,6 +193,13 @@ class TestVisualLibrary:
         vl_issue = visual_libary.get_element_for_id(issue_id)
         assert len(list(vl_issue.pages)) == 12
 
+    def test_element_with_no_pages(self, visual_libary):
+        item_id = '4497496'
+        item = visual_libary.get_element_for_id(item_id)
+
+        # Should not raise
+        item.pages
+
     def test_multilanguage_issue(self, visual_libary):
         issue_id = '10804777'
 

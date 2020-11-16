@@ -175,6 +175,11 @@ class VisualLibraryExportElement(ABC):
         if self._pages is None:
             self._pages = []
             pages_in_article = self.xml_data.find(self.METS_TAG_STRUCTMAP_STRING, {self.TYPE_STRING: self.PHYSICAL_STRING})
+
+            if pages_in_article is None:
+                self._pages = []
+                return self._pages
+
             pages = pages_in_article.find_all(self.METS_TAG_DIV_STRING, attrs={self.TYPE_STRING: self.PAGE_STRING})
             self._pages = ([Page(page, self.xml_data) for page in pages])
 
