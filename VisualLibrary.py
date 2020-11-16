@@ -1,4 +1,5 @@
 from collections import namedtuple
+from collections.abc import Generator
 
 import logging
 import re
@@ -68,6 +69,8 @@ class VisualLibraryExportElement(ABC):
     KEY_DATE_STRING = 'keydate'
     LOCTYPE_STRING = 'loctype'
     MARCRELATOR_STRING = 'marcrelator'
+    PAGE_STRING = 'page'
+    PHYSICAL_STRING = 'PHYSICAL'
     PUBLISHER_SHORT_STRING = 'isb'
     TRANSLATED_STRING = 'translated'
     TYPE_STRING = 'type'
@@ -155,6 +158,28 @@ class VisualLibraryExportElement(ABC):
     def elements(self):
         """ A common getter for all subclasses to access the relevant list. """
         pass
+
+    @property
+    def full_text(self) -> str:
+        return '\n'.join([page.full_text for page in self.pages])
+
+    @full_text.setter
+    def full_text(self, value):
+        function_is_read_only()
+
+    @property
+    def pages(self) -> Generator:
+        """ Returns a generator to access all pages of this element.
+            Every element in the Visual Library could hold pages. That's why it is in the parent class.
+        """
+        pages_in_article = self.xml_data.find(self.METS_TAG_STRUCTMAP_STRING, {self.TYPE_STRING: self.PHYSICAL_STRING})
+        pages = pages_in_article.find_all(self.METS_TAG_DIV_STRING, attrs={self.TYPE_STRING: self.PAGE_STRING})
+        for page in pages:
+            yield Page(page, self.xml_data)
+
+    @pages.setter
+    def pages(self, value):
+        function_is_read_only()
 
     def find_section_by_label(self, section_label, parent_labels=None, recursive=False):
         """ Returns a section that has the given label.
@@ -711,8 +736,6 @@ class Article(VisualLibraryExportElement):
     MODS_TAG_NAME_PART_STRING = 'mods:namepart'
     MODS_TAG_START_STRING = 'mods:start'
 
-    PAGE_STRING = 'page'
-    PHYSICAL_STRING = 'PHYSICAL'
     UNIT_STRING = 'unit'
 
     def __init__(self, vl_id, xml_importer, parent):
@@ -720,33 +743,12 @@ class Article(VisualLibraryExportElement):
 
         self.authors = self._extract_authors_from_metadata()
         self.doi = None
-        self.full_text = None
         self.page_range = self._extract_page_range_from_metadata()
-        self.pages = []
         self.is_standalone = False
-
-    @property
-    def full_text(self) -> str:
-        return '\n'.join([page.full_text for page in self.pages])
-
-    @property
-    def pages(self):
-        pages_in_article = self.xml_data.find(self.METS_TAG_STRUCTMAP_STRING, {self.TYPE_STRING: self.PHYSICAL_STRING})
-        pages = pages_in_article.find_all(self.METS_TAG_DIV_STRING, attrs={self.TYPE_STRING: self.PAGE_STRING})
-        for page in pages:
-            yield Page(page, self.xml_data)
 
     @property
     def elements(self):
         return self.pages
-
-    @full_text.setter
-    def full_text(self, value):
-        function_is_read_only()
-
-    @pages.setter
-    def pages(self, value):
-        function_is_read_only()
 
     def _extract_authors_from_metadata(self) -> list:
         """ Returns a list of author namedtuples from the metadata. """

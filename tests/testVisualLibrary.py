@@ -187,6 +187,12 @@ class TestVisualLibrary:
         articles = vl_issue.articles
         assert len(articles) == 8
 
+    def test_issue_with_no_articles_but_pages(self, visual_libary):
+        issue_id = '10516486'
+
+        vl_issue = visual_libary.get_element_for_id(issue_id)
+        assert len(list(vl_issue.pages)) == 12
+
     def test_multilanguage_issue(self, visual_libary):
         issue_id = '10804777'
 
