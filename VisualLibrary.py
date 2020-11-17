@@ -387,11 +387,19 @@ class VisualLibraryExportElement(ABC):
         """ Finds all metadata elements having the given role.
             This function is used for finding e.g. authors and publishers.
         """
+
+        def is_searched_role(person_element, role_type):
+            role_string_in_element = person_element.find(self.MODS_TAG_ROLE_STRING,
+                                                         {self.AUTHORITY_STRING: self.MARCRELATOR_STRING})
+            if role_string_in_element is not None:
+                return role_string_in_element.text == role_type
+            else:
+                return False
+
         persons_in_metadata = self.metadata.find_all(self.MODS_TAG_NAME_STRING)
         persons_in_given_role = [person_element
                                  for person_element in persons_in_metadata
-                                 if person_element.find(self.MODS_TAG_ROLE_STRING,
-                                                        {self.AUTHORITY_STRING: self.MARCRELATOR_STRING}).text == role_type
+                                 if is_searched_role(person_element, role_type)
                                  ]
 
         return persons_in_given_role
