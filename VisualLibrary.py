@@ -366,16 +366,16 @@ class VisualLibraryExportElement(ABC):
 
         title_element = title_info_element.find(self.MODS_TAG_TITLE_STRING)
         if title_element is not None:
-            self.title = title_element.text
+            self.title = title_element.text.strip()
 
             prefix_tag = title_element.find(self.MODS_TAG_NON_SORT_STRING)
             if prefix_tag is not None:
-                self.prefix = prefix_tag.text
+                self.prefix = prefix_tag.text.strip()
                 self.title = '{prefix} {title}'.format(prefix=self.prefix, title=self.title)
 
         subtitle_element = title_info_element.find(self.MODS_TAG_SUBTITLE_STRING)
         if subtitle_element is not None:
-            self.subtitle = subtitle_element.text
+            self.subtitle = subtitle_element.text.strip()
 
         translated_title_elements = self.metadata.find_all(self.MODS_TAG_TITLE_INFO_STRING,
                                                            {self.TYPE_STRING: self.TRANSLATED_STRING})
