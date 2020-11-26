@@ -213,6 +213,13 @@ class TestVisualLibrary:
                                         'the Siebengebirge (Bonn, FRG)'
         assert vl_issue.subtitle['eng'] is None
 
+    def test_volume_and_issue_retrieval(self, visual_libary):
+        article_id = '9273349'
+
+        vl_article = visual_libary.get_element_for_id(article_id)
+        assert vl_article.volume_number == '3'
+        assert vl_article.issue_number == '3'
+
 
 def test_remove_letters_from_alphanumeric_string():
     assert remove_letters_from_alphanumeric_string('1071953)') == '1071953'

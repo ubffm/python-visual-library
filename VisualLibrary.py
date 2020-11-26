@@ -126,8 +126,11 @@ class VisualLibraryExportElement(ABC):
         self.subtitle = None
         self.title = None
         self.prefix = None
+        self.volume_number = None
+        self.issue_number = None
 
         self._extract_top_parent_data_from_metadata()
+        self._extract_parent_metadata()
         self._extract_keywords_from_metadata()
         self._extract_languages_from_metadata()
         self._extract_publication_date_from_metadata()
@@ -315,6 +318,18 @@ class VisualLibraryExportElement(ABC):
 
         self.languages = [language.text for language in languages_element.find_all(
             self.MODS_TAG_LANGUAGE_TERM_STRING)]
+
+    def _extract_parent_metadata(self):
+        volume_number = self._own_section.metadata.find('mods:detail', {self.TYPE_STRING: 'volume'})
+        issue_number = self._own_section.metadata.find('mods:detail', {self.TYPE_STRING: 'issue'})
+
+        if volume_number is not None:
+            actual_number = volume_number.find('mods:number')
+            self.volume_number = actual_number.text if actual_number is not None else None
+
+        if issue_number is not None:
+            actual_number = issue_number.find('mods:number')
+            self.issue_number = actual_number.text if actual_number is not None else None
 
     def _extract_publication_date_from_metadata(self):
         """ Search for the earliest date in the metadata and use it as publication date.
