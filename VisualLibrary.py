@@ -331,9 +331,10 @@ class VisualLibraryExportElement(ABC):
             actual_number = issue_number.find('mods:number')
             self.issue_number = actual_number.text if actual_number is not None else None
 
-    def _extract_publication_date_from_metadata(self):
+    def _extract_publication_date_from_metadata(self, year_only: bool = False):
         """ Search for the earliest date in the metadata and use it as publication date.
-            The date is expected to be in the format 'YYYY' and be convertable into an int for comparison.
+            The date is expected to be in the format 'YYYY' and be convertible into an int for comparison.
+            If the year has to be a year only (hence, no duration dash), then the year_only should be True.
         """
 
         origin_info_elements = self._get_date_elements_from_metadata()
@@ -344,14 +345,15 @@ class VisualLibraryExportElement(ABC):
             dates = origin_element.find_all([self.MODS_TAG_PUBLICATION_DATE_ISSUED_STRING,
                                              self.MODS_TAG_PUBLICATION_DATE_STRING])
             for date_element in dates:
-                date_period = re_date_period.match(date_element.text)
-                if date_period:
-                    self.publication_date = date_period.group()
+
+                date_period_result = re_date_period.match(date_element.text)
+                if not year_only and date_period_result:
+                    self.publication_date = date_period_result.group()
                     return
 
-                year_only = re_year_only.match(date_element.text)
-                if year_only:
-                    self.publication_date = remove_letters_from_alphanumeric_string(year_only.group())
+                year_only_result = re_year_only.match(date_element.text)
+                if year_only_result:
+                    self.publication_date = remove_letters_from_alphanumeric_string(year_only_result.group())
                     return
 
     def _extract_publisher_from_metadata(self):
@@ -577,6 +579,10 @@ class Volume(ArticleHandlingExportElement):
         """ Disable setter """
         function_is_read_only()
 
+    def _extract_publication_date_from_metadata(self, year_only: bool = True):
+        """ This is a publication in a single moment in time. Hence a year only is forced. """
+        return super()._extract_publication_date_from_metadata(year_only)
+
     def _resolve_sections(self):
         sections = list(self._resolve_depending_sections())
         self._issues = get_list_by_type(sections, Issue)
@@ -601,6 +607,10 @@ class Issue(ArticleHandlingExportElement):
     @property
     def elements(self):
         return self.articles
+
+    def _extract_publication_date_from_metadata(self, year_only: bool = True):
+        """ This is a publication in a single moment in time. Hence a year only is forced. """
+        return super()._extract_publication_date_from_metadata(year_only)
 
 
 class Page:
@@ -826,6 +836,10 @@ class Article(VisualLibraryExportElement):
             return PageRange(start, end)
         else:
             return None
+
+    def _extract_publication_date_from_metadata(self, year_only: bool = True):
+        """ This is a publication in a single moment in time. Hence a year only is forced. """
+        return super()._extract_publication_date_from_metadata(year_only)
 
     def _is_person_element_author(self, person_element: Soup):
         return person_element.find(self.MODS_TAG_ROLE_STRING,

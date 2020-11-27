@@ -220,6 +220,12 @@ class TestVisualLibrary:
         assert vl_article.volume_number == '3'
         assert vl_article.issue_number == '3'
 
+    def test_single_year_only_publication(self, visual_libary):
+        volume_id = '5275733'
+
+        vl_volume = visual_libary.get_element_for_id(volume_id)
+        assert vl_volume.publication_date == '1837'
+
 
 def test_remove_letters_from_alphanumeric_string():
     assert remove_letters_from_alphanumeric_string('1071953)') == '1071953'
