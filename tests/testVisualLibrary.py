@@ -226,6 +226,12 @@ class TestVisualLibrary:
         vl_volume = visual_libary.get_element_for_id(volume_id)
         assert vl_volume.publication_date == '1837'
 
+    def test_journal_id_in_volume_item(self, visual_libary):
+        volume_id = '3938085'
+
+        vl_volume = visual_libary.get_element_for_id(volume_id)
+        assert vl_volume.journal_id == '3938082'
+
 
 def test_remove_letters_from_alphanumeric_string():
     assert remove_letters_from_alphanumeric_string('1071953)') == '1071953'

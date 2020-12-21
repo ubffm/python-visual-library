@@ -299,7 +299,8 @@ class VisualLibraryExportElement(ABC):
             journal_label = f'{journal_label}: {clean_up_string(subtitle.text)}'
 
         self.journal_label = journal_label
-        self.journal_id = re.search(r'md([0-9]*)]', top_parent_metadata_id)
+        journal_id_search = re.search(r'md([0-9]*)', top_parent_metadata_id)
+        self.journal_id = journal_id_search.group(1) if journal_id_search is not None else None
 
     def _extract_keywords_from_metadata(self):
         """ If keywords are present, they will be set. """
