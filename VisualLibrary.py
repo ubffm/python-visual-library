@@ -166,10 +166,6 @@ class VisualLibraryExportElement(ABC):
     def full_text(self) -> str:
         return '\n'.join([page.full_text for page in self.pages])
 
-    @full_text.setter
-    def full_text(self, value):
-        function_is_read_only()
-
     @property
     def pages(self) -> list:
         """ Returns a list of Page objects for this element.
@@ -187,10 +183,6 @@ class VisualLibraryExportElement(ABC):
             self._pages = ([Page(page, self.xml_data) for page in pages])
 
         return self._pages
-
-    @pages.setter
-    def pages(self, value):
-        function_is_read_only()
 
     def find_section_by_label(self, section_label, parent_labels=None, recursive=False):
         """ Returns a section that has the given label.

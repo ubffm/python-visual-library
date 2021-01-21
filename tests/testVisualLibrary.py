@@ -11,19 +11,19 @@ TEST_DATA_FOLDER = '{base_dir}/data/VisualLibrary'.format(base_dir=this_files_di
 
 class TestVisualLibrary:
     @pytest.fixture
-    def visual_libary(self):
+    def visual_library(self):
         return VisualLibrary()
 
-    def test_publication_year_hard_to_fetch(self, visual_libary):
+    def test_publication_year_hard_to_fetch(self, visual_library):
         issue_id = '10823380'
-        vl_issue = visual_libary.get_element_for_id(issue_id)
+        vl_issue = visual_library.get_element_for_id(issue_id)
 
         assert vl_issue.publication_date == '1992'
 
-    def test_call_for_journal(self, visual_libary):
+    def test_call_for_journal(self, visual_library):
         xml_test_file_path = '{test_data_folder}/journal-oai-response.xml'.format(test_data_folder=TEST_DATA_FOLDER)
 
-        vl_object = visual_libary.get_element_from_xml_file(xml_test_file_path)
+        vl_object = visual_library.get_element_from_xml_file(xml_test_file_path)
         journal_label = 'Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
 
         assert isinstance(vl_object, Journal)
@@ -50,10 +50,10 @@ class TestVisualLibrary:
 
         assert counter == 6
 
-    def test_call_for_volume(self, visual_libary):
+    def test_call_for_volume(self, visual_library):
         xml_test_file_path = '{test_data_folder}/volume-oai-response.xml'.format(test_data_folder=TEST_DATA_FOLDER)
 
-        vl_object = visual_libary.get_element_from_xml_file(xml_test_file_path)
+        vl_object = visual_library.get_element_from_xml_file(xml_test_file_path)
         journal_label = 'Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
 
         assert isinstance(vl_object, Volume)
@@ -71,10 +71,10 @@ class TestVisualLibrary:
 
         assert counter == 7
 
-    def test_call_for_article(self, visual_libary):
+    def test_call_for_article(self, visual_library):
         xml_test_file_path = '{test_data_folder}/article-oai-response.xml'.format(test_data_folder=TEST_DATA_FOLDER)
 
-        vl_object = visual_libary.get_element_from_xml_file(xml_test_file_path)
+        vl_object = visual_library.get_element_from_xml_file(xml_test_file_path)
         journal_label = 'Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
 
         assert isinstance(vl_object, Article)
@@ -104,10 +104,10 @@ class TestVisualLibrary:
 
         assert len(vl_object.full_text) == 8020
 
-    def test_call_for_single_page(self, visual_libary):
+    def test_call_for_single_page(self, visual_library):
         single_page_id = '10769418'
 
-        page = visual_libary.get_page_by_id(single_page_id)
+        page = visual_library.get_page_by_id(single_page_id)
 
         full_text_snippet = 'in Mitteleuropa ist durch den Menschen nachhaltig verändert\n'
 
@@ -116,10 +116,10 @@ class TestVisualLibrary:
         assert page.label == 'Seite 1'
         assert page.order == '11'
 
-    def test_deriving_types(self, visual_libary):
+    def test_deriving_types(self, visual_library):
         journal_id = '10827059'
 
-        vl_journal = visual_libary.get_element_for_id(journal_id)
+        vl_journal = visual_library.get_element_for_id(journal_id)
 
         assert isinstance(vl_journal, Volume)
         issues = vl_journal.issues
@@ -132,18 +132,18 @@ class TestVisualLibrary:
         issue = issues[1]
         assert len(issue.articles) == 37
 
-    def test_keywords_in_issue(self, visual_libary):
+    def test_keywords_in_issue(self, visual_library):
         issue_id = '10750063'
 
-        vl_issue = visual_libary.get_element_for_id(issue_id)
+        vl_issue = visual_library.get_element_for_id(issue_id)
 
         assert len(vl_issue.keywords) == 5
         assert vl_issue.keywords == ['Köln', 'Pollenanalyse', 'Wald', 'Waldgesellschaft', 'Flussterrasse']
 
-    def test_root_has_articles(self, visual_libary):
+    def test_root_has_articles(self, visual_library):
         journal_id = '10773114'
 
-        vl_root = visual_libary.get_element_for_id(journal_id)
+        vl_root = visual_library.get_element_for_id(journal_id)
 
         assert isinstance(vl_root, Journal)
         assert vl_root.title == 'Decheniana'
@@ -158,10 +158,10 @@ class TestVisualLibrary:
                                '10771487', '10827059', '9825034', '10821178', '10804777']
         assert [vol.id for vol in volumes] == expected_volume_ids
 
-    def test_article_with_translated_title(self, visual_libary):
+    def test_article_with_translated_title(self, visual_library):
         article_id = '10799758'
 
-        vl_article = visual_libary.get_element_for_id(article_id)
+        vl_article = visual_library.get_element_for_id(article_id)
 
         assert isinstance(vl_article.title, dict)
         assert vl_article.title['ger'] == 'Artzusammensetzung von Körbchenmuscheln Corbicula im Niederrhein'
@@ -171,39 +171,39 @@ class TestVisualLibrary:
         assert vl_article.subtitle['ger'] is None
         assert vl_article.subtitle['eng'] == 'mit 1 Tabelle und 2 Abbildungen'
 
-    def test_articles_below_blob_node(self, visual_libary):
+    def test_articles_below_blob_node(self, visual_library):
         issue_id = '11017998'
 
-        vl_issue = visual_libary.get_element_for_id(issue_id)
+        vl_issue = visual_library.get_element_for_id(issue_id)
 
         articles = vl_issue.articles
         assert len(articles) == 20
 
-    def test_issue_with_articles_not_recognized(self, visual_libary):
+    def test_issue_with_articles_not_recognized(self, visual_library):
         issue_id = '10821674'
 
-        vl_issue = visual_libary.get_element_for_id(issue_id)
+        vl_issue = visual_library.get_element_for_id(issue_id)
 
         articles = vl_issue.articles
         assert len(articles) == 8
 
-    def test_issue_with_no_articles_but_pages(self, visual_libary):
+    def test_issue_with_no_articles_but_pages(self, visual_library):
         issue_id = '10516486'
 
-        vl_issue = visual_libary.get_element_for_id(issue_id)
+        vl_issue = visual_library.get_element_for_id(issue_id)
         assert len(list(vl_issue.pages)) == 12
 
-    def test_element_with_no_pages(self, visual_libary):
+    def test_element_with_no_pages(self, visual_library):
         item_id = '4497496'
-        item = visual_libary.get_element_for_id(item_id)
+        item = visual_library.get_element_for_id(item_id)
 
         # Should not raise
         item.pages
 
-    def test_multilanguage_issue(self, visual_libary):
+    def test_multilanguage_issue(self, visual_library):
         issue_id = '10804777'
 
-        vl_issue = visual_libary.get_element_for_id(issue_id)
+        vl_issue = visual_library.get_element_for_id(issue_id)
 
         assert vl_issue.title['ger'] == 'Geologie und Paläontologie im Devon und Tertiär der ICE-Trasse im ' \
                                         'Siebengebirge'
@@ -213,24 +213,42 @@ class TestVisualLibrary:
                                         'the Siebengebirge (Bonn, FRG)'
         assert vl_issue.subtitle['eng'] is None
 
-    def test_volume_and_issue_retrieval(self, visual_libary):
+    def test_volume_and_issue_retrieval(self, visual_library):
         article_id = '9273349'
 
-        vl_article = visual_libary.get_element_for_id(article_id)
+        vl_article = visual_library.get_element_for_id(article_id)
         assert vl_article.volume_number == '3'
         assert vl_article.issue_number == '3'
 
-    def test_single_year_only_publication(self, visual_libary):
+    def test_single_year_only_publication(self, visual_library):
         volume_id = '5275733'
 
-        vl_volume = visual_libary.get_element_for_id(volume_id)
+        vl_volume = visual_library.get_element_for_id(volume_id)
         assert vl_volume.publication_date == '1837'
 
-    def test_journal_id_in_volume_item(self, visual_libary):
+    def test_journal_id_in_volume_item(self, visual_library):
         volume_id = '3938085'
 
-        vl_volume = visual_libary.get_element_for_id(volume_id)
+        vl_volume = visual_library.get_element_for_id(volume_id)
         assert vl_volume.journal_id == '3938082'
+
+    @pytest.mark.parametrize('object_id,number_of_elements,first_element_label,issue_number',
+                             [
+                                 ('4130085', 6, '1', '1'), ('4130086', 0, None, None),
+                                 ('4130212', 0, None, None), ('3827708', 4, '1866', None)
+                             ])
+    def test_after_restructuring_some_old_metadata(self, visual_library, object_id, number_of_elements,
+                                                   first_element_label, issue_number):
+        vl_object = visual_library.get_element_for_id(object_id)
+        assert len(vl_object.elements) == number_of_elements
+
+        if number_of_elements >= 1:
+            first_element = vl_object.elements[0]
+            assert first_element.label == first_element_label
+            assert first_element.issue_number == issue_number
+
+
+
 
 
 def test_remove_letters_from_alphanumeric_string():
