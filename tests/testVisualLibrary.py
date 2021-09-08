@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from ..VisualLibrary import VisualLibrary, Volume, Journal, Article, Page, remove_letters_from_alphanumeric_string
+from VisualLibrary import VisualLibrary, Volume, Journal, Article, Page, remove_letters_from_alphanumeric_string
 
 IMAGE_MIME_TYPE = 'image/jpeg'
 
@@ -21,6 +21,9 @@ class TestVisualLibrary:
         assert vl_issue.publication_date == '1992'
 
     def test_call_for_journal(self, visual_library):
+        """ Metadata from:
+            https://sammlungen.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10688403
+        """
         xml_test_file_path = '{test_data_folder}/journal-oai-response.xml'.format(test_data_folder=TEST_DATA_FOLDER)
 
         vl_object = visual_library.get_element_from_xml_file(xml_test_file_path)
@@ -51,6 +54,9 @@ class TestVisualLibrary:
         assert counter == 6
 
     def test_call_for_volume(self, visual_library):
+        """ Metadata from:
+            https://sammlungen.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10771471
+        """
         xml_test_file_path = '{test_data_folder}/volume-oai-response.xml'.format(test_data_folder=TEST_DATA_FOLDER)
 
         vl_object = visual_library.get_element_from_xml_file(xml_test_file_path)
@@ -102,7 +108,7 @@ class TestVisualLibrary:
             assert page.thumbnail.mime_type == IMAGE_MIME_TYPE
             assert len(page.full_text) > 0
 
-        assert len(vl_object.full_text) == 8020
+        assert len(vl_object.full_text) == 8017
 
     def test_call_for_single_page(self, visual_library):
         single_page_id = '10769418'
@@ -121,15 +127,15 @@ class TestVisualLibrary:
 
         vl_journal = visual_library.get_element_for_id(journal_id)
 
-        assert isinstance(vl_journal, Volume)
-        issues = vl_journal.issues
-        assert len(issues) == 2
-        assert issues[0].label == '1'
-        assert issues[0].number == '1'  # This is a bug in the submitted data! Should be 31!
-        assert issues[1].label == '2'
-        assert issues[1].number == '35'
+        assert isinstance(vl_journal, Journal)
+        volumes = vl_journal.volumes
+        assert len(volumes) == 2
+        assert volumes[0].label == '1'
+        assert volumes[0].number == '1'  # This is a bug in the submitted data! Should be 31!
+        assert volumes[1].label == '2'
+        assert volumes[1].number == '35'
 
-        issue = issues[1]
+        issue = volumes[1]
         assert len(issue.articles) == 37
 
     def test_keywords_in_issue(self, visual_library):
@@ -139,24 +145,6 @@ class TestVisualLibrary:
 
         assert len(vl_issue.keywords) == 5
         assert vl_issue.keywords == ['Köln', 'Pollenanalyse', 'Wald', 'Waldgesellschaft', 'Flussterrasse']
-
-    def test_root_has_articles(self, visual_library):
-        journal_id = '10773114'
-
-        vl_root = visual_library.get_element_for_id(journal_id)
-
-        assert isinstance(vl_root, Journal)
-        assert vl_root.title == 'Decheniana'
-        assert vl_root.publication_date == '1955-'
-        publisher = vl_root.publishers[0]
-        assert publisher.name == 'Naturhistorischer Verein der Rheinlande und Westfalens'
-
-        articles = vl_root.articles
-        assert len(articles) == 25
-        volumes = vl_root.volumes
-        expected_volume_ids = ['10821674', '10821917', '10807409', '10822417', '10822858', '10724145', '10766813',
-                               '10771487', '10827059', '9825034', '10821178', '10804777']
-        assert [vol.id for vol in volumes] == expected_volume_ids
 
     def test_article_with_translated_title(self, visual_library):
         article_id = '10799758'
@@ -247,8 +235,10 @@ class TestVisualLibrary:
             assert first_element.label == first_element_label
             assert first_element.issue_number == issue_number
 
-
-
+    def test_is_volume(self, visual_library):
+        volume_id = '10742075'
+        instance = visual_library.get_element_for_id(volume_id)
+        assert isinstance(instance, Volume)
 
 
 def test_remove_letters_from_alphanumeric_string():

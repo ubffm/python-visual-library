@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup as Soup
 from datetime import datetime
 
 from .data.VisualLibrary import full_text_data
-from ..VisualLibrary import Page, File
+from VisualLibrary import Page, File
 
 IMAGE_MIME_TYPE = 'image/jpeg'
 
@@ -34,19 +34,19 @@ class TestPage:
         mime_type_image_string = IMAGE_MIME_TYPE
 
         page_thumbnail_file = page.thumbnail
-        file_test(page_thumbnail_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/128/9660761',
+        file_test(page_thumbnail_file, expected_url='http://sammlungen.ub.uni-frankfurt.de/download/webcache/128/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         page_default_res_file = page.image_default_resolution
-        file_test(page_default_res_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/1000/9660761',
+        file_test(page_default_res_file, expected_url='http://sammlungen.ub.uni-frankfurt.de/download/webcache/1000/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         page_maximum_res_file = page.image_max_resolution
-        file_test(page_maximum_res_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/1504/9660761',
+        file_test(page_maximum_res_file, expected_url='http://sammlungen.ub.uni-frankfurt.de/download/webcache/1504/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         page_minimum_res_file = page.image_min_resolution
-        file_test(page_minimum_res_file, expected_url='http://vl.ub.uni-frankfurt.de/download/webcache/600/9660761',
+        file_test(page_minimum_res_file, expected_url='http://sammlungen.ub.uni-frankfurt.de/download/webcache/600/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         full_text = full_text_data.phys9660761_full_text

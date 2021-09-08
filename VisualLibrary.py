@@ -89,6 +89,7 @@ class VisualLibraryExportElement(ABC):
     MODS_TAG_DISPLAY_NAME_STRING = 'mods:displayform'
     MODS_TAG_LANGUAGE_STRING = 'mods:language'
     MODS_TAG_LANGUAGE_TERM_STRING = 'mods:languageterm'
+    MODS_TAG_NAME_PART = 'mods:namepart'
     MODS_TAG_NAME_STRING = 'mods:name'
     MODS_TAG_NON_SORT_STRING = 'mods:nonsort'
     MODS_TAG_NUMBER_STRING = 'mods:number'
@@ -357,7 +358,12 @@ class VisualLibraryExportElement(ABC):
         publishers_in_metadata = self._get_authority_element_by_role(self.PUBLISHER_SHORT_STRING)
         publishers = []
         for publisher in publishers_in_metadata:
-            publisher_name = publisher.find(self.MODS_TAG_DISPLAY_NAME_STRING).text
+
+            publisher_name = publisher.find(self.MODS_TAG_DISPLAY_NAME_STRING)
+            if publisher_name is None:
+                publisher_name = publisher.find(self.MODS_TAG_NAME_PART)
+            publisher_name = publisher_name.text
+
             publisher_uri = publisher.get(self.ATTRIBUTE_URI_VALUE_STRING, '')
             publishers.append(
                 Publisher(publisher_name, publisher_uri)
@@ -845,9 +851,12 @@ RESPONSE_HEADER = 'header'
 VL_OBJECT_SPECIFICATION = 'setspec'
 VL_OBJECT_TYPES = {
     'article': Article,
+    'book': Volume,
     'journal': Journal,
     'journal_issue': Issue,
     'journal_volume': Volume,
+    'multivolumework': Journal,
+    'periodical': Journal,
 }
 
 
@@ -896,7 +905,7 @@ def get_object_type_from_xml(xml_data: Soup, vl_id: str):
         return Article
 
     sections = xml_data.find_all(VisualLibraryExportElement.METS_TAG_DIV_STRING,
-                                 attrs={VisualLibraryExportElement.TYPE_STRING: 'section'})
+                                 attrs=MetsImporter.ATTRIBUTE_FILTER_FOR_SECTIONS)
 
     if sections:
         nesting_deepness_of_corresponding_section = _get_nesting_deepness_for_section(sections, vl_id)
@@ -914,7 +923,7 @@ def get_object_type_from_xml(xml_data: Soup, vl_id: str):
 
 def subsections_have_resource_pointer(metdata: Soup, vl_id: str):
     own_section = metdata.find(attrs={'id': 'log{}'.format(vl_id)})
-    subsections = own_section.find_all(attrs={VisualLibraryExportElement.TYPE_STRING: 'section'})
+    subsections = own_section.find_all(attrs=MetsImporter.ATTRIBUTE_FILTER_FOR_SECTIONS)
 
     return any(section.find(VisualLibraryExportElement.METS_TAG_RESOURCE_POINTER_STRING) is not None
                for section in subsections
@@ -950,8 +959,9 @@ class VisualLibrary:
     SOUP_XML_ENCODING = 'lxml'
     TITLE_CONTENT_ELEMENT_ID = 'tab-content-titleinfo'
     TITLE_INFO_ELEMENT_ID = 'tab-periodical-titleinfo'
-    VISUAL_LIBRARY_BASE_URL = 'http://vl.ub.uni-frankfurt.de'
-    VISUAL_LIBRARY_OAI_URL = 'http://vl.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix={xml_response_format}&identifier={identifier}'
+    VISUAL_LIBRARY_BASE_URL = 'https://sammlungen.ub.uni-frankfurt.de'
+    VISUAL_LIBRARY_OAI_URL = VISUAL_LIBRARY_BASE_URL + '/oai/?verb=GetRecord&metadataPrefix={xml_response_format}' \
+                                                       '&identifier={identifier}'
     VL_OBJECT_TYPES = VL_OBJECT_TYPES
 
     def get_data_for_id(self, vl_id, xml_response_format=METS_STRING):
