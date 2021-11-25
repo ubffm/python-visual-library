@@ -168,7 +168,7 @@ class MetsImporter(XMLImporter):
     """ A class for importing METS data. """
 
     ATTRIBUTE_FILTER_FOR_SECTIONS = {
-        'type': ['periodical', 'volume', 'article', 'section', 'document']
+        'type': ['periodical', 'volume', 'issue', 'article', 'section', 'document']
     }
     ATTRIBUTE_DOWNLOAD_STRING = 'download'
     ATTRIBUTE_FILE_ID_STRING = 'fileid'
@@ -189,8 +189,9 @@ class MetsImporter(XMLImporter):
         self.debug_mode = debug
 
     def get_section_by_id(self, section_id):
+        prefixed_section_id = f'{self.SECTION_ID_PREFIX_STRING}{section_id}'
+
         def search_section(section):
-            prefixed_section_id = f'{self.SECTION_ID_PREFIX_STRING}{section_id}'
             for sec in section:
                 if sec.id == prefixed_section_id:
                     return sec
