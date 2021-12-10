@@ -168,7 +168,7 @@ class MetsImporter(XMLImporter):
     """ A class for importing METS data. """
 
     ATTRIBUTE_FILTER_FOR_SECTIONS = {
-        'type': ['periodical', 'volume', 'issue', 'article', 'section', 'document']
+        'type': ['periodical', 'volume', 'issue', 'article', 'section', 'document', 'illustration']
     }
     ATTRIBUTE_DOWNLOAD_STRING = 'download'
     ATTRIBUTE_FILE_ID_STRING = 'fileid'

@@ -1,7 +1,14 @@
 import os
 import pytest
 
-from VisualLibrary import VisualLibrary, Volume, Journal, Article, Page, remove_letters_from_alphanumeric_string
+from VisualLibrary import (
+    VisualLibrary,
+    Volume,
+    Journal,
+    Article,
+    Page,
+    remove_letters_from_alphanumeric_string
+)
 
 IMAGE_MIME_TYPE = 'image/jpeg'
 
@@ -239,6 +246,12 @@ class TestVisualLibrary:
         volume_id = '10742075'
         instance = visual_library.get_element_for_id(volume_id)
         assert isinstance(instance, Volume)
+
+    def test_assign_correct_label(self, visual_library):
+        volume_id = '9943857'
+        instance = visual_library.get_element_for_id(volume_id)
+        assert instance.title == 'Nr. 1 (Januar 1930)'
+        assert instance.journal_label == 'Journal für Ornithologie: Zeitschrift der Deutschen Ornithologen-Gesellschaft'
 
 
 def test_remove_letters_from_alphanumeric_string():

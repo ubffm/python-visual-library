@@ -85,6 +85,7 @@ class VisualLibraryExportElement(ABC):
     METS_TAG_STRUCTMAP_STRING = 'mets:structmap'
     METS_TAG_XML_DATA_STRING = 'mets:xmldata'
 
+    MODS_TAG_CAPTION_STRING = 'mods:caption'
     MODS_TAG_DETAIL_STRING = 'mods:detail'
     MODS_TAG_DISPLAY_NAME_STRING = 'mods:displayform'
     MODS_TAG_LANGUAGE_STRING = 'mods:language'
@@ -374,13 +375,20 @@ class VisualLibraryExportElement(ABC):
     def _extract_titles_from_metadata(self):
         """ Sets both the title and subtitle data with the appropriate data. """
 
-        title_info_element = self.metadata.find(self.MODS_TAG_TITLE_INFO_STRING)
+        caption_info_element = self._get_mods_caption_if_available()
 
         # Issues and Volumes may not have a title
+        if caption_info_element is not None:
+            self.title = caption_info_element.text.strip()
+            return None
+
+        title_info_element = self.metadata.find(self.MODS_TAG_TITLE_INFO_STRING)
+
         if title_info_element is None:
             return None
 
         title_element = title_info_element.find(self.MODS_TAG_TITLE_STRING)
+
         if title_element is not None:
             self.title = title_element.text.strip()
 
@@ -398,6 +406,16 @@ class VisualLibraryExportElement(ABC):
 
         if translated_title_elements:
             self._add_translated_titles_to_title(translated_title_elements)
+
+    def _get_mods_caption_if_available(self):
+        mods_captions = self._own_section.metadata.find(self.MODS_TAG_PART_STRING)
+        if mods_captions is not None:
+            title_info_element = mods_captions.find(self.MODS_TAG_CAPTION_STRING)
+            if title_info_element is not None:
+                return title_info_element
+        else:
+            return None
+
 
     def _get_authority_element_by_role(self, role_type: str) -> list:
         """ Finds all metadata elements having the given role.
