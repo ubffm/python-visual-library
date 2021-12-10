@@ -375,13 +375,6 @@ class VisualLibraryExportElement(ABC):
     def _extract_titles_from_metadata(self):
         """ Sets both the title and subtitle data with the appropriate data. """
 
-        caption_info_element = self._get_mods_caption_if_available()
-
-        # Issues and Volumes may not have a title
-        if caption_info_element is not None:
-            self.title = caption_info_element.text.strip()
-            return None
-
         title_info_element = self.metadata.find(self.MODS_TAG_TITLE_INFO_STRING)
 
         if title_info_element is None:
@@ -628,6 +621,17 @@ class Issue(ArticleHandlingExportElement):
     def _extract_publication_date_from_metadata(self, year_only: bool = True):
         """ This is a publication in a single moment in time. Hence a year only is forced. """
         return super()._extract_publication_date_from_metadata(year_only)
+
+    def _extract_titles_from_metadata(self):
+        caption_info_element = self._get_mods_caption_if_available()
+
+        # Issues and Volumes may not have a title
+        if caption_info_element is not None:
+            self.title = caption_info_element.text.strip()
+            return None
+        else:
+            super(Issue, self)._extract_titles_from_metadata()
+
 
 
 class Page:
