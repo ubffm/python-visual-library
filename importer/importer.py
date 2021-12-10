@@ -192,11 +192,16 @@ class MetsImporter(XMLImporter):
         prefixed_section_id = f'{self.SECTION_ID_PREFIX_STRING}{section_id}'
 
         def search_section(section):
+            relevant_section = None
             for sec in section:
                 if sec.id == prefixed_section_id:
                     return sec
 
-                return search_section(sec.sections)
+                relevant_section = search_section(sec.sections)
+                if relevant_section is not None:
+                    break
+
+            return relevant_section
 
         return search_section(self.structure)
 
