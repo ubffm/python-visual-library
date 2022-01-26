@@ -1,6 +1,7 @@
 <OAI-PMH xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
-    <responseDate>2021-09-08T13:56:34Z</responseDate>
-    <request verb="GetRecord" metadataPrefix="mets" identifier="10902187">https://sammlungen.ub.uni-frankfurt.de/oai/</request>
+    <responseDate>2022-01-25T19:16:33Z</responseDate>
+    <request verb="GetRecord" metadataPrefix="mets" identifier="10902187">https://sammlungen.ub.uni-frankfurt.de/oai/
+    </request>
     <GetRecord>
         <record>
             <header>
@@ -10,10 +11,11 @@
                 <setSpec>article</setSpec>
             </header>
             <metadata>
-                <mets:mets xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd" OBJID="55" LABEL="Biodiversität">
-                    <mets:metsHdr CREATEDATE="2021-09-08T15:56:34">
+                <mets:mets
+                        xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd"
+                        OBJID="55" LABEL="Biodiversität">
+                    <mets:metsHdr CREATEDATE="2022-01-25T20:16:33">
                         <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
-                            <mets:name>vls/2012</mets:name>
                         </mets:agent>
                         <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="INSTANCE">
                             <mets:name>ubffm-server</mets:name>
@@ -28,7 +30,8 @@
                     <mets:dmdSec ID="md10808761">
                         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
                             <mets:xmlData>
-                                <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
                                     <mods:typeOfResource>text</mods:typeOfResource>
                                     <mods:part order="3">
                                         <mods:detail type="volume">
@@ -37,17 +40,20 @@
                                         <mods:date encoding="w3cdtf">1937</mods:date>
                                     </mods:part>
                                     <mods:recordInfo>
-                                        <mods:recordIdentifier source="local">ubffm-server:10808761</mods:recordIdentifier>
+                                        <mods:recordIdentifier source="local">ubffm-server:10808761
+                                        </mods:recordIdentifier>
                                     </mods:recordInfo>
                                     <mods:relatedItem type="host">
                                         <mods:titleInfo>
                                             <mods:title>Decheniana</mods:title>
                                             <mods:subTitle>
-                                                Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens
+                                                Verhandlungen des Naturhistorischen Vereins der Rheinlande und
+                                                Westfalens
                                             </mods:subTitle>
                                             <mods:partName>Geologische Abteilung</mods:partName>
                                         </mods:titleInfo>
-                                        <mods:name type="corporate" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/40094-4">
+                                        <mods:name type="corporate" authority="gnd" authorityURI="http://d-nb.info/gnd/"
+                                                   valueURI="http://d-nb.info/gnd/40094-4">
                                             <mods:namePart>
                                                 Naturhistorischer Verein der Rheinlande und Westfalens
                                             </mods:namePart>
@@ -62,7 +68,8 @@
                                             <mods:place>
                                                 <mods:placeTerm type="text">Bonn</mods:placeTerm>
                                             </mods:place>
-                                            <mods:publisher>Im Selbstverlag des Naturhistorischen Vereins</mods:publisher>
+                                            <mods:publisher>Im Selbstverlag des Naturhistorischen Vereins
+                                            </mods:publisher>
                                             <mods:place>
                                                 <mods:placeTerm type="text">Bonn</mods:placeTerm>
                                             </mods:place>
@@ -90,13 +97,15 @@
                                         <mods:relatedItem type="otherVersion">
                                             <mods:note>Teilweise Fortsetzung von</mods:note>
                                             <mods:recordInfo>
-                                                <mods:recordIdentifier source="ubffmbiodiv">45102219X</mods:recordIdentifier>
+                                                <mods:recordIdentifier source="ubffmbiodiv">45102219X
+                                                </mods:recordIdentifier>
                                             </mods:recordInfo>
                                         </mods:relatedItem>
                                         <mods:relatedItem type="otherVersion">
                                             <mods:note>Fortgesetzt durch</mods:note>
                                             <mods:recordInfo>
-                                                <mods:recordIdentifier source="ubffmbiodiv">451149114</mods:recordIdentifier>
+                                                <mods:recordIdentifier source="ubffmbiodiv">451149114
+                                                </mods:recordIdentifier>
                                             </mods:recordInfo>
                                         </mods:relatedItem>
                                         <mods:extension>
@@ -106,7 +115,8 @@
                                         <mods:recordInfo>
                                             <mods:recordCreationDate encoding="marc">24-07-19</mods:recordCreationDate>
                                             <mods:recordChangeDate encoding="marc">02-02-21</mods:recordChangeDate>
-                                            <mods:recordIdentifier source="ubffmbiodiv">451037030</mods:recordIdentifier>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451037030
+                                            </mods:recordIdentifier>
                                             <mods:descriptionStandard>rda</mods:descriptionStandard>
                                         </mods:recordInfo>
                                         <mods:extension>
@@ -124,12 +134,14 @@
                     <mets:dmdSec ID="md10902187">
                         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
                             <mets:xmlData>
-                                <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
                                     <mods:titleInfo>
                                         <mods:title>Diluvialer Gehängeschutt südlich von Bonn</mods:title>
                                         <mods:subTitle>mit 3 Textfiguren</mods:subTitle>
                                     </mods:titleInfo>
-                                    <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/118745026">
+                                    <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/"
+                                               valueURI="http://d-nb.info/gnd/118745026">
                                         <mods:displayForm>Richter, Max</mods:displayForm>
                                         <mods:namePart type="given">Max</mods:namePart>
                                         <mods:namePart type="family">Richter</mods:namePart>
@@ -156,11 +168,13 @@
                                         <mods:titleInfo>
                                             <mods:title>Decheniana</mods:title>
                                             <mods:subTitle>
-                                                Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens
+                                                Verhandlungen des Naturhistorischen Vereins der Rheinlande und
+                                                Westfalens
                                             </mods:subTitle>
                                             <mods:partName>Geologische Abteilung</mods:partName>
                                         </mods:titleInfo>
-                                        <mods:name type="corporate" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/40094-4">
+                                        <mods:name type="corporate" authority="gnd" authorityURI="http://d-nb.info/gnd/"
+                                                   valueURI="http://d-nb.info/gnd/40094-4">
                                             <mods:namePart>
                                                 Naturhistorischer Verein der Rheinlande und Westfalens
                                             </mods:namePart>
@@ -175,7 +189,8 @@
                                             <mods:place>
                                                 <mods:placeTerm type="text">Bonn</mods:placeTerm>
                                             </mods:place>
-                                            <mods:publisher>Im Selbstverlag des Naturhistorischen Vereins</mods:publisher>
+                                            <mods:publisher>Im Selbstverlag des Naturhistorischen Vereins
+                                            </mods:publisher>
                                             <mods:place>
                                                 <mods:placeTerm type="text">Bonn</mods:placeTerm>
                                             </mods:place>
@@ -203,13 +218,15 @@
                                         <mods:relatedItem type="otherVersion">
                                             <mods:note>Teilweise Fortsetzung von</mods:note>
                                             <mods:recordInfo>
-                                                <mods:recordIdentifier source="ubffmbiodiv">45102219X</mods:recordIdentifier>
+                                                <mods:recordIdentifier source="ubffmbiodiv">45102219X
+                                                </mods:recordIdentifier>
                                             </mods:recordInfo>
                                         </mods:relatedItem>
                                         <mods:relatedItem type="otherVersion">
                                             <mods:note>Fortgesetzt durch</mods:note>
                                             <mods:recordInfo>
-                                                <mods:recordIdentifier source="ubffmbiodiv">451149114</mods:recordIdentifier>
+                                                <mods:recordIdentifier source="ubffmbiodiv">451149114
+                                                </mods:recordIdentifier>
                                             </mods:recordInfo>
                                         </mods:relatedItem>
                                         <mods:extension>
@@ -219,7 +236,8 @@
                                         <mods:recordInfo>
                                             <mods:recordCreationDate encoding="marc">24-07-19</mods:recordCreationDate>
                                             <mods:recordChangeDate encoding="marc">02-02-21</mods:recordChangeDate>
-                                            <mods:recordIdentifier source="ubffmbiodiv">451037030</mods:recordIdentifier>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451037030
+                                            </mods:recordIdentifier>
                                             <mods:descriptionStandard>rda</mods:descriptionStandard>
                                         </mods:recordInfo>
                                         <mods:extension>
@@ -263,7 +281,8 @@
                     <mets:dmdSec ID="md10688403">
                         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
                             <mets:xmlData>
-                                <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
                                     <mods:titleInfo>
                                         <mods:title>Decheniana</mods:title>
                                         <mods:subTitle>
@@ -271,7 +290,8 @@
                                         </mods:subTitle>
                                         <mods:partName>Geologische Abteilung</mods:partName>
                                     </mods:titleInfo>
-                                    <mods:name type="corporate" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/40094-4">
+                                    <mods:name type="corporate" authority="gnd" authorityURI="http://d-nb.info/gnd/"
+                                               valueURI="http://d-nb.info/gnd/40094-4">
                                         <mods:namePart>
                                             Naturhistorischer Verein der Rheinlande und Westfalens
                                         </mods:namePart>
@@ -314,13 +334,15 @@
                                     <mods:relatedItem type="otherVersion">
                                         <mods:note>Teilweise Fortsetzung von</mods:note>
                                         <mods:recordInfo>
-                                            <mods:recordIdentifier source="ubffmbiodiv">45102219X</mods:recordIdentifier>
+                                            <mods:recordIdentifier source="ubffmbiodiv">45102219X
+                                            </mods:recordIdentifier>
                                         </mods:recordInfo>
                                     </mods:relatedItem>
                                     <mods:relatedItem type="otherVersion">
                                         <mods:note>Fortgesetzt durch</mods:note>
                                         <mods:recordInfo>
-                                            <mods:recordIdentifier source="ubffmbiodiv">451149114</mods:recordIdentifier>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451149114
+                                            </mods:recordIdentifier>
                                         </mods:recordInfo>
                                     </mods:relatedItem>
                                     <mods:extension>
@@ -434,107 +456,174 @@
                     </mets:amdSec>
                     <mets:fileSec>
                         <mets:fileGrp USE="TEASER">
-                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:15:18.663800Z" ID="IMG_TEASER_10769619">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10769619" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:15:18.663800Z"
+                                       ID="IMG_TEASER_10769619">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10769619"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T17:08:34.862000Z" ID="IMG_TEASER_10804931">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10804931" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T17:08:34.862000Z"
+                                       ID="IMG_TEASER_10804931">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10804931"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T17:13:30.493700Z" ID="IMG_TEASER_10805251">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10805251" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T17:13:30.493700Z"
+                                       ID="IMG_TEASER_10805251">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10805251"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                         </mets:fileGrp>
                         <mets:fileGrp USE="DOWNLOAD">
-                            <mets:file MIMETYPE="application/pdf" CHECKSUM="579dc2b519068adfa76cb4737a34e4aed6344cbc" CREATED="2021-01-11T21:04:51.655500Z" CHECKSUMTYPE="SHA-1" SIZE="82893541" ID="PDF_10808761">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10808761" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="579dc2b519068adfa76cb4737a34e4aed6344cbc"
+                                       CREATED="2021-01-11T21:04:51.655500Z" CHECKSUMTYPE="SHA-1" SIZE="82893541"
+                                       ID="PDF_10808761">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10808761"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="application/pdf" CHECKSUM="0f785fbf8728e24d4257123445a7079b95b5f9ef" CREATED="2020-06-08T12:25:51.069300Z" CHECKSUMTYPE="SHA-1" SIZE="1252431" ID="PDF_10902187">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10902187" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="0f785fbf8728e24d4257123445a7079b95b5f9ef"
+                                       CREATED="2020-06-08T12:25:51.069300Z" CHECKSUMTYPE="SHA-1" SIZE="1252431"
+                                       ID="PDF_10902187">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10902187"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                         </mets:fileGrp>
                         <mets:fileGrp USE="DEFAULT">
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_10805251">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/10805251" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/10805251"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_10805252">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/10805252" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/10805252"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_10805253">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/10805253" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/10805253"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_10805254">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/10805254" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/10805254"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_10805255">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/10805255" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/10805255"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                         </mets:fileGrp>
                         <mets:fileGrp USE="THUMBS">
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_10805251">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/10805251" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/10805251"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_10805252">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/10805252" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/10805252"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_10805253">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/10805253" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/10805253"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_10805254">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/10805254" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/10805254"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_10805255">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/10805255" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/10805255"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                         </mets:fileGrp>
                         <mets:fileGrp USE="MIN">
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_10805251">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/10805251" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/10805251"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_10805252">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/10805252" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/10805252"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_10805253">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/10805253" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/10805253"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_10805254">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/10805254" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/10805254"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_10805255">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/10805255" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/10805255"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                         </mets:fileGrp>
                         <mets:fileGrp USE="MAX">
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_10805251">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/10805251" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/10805251"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_10805252">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/10805252" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/10805252"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_10805253">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/10805253" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/10805253"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_10805254">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/10805254" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/10805254"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_10805255">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/10805255" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/10805255"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                         </mets:fileGrp>
                         <mets:fileGrp USE="FULLTEXT">
                             <mets:file MIMETYPE="text/xml" CREATED="2019-12-13T02:14:27.217800Z" ID="ALTO10805251">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/fulltext/alto3/10805251" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/fulltext/alto3/10805251"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="text/xml" CREATED="2019-12-13T02:14:32.689400Z" ID="ALTO10805252">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/fulltext/alto3/10805252" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/fulltext/alto3/10805252"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="text/xml" CREATED="2019-12-13T02:14:38.515700Z" ID="ALTO10805253">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/fulltext/alto3/10805253" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/fulltext/alto3/10805253"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="text/xml" CREATED="2019-12-13T02:14:45.612100Z" ID="ALTO10805254">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/fulltext/alto3/10805254" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/fulltext/alto3/10805254"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                             <mets:file MIMETYPE="text/xml" CREATED="2019-12-13T02:14:49.228900Z" ID="ALTO10805255">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/fulltext/alto3/10805255" LOCTYPE="URL"/>
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/fulltext/alto3/10805255"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                         </mets:fileGrp>
                     </mets:fileSec>
@@ -578,14 +667,20 @@
                         </mets:div>
                     </mets:structMap>
                     <mets:structMap TYPE="LOGICAL">
-                        <mets:div ID="log10688403" DMDID="md10688403" ADMID="amd10688403" TYPE="periodical" LABEL="Decheniana" ORDER="1">
-                            <mets:mptr LOCTYPE="URL" xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10688403"/>
+                        <mets:div ID="log10688403" DMDID="md10688403" ADMID="amd10688403" TYPE="periodical"
+                                  LABEL="Decheniana" ORDER="1">
+                            <mets:mptr LOCTYPE="URL"
+                                       xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10688403"/>
                             <mets:fptr FILEID="IMG_TEASER_10769619"/>
-                            <mets:div ID="log10808761" DMDID="md10808761" ADMID="amd10808761" TYPE="volume" LABEL="96 A (1937)" ORDER="1">
-                                <mets:mptr LOCTYPE="URL" xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10808761"/>
+                            <mets:div ID="log10808761" DMDID="md10808761" ADMID="amd10808761" TYPE="volume"
+                                      LABEL="96 A (1937)" ORDER="1">
+                                <mets:mptr LOCTYPE="URL"
+                                           xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10808761"/>
                                 <mets:fptr FILEID="PDF_10808761"/>
                                 <mets:fptr FILEID="IMG_TEASER_10804931"/>
-                                <mets:div ID="log10902187" DMDID="md10902187" ADMID="amd10902187" TYPE="article" LABEL="Diluvialer Gehängeschutt südlich von Bonn" ORDER="1" CONTENTIDS="urn:nbn:de:hebis:30:4-197927">
+                                <mets:div ID="log10902187" DMDID="md10902187" ADMID="amd10902187" TYPE="article"
+                                          LABEL="Diluvialer Gehängeschutt südlich von Bonn" ORDER="1"
+                                          CONTENTIDS="urn:nbn:de:hebis:30:4-197927">
                                     <mets:fptr FILEID="PDF_10902187"/>
                                     <mets:fptr FILEID="IMG_TEASER_10805251"/>
                                 </mets:div>

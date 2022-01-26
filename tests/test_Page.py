@@ -1,10 +1,11 @@
 import os
+from datetime import datetime
+from typing import Optional
 
 from bs4 import BeautifulSoup as Soup
-from datetime import datetime
 
-from .data.VisualLibrary import full_text_data
 from VisualLibrary import Page, File
+from .data.VisualLibrary import full_text_data
 
 IMAGE_MIME_TYPE = 'image/jpeg'
 
@@ -30,23 +31,23 @@ class TestPage:
         assert page.order == '57'
         assert page.id == '9660761'
 
-        creation_date = datetime.fromisoformat('2018-05-08')
+        creation_date = None
         mime_type_image_string = IMAGE_MIME_TYPE
 
         page_thumbnail_file = page.thumbnail
-        file_test(page_thumbnail_file, expected_url='http://sammlungen.ub.uni-frankfurt.de/download/webcache/128/9660761',
+        file_test(page_thumbnail_file, expected_url='https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         page_default_res_file = page.image_default_resolution
-        file_test(page_default_res_file, expected_url='http://sammlungen.ub.uni-frankfurt.de/download/webcache/1000/9660761',
+        file_test(page_default_res_file, expected_url='https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         page_maximum_res_file = page.image_max_resolution
-        file_test(page_maximum_res_file, expected_url='http://sammlungen.ub.uni-frankfurt.de/download/webcache/1504/9660761',
+        file_test(page_maximum_res_file, expected_url='https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         page_minimum_res_file = page.image_min_resolution
-        file_test(page_minimum_res_file, expected_url='http://sammlungen.ub.uni-frankfurt.de/download/webcache/600/9660761',
+        file_test(page_minimum_res_file, expected_url='https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/9660761',
                   expected_date=creation_date, expected_mime_type=mime_type_image_string)
 
         full_text = full_text_data.phys9660761_full_text
@@ -54,7 +55,8 @@ class TestPage:
         assert full_text == page_text
 
 
-def file_test(file: File, expected_url: str, expected_date: datetime, expected_mime_type: str):
+def file_test(file: File, expected_url: str, expected_date: Optional[datetime], expected_mime_type: str):
     assert file.url == expected_url
-    assert file.date_uploaded.date() == expected_date.date()
+    if file.date_uploaded is not None:
+        assert file.date_uploaded.date() == expected_date.date()
     assert file.mime_type == expected_mime_type

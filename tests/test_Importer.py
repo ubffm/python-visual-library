@@ -12,6 +12,9 @@ TEST_DATA_DIRECTORY = '{base_dir}/data/Importer'.format(base_dir=CURRENT_DIRECTO
 
 class TestImporter:
     def test_mets_importer(self):
+        """ Metadata from:
+            https://sammlungen.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10771471
+        """
         mets_importer = MetsImporter(debug=True)
 
         xml_data = get_oai_response_xml_string()
@@ -29,17 +32,11 @@ class TestImporter:
 
         articles = issue.sections
         pdf_creation_date = datetime.fromisoformat('2020-06-08')
-        articles_with_files = ['log10773142', 'log10773155', 'log10773161', 'log10773164', 'log10773171', 'log10773178']
-        articles_with_resources = ['log10773124', 'log10773126', 'log10773142', 'log10773176']
-        articles_with_metadata = ['log10773134']
-        articles_with_metadata.extend(articles_with_files)
-        articles_with_resources.extend(articles_with_files)
+        articles_with_files = ['log10773126', 'log10773134', 'log10773142', 'log10773155', 'log10773161',
+                               'log10773164', 'log10773171', 'log10773178']
 
         for article in articles:
-            if article.id in articles_with_resources:
-                assert len(article.resource_pointers) >= 1
-            else:
-                assert len(article.resource_pointers) == 0
+            assert len(article.resource_pointers) >= 1
 
             if article.id in articles_with_files:
                 for f in article.files:
@@ -50,13 +47,9 @@ class TestImporter:
                     assert f.languages == {'ger'}
                     assert f.data == DEBUG_FILE_DATA_CONTENT_BYTE_STRING
                     assert re.match(r'pdf_[0-9]*', f.name)
+                    assert article.metadata is not None
             else:
                 assert len(article.files) == 0
-
-            if article.id in articles_with_metadata:
-                assert article.metadata is not None
-            else:
-                assert article.metadata is None
 
 
 def get_oai_response_xml_string():

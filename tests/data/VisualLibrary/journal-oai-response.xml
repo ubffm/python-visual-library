@@ -1,6 +1,7 @@
 <OAI-PMH xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
-    <responseDate>2021-09-07T11:35:07Z</responseDate>
-    <request verb="GetRecord" metadataPrefix="mets" identifier="10688403">https://sammlungen.ub.uni-frankfurt.de/oai/</request>
+    <responseDate>2022-01-26T11:29:49Z</responseDate>
+    <request verb="GetRecord" metadataPrefix="mets" identifier="10688403">https://sammlungen.ub.uni-frankfurt.de/oai/
+    </request>
     <GetRecord>
         <record>
             <header>
@@ -10,8 +11,10 @@
                 <setSpec>periodical</setSpec>
             </header>
             <metadata>
-                <mets:mets xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd" OBJID="55" LABEL="Biodiversität">
-                    <mets:metsHdr CREATEDATE="2021-09-07T13:35:07">
+                <mets:mets
+                        xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd"
+                        OBJID="55" LABEL="Biodiversität">
+                    <mets:metsHdr CREATEDATE="2022-01-26T12:29:49">
                         <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
                             <mets:name>vls/2012</mets:name>
                         </mets:agent>
@@ -28,7 +31,8 @@
                     <mets:dmdSec ID="md10812612">
                         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
                             <mets:xmlData>
-                                <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
                                     <mods:typeOfResource>text</mods:typeOfResource>
                                     <mods:part>
                                         <mods:detail>
@@ -38,7 +42,8 @@
                                         <mods:date encoding="w3cdtf">1938</mods:date>
                                     </mods:part>
                                     <mods:recordInfo>
-                                        <mods:recordIdentifier source="local">ubffm-server:10812612</mods:recordIdentifier>
+                                        <mods:recordIdentifier source="local">ubffm-server:10812612
+                                        </mods:recordIdentifier>
                                     </mods:recordInfo>
                                 </mods:mods>
                             </mets:xmlData>
@@ -47,7 +52,8 @@
                     <mets:dmdSec ID="md10812648">
                         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
                             <mets:xmlData>
-                                <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
                                     <mods:typeOfResource>text</mods:typeOfResource>
                                     <mods:part>
                                         <mods:detail>
@@ -56,7 +62,8 @@
                                         <mods:date encoding="w3cdtf">1938</mods:date>
                                     </mods:part>
                                     <mods:recordInfo>
-                                        <mods:recordIdentifier source="local">ubffm-server:10812648</mods:recordIdentifier>
+                                        <mods:recordIdentifier source="local">ubffm-server:10812648
+                                        </mods:recordIdentifier>
                                     </mods:recordInfo>
                                 </mods:mods>
                             </mets:xmlData>
@@ -65,7 +72,8 @@
                     <mets:dmdSec ID="md10801836">
                         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
                             <mets:xmlData>
-                                <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
                                     <mods:typeOfResource>text</mods:typeOfResource>
                                     <mods:part>
                                         <mods:detail>
@@ -74,7 +82,8 @@
                                         <mods:date encoding="w3cdtf">1941</mods:date>
                                     </mods:part>
                                     <mods:recordInfo>
-                                        <mods:recordIdentifier source="local">ubffm-server:10801836</mods:recordIdentifier>
+                                        <mods:recordIdentifier source="local">ubffm-server:10801836
+                                        </mods:recordIdentifier>
                                     </mods:recordInfo>
                                 </mods:mods>
                             </mets:xmlData>
@@ -83,7 +92,8 @@
                     <mets:dmdSec ID="md10771470">
                         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
                             <mets:xmlData>
-                                <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
                                     <mods:typeOfResource>text</mods:typeOfResource>
                                     <mods:part>
                                         <mods:date encoding="w3cdtf">1939</mods:date>
@@ -92,7 +102,8 @@
                                         </mods:detail>
                                     </mods:part>
                                     <mods:recordInfo>
-                                        <mods:recordIdentifier source="local">ubffm-server:10771470</mods:recordIdentifier>
+                                        <mods:recordIdentifier source="local">ubffm-server:10771470
+                                        </mods:recordIdentifier>
                                     </mods:recordInfo>
                                 </mods:mods>
                             </mets:xmlData>
@@ -101,7 +112,8 @@
                     <mets:dmdSec ID="md10771471">
                         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
                             <mets:xmlData>
-                                <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
                                     <mods:typeOfResource>text</mods:typeOfResource>
                                     <mods:part>
                                         <mods:detail>
@@ -110,7 +122,8 @@
                                         <mods:date encoding="w3cdtf">1937</mods:date>
                                     </mods:part>
                                     <mods:recordInfo>
-                                        <mods:recordIdentifier source="local">ubffm-server:10771471</mods:recordIdentifier>
+                                        <mods:recordIdentifier source="local">ubffm-server:10771471
+                                        </mods:recordIdentifier>
                                     </mods:recordInfo>
                                 </mods:mods>
                             </mets:xmlData>
@@ -119,13 +132,15 @@
                     <mets:dmdSec ID="md10688403">
                         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
                             <mets:xmlData>
-                                <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
                                     <mods:titleInfo>
                                         <mods:title>Decheniana</mods:title>
                                         <mods:subTitle>Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens</mods:subTitle>
                                         <mods:partName>Geologische Abteilung</mods:partName>
                                     </mods:titleInfo>
-                                    <mods:name type="corporate" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/40094-4">
+                                    <mods:name type="corporate" authority="gnd" authorityURI="http://d-nb.info/gnd/"
+                                               valueURI="http://d-nb.info/gnd/40094-4">
                                         <mods:namePart>Naturhistorischer Verein der Rheinlande und Westfalens</mods:namePart>
                                         <mods:role>
                                             <mods:roleTerm type="code" authority="marcrelator">isb</mods:roleTerm>
@@ -166,13 +181,15 @@
                                     <mods:relatedItem type="otherVersion">
                                         <mods:note>Teilweise Fortsetzung von</mods:note>
                                         <mods:recordInfo>
-                                            <mods:recordIdentifier source="ubffmbiodiv">45102219X</mods:recordIdentifier>
+                                            <mods:recordIdentifier source="ubffmbiodiv">45102219X
+                                            </mods:recordIdentifier>
                                         </mods:recordInfo>
                                     </mods:relatedItem>
                                     <mods:relatedItem type="otherVersion">
                                         <mods:note>Fortgesetzt durch</mods:note>
                                         <mods:recordInfo>
-                                            <mods:recordIdentifier source="ubffmbiodiv">451149114</mods:recordIdentifier>
+                                            <mods:recordIdentifier source="ubffmbiodiv">451149114
+                                            </mods:recordIdentifier>
                                         </mods:recordInfo>
                                     </mods:relatedItem>
                                     <mods:extension>
@@ -192,7 +209,8 @@
                     <mets:dmdSec ID="md10808761">
                         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
                             <mets:xmlData>
-                                <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
                                     <mods:typeOfResource>text</mods:typeOfResource>
                                     <mods:part>
                                         <mods:detail>
@@ -201,7 +219,8 @@
                                         <mods:date encoding="w3cdtf">1937</mods:date>
                                     </mods:part>
                                     <mods:recordInfo>
-                                        <mods:recordIdentifier source="local">ubffm-server:10808761</mods:recordIdentifier>
+                                        <mods:recordIdentifier source="local">ubffm-server:10808761
+                                        </mods:recordIdentifier>
                                     </mods:recordInfo>
                                 </mods:mods>
                             </mets:xmlData>
@@ -442,72 +461,123 @@
                     </mets:amdSec>
                     <mets:fileSec>
                         <mets:fileGrp USE="TEASER">
-                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:15:18.663800Z" ID="IMG_TEASER_10769619">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10769619" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:15:18.663800Z"
+                                       ID="IMG_TEASER_10769619">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10769619"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T17:08:34.862000Z" ID="IMG_TEASER_10804931">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10804931" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T17:08:34.862000Z"
+                                       ID="IMG_TEASER_10804931">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10804931"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T18:08:03.954900Z" ID="IMG_TEASER_10808067">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10808067" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T18:08:03.954900Z"
+                                       ID="IMG_TEASER_10808067">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10808067"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T18:11:28.834700Z" ID="IMG_TEASER_10808344">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10808344" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T18:11:28.834700Z"
+                                       ID="IMG_TEASER_10808344">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10808344"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:19:05.711700Z" ID="IMG_TEASER_10769922">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10769922" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-11-26T13:19:05.711700Z"
+                                       ID="IMG_TEASER_10769922">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10769922"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T15:59:16.457500Z" ID="IMG_TEASER_10801345">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10801345" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2019-12-12T15:59:16.457500Z"
+                                       ID="IMG_TEASER_10801345">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/10801345"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                         </mets:fileGrp>
                         <mets:fileGrp USE="DOWNLOAD">
-                            <mets:file MIMETYPE="application/pdf" CHECKSUM="214a6352294e25246d5934d04f5abfe9785e39f9" CREATED="2021-01-11T21:04:05.518300Z" CHECKSUMTYPE="SHA-1" SIZE="63092431" ID="PDF_10771471">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10771471" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="214a6352294e25246d5934d04f5abfe9785e39f9"
+                                       CREATED="2021-01-11T21:04:05.518300Z" CHECKSUMTYPE="SHA-1" SIZE="63092431"
+                                       ID="PDF_10771471">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10771471"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="application/pdf" CHECKSUM="579dc2b519068adfa76cb4737a34e4aed6344cbc" CREATED="2021-01-11T21:04:51.655500Z" CHECKSUMTYPE="SHA-1" SIZE="82893541" ID="PDF_10808761">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10808761" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="579dc2b519068adfa76cb4737a34e4aed6344cbc"
+                                       CREATED="2021-01-11T21:04:51.655500Z" CHECKSUMTYPE="SHA-1" SIZE="82893541"
+                                       ID="PDF_10808761">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10808761"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="application/pdf" CHECKSUM="da77c6097d20a45274ec07fd2c067a139db90445" CREATED="2021-01-11T21:02:36.778500Z" CHECKSUMTYPE="SHA-1" SIZE="43563832" ID="PDF_10812648">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10812648" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="da77c6097d20a45274ec07fd2c067a139db90445"
+                                       CREATED="2021-01-11T21:02:36.778500Z" CHECKSUMTYPE="SHA-1" SIZE="43563832"
+                                       ID="PDF_10812648">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10812648"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="application/pdf" CHECKSUM="3b28fafd23a4e3ec20407ce51f1f161f3f73f72a" CREATED="2021-01-11T21:03:32.106500Z" CHECKSUMTYPE="SHA-1" SIZE="35641357" ID="PDF_10771470">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10771470" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="3b28fafd23a4e3ec20407ce51f1f161f3f73f72a"
+                                       CREATED="2021-01-11T21:03:32.106500Z" CHECKSUMTYPE="SHA-1" SIZE="35641357"
+                                       ID="PDF_10771470">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10771470"
+                                        LOCTYPE="URL"/>
                             </mets:file>
-                            <mets:file MIMETYPE="application/pdf" CHECKSUM="d3e5e19de82e24fd7a4ad1314922e4d49626b8bd" CREATED="2021-01-11T21:03:14.438700Z" CHECKSUMTYPE="SHA-1" SIZE="42710996" ID="PDF_10801836">
-                                <mets:FLocat xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10801836" LOCTYPE="URL"/>
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="d3e5e19de82e24fd7a4ad1314922e4d49626b8bd"
+                                       CREATED="2021-01-11T21:03:14.438700Z" CHECKSUMTYPE="SHA-1" SIZE="42710996"
+                                       ID="PDF_10801836">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10801836"
+                                        LOCTYPE="URL"/>
                             </mets:file>
                         </mets:fileGrp>
                     </mets:fileSec>
                     <mets:structMap TYPE="LOGICAL">
-                        <mets:div ID="log10688403" DMDID="md10688403" ADMID="amd10688403" LABEL="Decheniana" TYPE="periodical" ORDER="208660" CONTENTIDS="urn:nbn:de:hebis:30:4-211075">
+                        <mets:div ID="log10688403" DMDID="md10688403" ADMID="amd10688403" LABEL="Decheniana"
+                                  TYPE="periodical" ORDER="208694" CONTENTIDS="urn:nbn:de:hebis:30:4-211075">
                             <mets:fptr FILEID="IMG_TEASER_10769619"/>
-                            <mets:div ID="log10771471" DMDID="md10771471" ADMID="amd10771471" LABEL="95 A (1937)" TYPE="volume" ORDER="2">
-                                <mets:mptr LOCTYPE="URL" xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10771471"/>
+                            <mets:div ID="log10771471" DMDID="md10771471" ADMID="amd10771471" LABEL="95 A (1937)"
+                                      TYPE="volume" ORDER="2">
+                                <mets:mptr LOCTYPE="URL"
+                                           xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10771471"/>
                                 <mets:fptr FILEID="PDF_10771471"/>
                                 <mets:fptr FILEID="IMG_TEASER_10769619"/>
                             </mets:div>
-                            <mets:div ID="log10808761" DMDID="md10808761" ADMID="amd10808761" LABEL="96 A (1937)" TYPE="volume" ORDER="3">
-                                <mets:mptr LOCTYPE="URL" xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10808761"/>
+                            <mets:div ID="log10808761" DMDID="md10808761" ADMID="amd10808761" LABEL="96 A (1937)"
+                                      TYPE="volume" ORDER="3">
+                                <mets:mptr LOCTYPE="URL"
+                                           xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10808761"/>
                                 <mets:fptr FILEID="PDF_10808761"/>
                                 <mets:fptr FILEID="IMG_TEASER_10804931"/>
                             </mets:div>
-                            <mets:div ID="log10812648" DMDID="md10812648" ADMID="amd10812648" LABEL="97 A (1938)" TYPE="volume" ORDER="4">
-                                <mets:mptr LOCTYPE="URL" xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10812648"/>
+                            <mets:div ID="log10812648" DMDID="md10812648" ADMID="amd10812648" LABEL="97 A (1938)"
+                                      TYPE="volume" ORDER="4">
+                                <mets:mptr LOCTYPE="URL"
+                                           xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10812648"/>
                                 <mets:fptr FILEID="PDF_10812648"/>
                                 <mets:fptr FILEID="IMG_TEASER_10808067"/>
                             </mets:div>
-                            <mets:div ID="log10812612" DMDID="md10812612" ADMID="amd10812612" LABEL="98 A = 1938-39" TYPE="volume" ORDER="6">
-                                <mets:mptr LOCTYPE="URL" xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10812612"/>
+                            <mets:div ID="log10812612" DMDID="md10812612" ADMID="amd10812612" LABEL="98 A = 1938-39"
+                                      TYPE="volume" ORDER="6">
+                                <mets:mptr LOCTYPE="URL"
+                                           xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10812612"/>
                                 <mets:fptr FILEID="IMG_TEASER_10808344"/>
                             </mets:div>
-                            <mets:div ID="log10771470" DMDID="md10771470" ADMID="amd10771470" LABEL="99 A (1939)" TYPE="volume" ORDER="8">
-                                <mets:mptr LOCTYPE="URL" xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10771470"/>
+                            <mets:div ID="log10771470" DMDID="md10771470" ADMID="amd10771470" LABEL="99 A (1939)"
+                                      TYPE="volume" ORDER="8">
+                                <mets:mptr LOCTYPE="URL"
+                                           xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10771470"/>
                                 <mets:fptr FILEID="PDF_10771470"/>
                                 <mets:fptr FILEID="IMG_TEASER_10769922"/>
                             </mets:div>
-                            <mets:div ID="log10801836" DMDID="md10801836" ADMID="amd10801836" LABEL="100 A (1941)" TYPE="volume" ORDER="9">
-                                <mets:mptr LOCTYPE="URL" xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10801836"/>
+                            <mets:div ID="log10801836" DMDID="md10801836" ADMID="amd10801836" LABEL="100 A (1941)"
+                                      TYPE="volume" ORDER="9">
+                                <mets:mptr LOCTYPE="URL"
+                                           xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10801836"/>
                                 <mets:fptr FILEID="PDF_10801836"/>
                                 <mets:fptr FILEID="IMG_TEASER_10801345"/>
                             </mets:div>

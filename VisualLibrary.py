@@ -1,9 +1,10 @@
-from collections import namedtuple
-
 import logging
 import re
-import sys
 from abc import ABC, abstractmethod
+from collections import namedtuple
+from typing import Tuple, Optional
+
+import sys
 from bs4 import BeautifulSoup as Soup
 from bs4 import Tag
 
@@ -108,6 +109,7 @@ class VisualLibraryExportElement(ABC):
         self.xml_importer = xml_importer
         self.xml_data = xml_importer.xml_data
         self.id = vl_id
+        self.url = self._generate_element_url()
 
         self._number = None
         self._own_section = self._get_own_sections()
@@ -130,6 +132,7 @@ class VisualLibraryExportElement(ABC):
         self.prefix = None
         self.volume_number = None
         self.issue_number = None
+        self.pdf_url = self._extract_pdf_url_from_metadata()
 
         self._extract_top_parent_data_from_metadata()
         self._extract_parent_metadata()
@@ -499,6 +502,16 @@ class VisualLibraryExportElement(ABC):
         except AttributeError:
             return None
 
+    def _extract_pdf_url_from_metadata(self) -> Optional[str]:
+        for file_type in self.files:
+            if file_type.mime_type == 'application/pdf':
+                return file_type.url
+
+        return None
+
+    def _generate_element_url(self):
+        return f'{VisualLibrary.VISUAL_LIBRARY_BASE_URL}/{self.id}'
+
 
 class ArticleHandlingExportElement(VisualLibraryExportElement, ABC):
     """ All classes handling article lists should inherit from this class. """
@@ -667,7 +680,6 @@ class Page:
         self._page_element = page_element
         self.label = page_element.get(self.LABEL_STRING)
         self.order = page_element.get(self.ORDER_STRING)
-        self.thumbnail = None
         self.id = self._extract_page_id_from_metadata(page_element)
         self.vl_id = self._extract_vl_page_id_from_metadata(page_element)
 
@@ -838,7 +850,7 @@ class Article(VisualLibraryExportElement):
 
         return authors
 
-    def _extract_page_range_from_metadata(self) -> (namedtuple, None):
+    def _extract_page_range_from_metadata(self) -> Tuple[namedtuple, None]:
         PageRange = namedtuple('PageRange', ['start', 'end'])
         page_range_element = self.xml_data.find(self.MODS_TAG_EXTEND_STRING, attrs={self.UNIT_STRING: self.PAGE_STRING})
         if page_range_element is not None:

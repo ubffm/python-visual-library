@@ -13,7 +13,7 @@ from VisualLibrary import (
 IMAGE_MIME_TYPE = 'image/jpeg'
 
 this_files_directory = os.path.dirname(os.path.realpath(__file__))
-TEST_DATA_FOLDER = '{base_dir}/data/VisualLibrary'.format(base_dir=this_files_directory)
+TEST_DATA_FOLDER = f'{this_files_directory}/data/VisualLibrary'
 
 
 class TestVisualLibrary:
@@ -31,7 +31,7 @@ class TestVisualLibrary:
         """ Metadata from:
             https://sammlungen.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10688403
         """
-        xml_test_file_path = '{test_data_folder}/journal-oai-response.xml'.format(test_data_folder=TEST_DATA_FOLDER)
+        xml_test_file_path = f'{TEST_DATA_FOLDER}/journal-oai-response.xml'
 
         vl_object = visual_library.get_element_from_xml_file(xml_test_file_path)
         journal_label = 'Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
@@ -46,7 +46,8 @@ class TestVisualLibrary:
         assert not vl_object.files
         assert vl_object.number is None
         assert vl_object.journal_label == journal_label
-
+        assert vl_object.url == 'https://sammlungen.ub.uni-frankfurt.de/10688403'
+        assert vl_object.pdf_url is None
         assert vl_object.parent is None
 
         publisher = vl_object.publishers[0]
@@ -64,7 +65,7 @@ class TestVisualLibrary:
         """ Metadata from:
             https://sammlungen.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10771471
         """
-        xml_test_file_path = '{test_data_folder}/volume-oai-response.xml'.format(test_data_folder=TEST_DATA_FOLDER)
+        xml_test_file_path = f'{TEST_DATA_FOLDER}/volume-oai-response.xml'
 
         vl_object = visual_library.get_element_from_xml_file(xml_test_file_path)
         journal_label = 'Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
@@ -74,6 +75,8 @@ class TestVisualLibrary:
         assert vl_object.publication_date == '1937'
         assert vl_object.number == '95 A'
         assert vl_object.journal_label == journal_label
+        assert vl_object.url == 'https://sammlungen.ub.uni-frankfurt.de/10771471'
+        assert vl_object.pdf_url == 'https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10771471'
 
         counter = 0
         for article in vl_object.articles:
@@ -85,7 +88,7 @@ class TestVisualLibrary:
         assert counter == 7
 
     def test_call_for_article(self, visual_library):
-        xml_test_file_path = '{test_data_folder}/article-oai-response.xml'.format(test_data_folder=TEST_DATA_FOLDER)
+        xml_test_file_path = f'{TEST_DATA_FOLDER}/article-oai-response.xml'
 
         vl_object = visual_library.get_element_from_xml_file(xml_test_file_path)
         journal_label = 'Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens'
@@ -96,6 +99,8 @@ class TestVisualLibrary:
         assert len(vl_object.authors) == 1
         assert vl_object.number is None
         assert vl_object.journal_label == journal_label
+        assert vl_object.url == 'https://sammlungen.ub.uni-frankfurt.de/10902187'
+        assert vl_object.pdf_url == 'https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/10902187'
 
         assert isinstance(vl_object.parent, Volume)
 
