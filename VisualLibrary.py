@@ -99,6 +99,7 @@ class VisualLibraryExportElement(ABC):
     MODS_TAG_PART_STRING = 'mods:part'
     MODS_TAG_PUBLICATION_DATE_ISSUED_STRING = 'mods:dateissued'
     MODS_TAG_PUBLICATION_DATE_STRING = 'mods:date'
+    MODS_TAG_RELATED_ITEM = 'mods:relateditem'
     MODS_TAG_ROLE_STRING = 'mods:roleterm'
     MODS_TAG_SUBJECT_STRING = 'mods:subject'
     MODS_TAG_SUBTITLE_STRING = 'mods:subtitle'
@@ -427,10 +428,13 @@ class VisualLibraryExportElement(ABC):
                 return False
 
         persons_in_metadata = self.metadata.find_all(self.MODS_TAG_NAME_STRING)
+        persons_in_metadata = [person
+                               for person in persons_in_metadata
+                               if person.parent.name != self.MODS_TAG_RELATED_ITEM]
+
         persons_in_given_role = [person_element
                                  for person_element in persons_in_metadata
-                                 if is_searched_role(person_element, role_type)
-                                 ]
+                                 if is_searched_role(person_element, role_type)]
 
         return persons_in_given_role
 

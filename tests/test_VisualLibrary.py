@@ -258,6 +258,14 @@ class TestVisualLibrary:
         assert instance.title == 'Nr. 1 (Januar 1930)'
         assert instance.journal_label == 'Journal für Ornithologie: Zeitschrift der Deutschen Ornithologen-Gesellschaft'
 
+    def test_ignores_publisher_as_author(self, visual_library):
+        item_id = '9273349'
+        instance = visual_library.get_element_for_id(item_id)
+
+        assert len(instance.authors) == 1
+        author = instance.authors[0]
+        assert author.given_name == 'Werner' and author.family_name == 'Hassenkamp'
+
 
 def test_remove_letters_from_alphanumeric_string():
     assert remove_letters_from_alphanumeric_string('1071953)') == '1071953'
