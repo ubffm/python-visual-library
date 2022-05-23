@@ -1,0 +1,567 @@
+<OAI-PMH xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>2022-05-23T07:27:00Z</responseDate>
+    <request verb="GetRecord" metadataPrefix="mets" identifier="9738495">https://sammlungen.ub.uni-frankfurt.de/oai/
+    </request>
+    <GetRecord>
+        <record>
+            <header>
+                <identifier>oai:sammlungen.ub.uni-frankfurt.de:9738495</identifier>
+                <datestamp>2020-12-22T08:53:25Z</datestamp>
+                <setSpec>ubffmbiodiv</setSpec>
+                <setSpec>article</setSpec>
+            </header>
+            <metadata>
+                <mets:mets
+                        xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd"
+                        OBJID="55" LABEL="Biodiversität">
+                    <mets:metsHdr CREATEDATE="2022-05-23T09:27:01">
+                        <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+                            <mets:name>vls/2012</mets:name>
+                        </mets:agent>
+                        <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="INSTANCE">
+                            <mets:name>ubffm-server</mets:name>
+                        </mets:agent>
+                        <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="REPOSITORY">
+                            <mets:name>sammlungen.ub.uni-frankfurt.de/biodiv</mets:name>
+                        </mets:agent>
+                        <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="BUILDER">
+                            <mets:name>vd</mets:name>
+                        </mets:agent>
+                    </mets:metsHdr>
+                    <mets:dmdSec ID="md9671217">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                    <mods:titleInfo>
+                                        <mods:title>Ornithologische Mitteilungen</mods:title>
+                                        <mods:subTitle>
+                                            Monatsschrift für Vogelbeobachtung, Feldornithologie und Avifaunistik
+                                        </mods:subTitle>
+                                    </mods:titleInfo>
+                                    <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/"
+                                               valueURI="http://d-nb.info/gnd/106301462">
+                                        <mods:namePart>Thiede, Walther</mods:namePart>
+                                        <mods:namePart type="given">Walther</mods:namePart>
+                                        <mods:namePart type="family">Thiede</mods:namePart>
+                                        <mods:role>
+                                            <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
+                                            <mods:roleTerm type="text">Herausgeber</mods:roleTerm>
+                                        </mods:role>
+                                    </mods:name>
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:genre authority="hebis">Zeitschrift</mods:genre>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">[Schlangenbad]</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>[Biologie-Verl.]</mods:publisher>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>Dr.-Walther-Thiede-Stiftung</mods:publisher>
+                                        <mods:dateIssued>
+                                            3. Jahrgang, Nr. 1 (Januar 1951) [?]-Jahrgang 52, Nr. 12 (2000) [?]
+                                        </mods:dateIssued>
+                                        <mods:dateIssued>Saale : Dr.-Walther-Thiede-Stiftung, 1948-</mods:dateIssued>
+                                    </mods:originInfo>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Frankfurt am Main</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>
+                                            Universitätsbibliothek Johann Christian Senckenberg
+                                        </mods:publisher>
+                                        <mods:dateIssued encoding="w3cdtf" point="start">2020</mods:dateIssued>
+                                        <mods:dateIssued encoding="w3cdtf" point="end">2020</mods:dateIssued>
+                                        <mods:edition>[Electronic ed.]</mods:edition>
+                                    </mods:originInfo>
+                                    <mods:language>
+                                        <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+                                    </mods:language>
+                                    <mods:note type="statement of responsibility">herausgegeben von Dr. Walther Thiede
+                                    </mods:note>
+                                    <mods:note type="date/sequential designation">
+                                        3. Jahrgang, Nr. 1 (Januar 1951) [?]-Jahrgang 52, Nr. 12 (2000) [?]
+                                    </mods:note>
+                                    <mods:note>Titelzusatz variiert</mods:note>
+                                    <mods:note>Mehr nicht digitalisiert</mods:note>
+                                    <mods:note>Reproduktion</mods:note>
+                                    <mods:identifier type="urn">urn:nbn:de:hebis:30:4-234644</mods:identifier>
+                                    <mods:accessCondition type="use and reproduction"
+                                                          xlink:href="http://rightsstatements.org/vocab/InC/1.0/"
+                                                          displayLabel="Nutzungsrechte eingeschränkt">reserved
+                                    </mods:accessCondition>
+                                    <mods:extension>
+                                        <vlz:externalType recordSyntax="pica" code="Ob"/>
+                                        <vlz:info version="1"/>
+                                    </mods:extension>
+                                    <mods:recordInfo>
+                                        <mods:recordCreationDate encoding="marc">15-03-18</mods:recordCreationDate>
+                                        <mods:recordChangeDate encoding="marc">02-02-21</mods:recordChangeDate>
+                                        <mods:recordIdentifier source="ubffmbiodiv">427517435</mods:recordIdentifier>
+                                        <mods:descriptionStandard>rda</mods:descriptionStandard>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:dmdSec ID="md9702743">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:accessCondition type="use and reproduction"
+                                                          xlink:href="http://rightsstatements.org/vocab/InC/1.0/"
+                                                          displayLabel="Nutzungsrechte eingeschränkt">reserved
+                                    </mods:accessCondition>
+                                    <mods:part>
+                                        <mods:detail>
+                                            <mods:number>27</mods:number>
+                                        </mods:detail>
+                                        <mods:date encoding="w3cdtf">1975</mods:date>
+                                    </mods:part>
+                                    <mods:recordInfo>
+                                        <mods:recordIdentifier source="local">ubffm-server:9702743
+                                        </mods:recordIdentifier>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:dmdSec ID="md9738413">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:genre authority="marcgt">issue</mods:genre>
+                                    <mods:accessCondition type="use and reproduction"
+                                                          xlink:href="http://rightsstatements.org/vocab/InC/1.0/"
+                                                          displayLabel="Nutzungsrechte eingeschränkt">reserved
+                                    </mods:accessCondition>
+                                    <mods:part>
+                                        <mods:detail>
+                                            <mods:number>12</mods:number>
+                                        </mods:detail>
+                                        <mods:date encoding="w3cdtf">1975-12</mods:date>
+                                    </mods:part>
+                                    <mods:recordInfo>
+                                        <mods:recordIdentifier source="local">ubffm-server:9738413
+                                        </mods:recordIdentifier>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:dmdSec ID="md9738495">
+                        <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+                            <mets:xmlData>
+                                <mods:mods version="3.7"
+                                           xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                                    <mods:titleInfo>
+                                        <mods:title>
+                                            Zur Nahrungssuche des Grünspechtes (Picus virdis) an Hauswänden
+                                        </mods:title>
+                                    </mods:titleInfo>
+                                    <mods:name type="personal">
+                                        <mods:namePart>Baier, Ernst</mods:namePart>
+                                        <mods:namePart type="given">Ernst</mods:namePart>
+                                        <mods:namePart type="family">Baier</mods:namePart>
+                                        <mods:role>
+                                            <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                                            <mods:roleTerm type="text">Verfasser</mods:roleTerm>
+                                        </mods:role>
+                                    </mods:name>
+                                    <mods:typeOfResource>text</mods:typeOfResource>
+                                    <mods:originInfo>
+                                        <mods:dateIssued keyDate="yes">1975</mods:dateIssued>
+                                    </mods:originInfo>
+                                    <mods:originInfo>
+                                        <mods:place>
+                                            <mods:placeTerm type="text">Frankfurt</mods:placeTerm>
+                                        </mods:place>
+                                        <mods:publisher>
+                                            Universitätsbibliothek Johann Christian Senckenberg
+                                        </mods:publisher>
+                                        <mods:dateIssued encoding="w3cdtf">2018</mods:dateIssued>
+                                        <mods:dateIssued>2018</mods:dateIssued>
+                                        <mods:edition>[Electronic ed.]</mods:edition>
+                                    </mods:originInfo>
+                                    <mods:language>
+                                        <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+                                    </mods:language>
+                                    <mods:note type="statement of responsibility">Ernst Baier</mods:note>
+                                    <mods:classification authority="dnb">590</mods:classification>
+                                    <mods:identifier type="urn">urn:nbn:de:hebis:30:4-140904</mods:identifier>
+                                    <mods:accessCondition type="use and reproduction"
+                                                          xlink:href="http://rightsstatements.org/vocab/InC/1.0/"
+                                                          displayLabel="Nutzungsrechte eingeschränkt">reserved
+                                    </mods:accessCondition>
+                                    <mods:relatedItem type="host">
+                                        <mods:titleInfo>
+                                            <mods:title>Ornithologische Mitteilungen</mods:title>
+                                            <mods:subTitle>
+                                                Monatsschrift für Vogelbeobachtung, Feldornithologie und Avifaunistik
+                                            </mods:subTitle>
+                                        </mods:titleInfo>
+                                        <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/"
+                                                   valueURI="http://d-nb.info/gnd/106301462">
+                                            <mods:namePart>Thiede, Walther</mods:namePart>
+                                            <mods:namePart type="given">Walther</mods:namePart>
+                                            <mods:namePart type="family">Thiede</mods:namePart>
+                                            <mods:role>
+                                                <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
+                                                <mods:roleTerm type="text">Herausgeber</mods:roleTerm>
+                                            </mods:role>
+                                        </mods:name>
+                                        <mods:typeOfResource>text</mods:typeOfResource>
+                                        <mods:genre authority="hebis">Zeitschrift</mods:genre>
+                                        <mods:originInfo>
+                                            <mods:place>
+                                                <mods:placeTerm type="text">[Schlangenbad]</mods:placeTerm>
+                                            </mods:place>
+                                            <mods:publisher>[Biologie-Verl.]</mods:publisher>
+                                            <mods:place>
+                                                <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+                                            </mods:place>
+                                            <mods:publisher>Dr.-Walther-Thiede-Stiftung</mods:publisher>
+                                            <mods:dateIssued>
+                                                3. Jahrgang, Nr. 1 (Januar 1951) [?]-Jahrgang 52, Nr. 12 (2000) [?]
+                                            </mods:dateIssued>
+                                            <mods:dateIssued>Saale : Dr.-Walther-Thiede-Stiftung, 1948-
+                                            </mods:dateIssued>
+                                        </mods:originInfo>
+                                        <mods:originInfo>
+                                            <mods:place>
+                                                <mods:placeTerm type="text">Frankfurt am Main</mods:placeTerm>
+                                            </mods:place>
+                                            <mods:publisher>
+                                                Universitätsbibliothek Johann Christian Senckenberg
+                                            </mods:publisher>
+                                            <mods:dateIssued encoding="w3cdtf" point="start">2020</mods:dateIssued>
+                                            <mods:dateIssued encoding="w3cdtf" point="end">2020</mods:dateIssued>
+                                            <mods:edition>[Electronic ed.]</mods:edition>
+                                        </mods:originInfo>
+                                        <mods:language>
+                                            <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+                                        </mods:language>
+                                        <mods:note type="statement of responsibility">herausgegeben von Dr. Walther
+                                            Thiede
+                                        </mods:note>
+                                        <mods:note type="date/sequential designation">
+                                            3. Jahrgang, Nr. 1 (Januar 1951) [?]-Jahrgang 52, Nr. 12 (2000) [?]
+                                        </mods:note>
+                                        <mods:note>Titelzusatz variiert</mods:note>
+                                        <mods:note>Mehr nicht digitalisiert</mods:note>
+                                        <mods:note>Reproduktion</mods:note>
+                                        <mods:identifier type="urn">urn:nbn:de:hebis:30:4-234644</mods:identifier>
+                                        <mods:extension>
+                                            <vlz:externalType recordSyntax="pica" code="Ob"/>
+                                            <vlz:info version="1"/>
+                                        </mods:extension>
+                                        <mods:recordInfo>
+                                            <mods:recordCreationDate encoding="marc">15-03-18</mods:recordCreationDate>
+                                            <mods:recordChangeDate encoding="marc">02-02-21</mods:recordChangeDate>
+                                            <mods:recordIdentifier source="ubffmbiodiv">427517435
+                                            </mods:recordIdentifier>
+                                            <mods:descriptionStandard>rda</mods:descriptionStandard>
+                                        </mods:recordInfo>
+                                        <mods:extension>
+                                            <vl:id>9671217</vl:id>
+                                            <vl:odid>55</vl:odid>
+                                            <vl:datatype>1</vl:datatype>
+                                            <vl:type>24</vl:type>
+                                            <vl:state>1</vl:state>
+                                        </mods:extension>
+                                        <mods:part>
+                                            <mods:detail type="issue">
+                                                <mods:number>12</mods:number>
+                                            </mods:detail>
+                                            <mods:date encoding="w3cdtf">1975-12</mods:date>
+                                            <mods:detail type="volume">
+                                                <mods:number>27</mods:number>
+                                            </mods:detail>
+                                            <mods:date encoding="w3cdtf">1975</mods:date>
+                                        </mods:part>
+                                    </mods:relatedItem>
+                                    <mods:part>
+                                        <mods:detail type="issue">
+                                            <mods:number>12</mods:number>
+                                        </mods:detail>
+                                        <mods:detail type="volume">
+                                            <mods:number>27</mods:number>
+                                        </mods:detail>
+                                        <mods:extent unit="page">
+                                            <mods:start>248</mods:start>
+                                        </mods:extent>
+                                        <mods:date encoding="iso8601">1975</mods:date>
+                                    </mods:part>
+                                    <mods:extension>
+                                        <vlz:externalType recordSyntax="pica" code="Oo"/>
+                                        <vlz:info version="1"/>
+                                    </mods:extension>
+                                    <mods:recordInfo>
+                                        <mods:recordCreationDate encoding="marc">07-11-18</mods:recordCreationDate>
+                                        <mods:recordChangeDate encoding="marc">23-12-20</mods:recordChangeDate>
+                                        <mods:recordIdentifier source="ubffmbiodiv">438564162</mods:recordIdentifier>
+                                        <mods:descriptionStandard>rda</mods:descriptionStandard>
+                                    </mods:recordInfo>
+                                </mods:mods>
+                            </mets:xmlData>
+                        </mets:mdWrap>
+                    </mets:dmdSec>
+                    <mets:amdSec ID="amd9738495">
+                        <mets:rightsMD ID="rights9738495">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                        <dv:license>reserved</dv:license>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov9738495">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>https://hds.hebis.de/ubffm/Record/HEB438564162</dv:reference>
+                                        <dv:presentation>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv/id/9738495
+                                        </dv:presentation>
+                                        <dv:iiif>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv/i3f/v20/9738495/manifest
+                                        </dv:iiif>
+                                        <dv:sru>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv/proto_ftsearch/9738495
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:amdSec ID="amd9671217">
+                        <mets:rightsMD ID="rights9671217">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                        <dv:license>reserved</dv:license>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov9671217">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>https://hds.hebis.de/ubffm/Record/HEB427517435</dv:reference>
+                                        <dv:presentation>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv/id/9671217
+                                        </dv:presentation>
+                                        <dv:sru>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv/proto_ftsearch/9671217
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:amdSec ID="amd9702743">
+                        <mets:rightsMD ID="rights9702743">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                        <dv:license>reserved</dv:license>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov9702743">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>
+                                            https://hds.hebis.de/ubffm/Record/HEBubffm-server%3A9702743
+                                        </dv:reference>
+                                        <dv:presentation>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv/id/9702743
+                                        </dv:presentation>
+                                        <dv:iiif>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv/i3f/v20/9702743/manifest
+                                        </dv:iiif>
+                                        <dv:sru>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv/proto_ftsearch/9702743
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:amdSec ID="amd9738413">
+                        <mets:rightsMD ID="rights9738413">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+                                <mets:xmlData>
+                                    <dv:rights>
+                                        <dv:ownerLogo>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv//domainresource/static/graphics/connectors/viewerLogo.gif
+                                        </dv:ownerLogo>
+                                        <dv:ownerSiteURL>http://sammlungen.ub.uni-frankfurt.de</dv:ownerSiteURL>
+                                        <dv:license>reserved</dv:license>
+                                    </dv:rights>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:rightsMD>
+                        <mets:digiprovMD ID="digiprov9738413">
+                            <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+                                <mets:xmlData>
+                                    <dv:links>
+                                        <dv:reference>
+                                            https://hds.hebis.de/ubffm/Record/HEBubffm-server%3A9738413
+                                        </dv:reference>
+                                        <dv:presentation>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv/id/9738413
+                                        </dv:presentation>
+                                        <dv:iiif>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv/i3f/v20/9738413/manifest
+                                        </dv:iiif>
+                                        <dv:sru>
+                                            https://sammlungen.ub.uni-frankfurt.de/biodiv/proto_ftsearch/9738413
+                                        </dv:sru>
+                                    </dv:links>
+                                </mets:xmlData>
+                            </mets:mdWrap>
+                        </mets:digiprovMD>
+                    </mets:amdSec>
+                    <mets:fileSec>
+                        <mets:fileGrp USE="TEASER">
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2018-05-09T06:01:06.953500Z"
+                                       ID="IMG_TEASER_9676026">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/9676026"
+                                        LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2018-05-09T18:14:12.577100Z"
+                                       ID="IMG_TEASER_9695473">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/9695473"
+                                        LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2018-05-09T18:15:16.199300Z"
+                                       ID="IMG_TEASER_9695691">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/9695691"
+                                        LOCTYPE="URL"/>
+                            </mets:file>
+                            <mets:file MIMETYPE="image/jpeg" CREATED="2018-05-09T18:15:27.615700Z"
+                                       ID="IMG_TEASER_9695720">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/304/9695720"
+                                        LOCTYPE="URL"/>
+                            </mets:file>
+                        </mets:fileGrp>
+                        <mets:fileGrp USE="DOWNLOAD">
+                            <mets:file MIMETYPE="application/pdf" CHECKSUM="6a82af6682d79bf42be9491f26d4286936b205ba"
+                                       CREATED="2020-12-11T20:17:04.283800Z" CHECKSUMTYPE="SHA-1" SIZE="420409"
+                                       ID="PDF_9738495">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/pdf/9738495"
+                                        LOCTYPE="URL"/>
+                            </mets:file>
+                        </mets:fileGrp>
+                        <mets:fileGrp USE="DEFAULT">
+                            <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_9695720">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/1000/9695720"
+                                        LOCTYPE="URL"/>
+                            </mets:file>
+                        </mets:fileGrp>
+                        <mets:fileGrp USE="THUMBS">
+                            <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_9695720">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/128/9695720"
+                                        LOCTYPE="URL"/>
+                            </mets:file>
+                        </mets:fileGrp>
+                        <mets:fileGrp USE="MIN">
+                            <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_9695720">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/504/9695720"
+                                        LOCTYPE="URL"/>
+                            </mets:file>
+                        </mets:fileGrp>
+                        <mets:fileGrp USE="MAX">
+                            <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9695720">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/webcache/0/9695720"
+                                        LOCTYPE="URL"/>
+                            </mets:file>
+                        </mets:fileGrp>
+                        <mets:fileGrp USE="FULLTEXT">
+                            <mets:file MIMETYPE="text/xml" CREATED="2018-08-16T12:37:33.150000Z" ID="ALTO9695720">
+                                <mets:FLocat
+                                        xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/download/fulltext/alto3/9695720"
+                                        LOCTYPE="URL"/>
+                            </mets:file>
+                        </mets:fileGrp>
+                    </mets:fileSec>
+                    <mets:structMap TYPE="PHYSICAL">
+                        <mets:div TYPE="physSequence" ID="physroot">
+                            <mets:div ID="phys9695720" TYPE="page" LABEL="Seite 248" ORDER="1" ORDERLABEL="248">
+                                <mets:fptr FILEID="IMG_DEFAULT_9695720"/>
+                                <mets:fptr FILEID="IMG_THUMBS_9695720"/>
+                                <mets:fptr FILEID="IMG_MIN_9695720"/>
+                                <mets:fptr FILEID="IMG_MAX_9695720"/>
+                                <mets:fptr FILEID="ALTO9695720"/>
+                            </mets:div>
+                        </mets:div>
+                    </mets:structMap>
+                    <mets:structMap TYPE="LOGICAL">
+                        <mets:div ID="log9671217" DMDID="md9671217" ADMID="amd9671217" TYPE="periodical"
+                                  LABEL="Ornithologische Mitteilungen" ORDER="1">
+                            <mets:mptr LOCTYPE="URL"
+                                       xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=9671217"/>
+                            <mets:fptr FILEID="IMG_TEASER_9676026"/>
+                            <mets:div ID="log9702743" DMDID="md9702743" ADMID="amd9702743" TYPE="volume"
+                                      LABEL="27 (1975)" ORDER="1">
+                                <mets:mptr LOCTYPE="URL"
+                                           xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=9702743"/>
+                                <mets:fptr FILEID="IMG_TEASER_9695473"/>
+                                <mets:div ID="log9738413" DMDID="md9738413" ADMID="amd9738413" TYPE="issue"
+                                          LABEL="12 (12.1975)" ORDER="1">
+                                    <mets:mptr LOCTYPE="URL"
+                                               xlink:href="https://sammlungen.ub.uni-frankfurt.de/biodiv/oai/?verb=GetRecord&metadataPrefix=mets&identifier=9738413"/>
+                                    <mets:fptr FILEID="IMG_TEASER_9695691"/>
+                                    <mets:div ID="log11152146" TYPE="section" LABEL="Kleine Mitteilungen " ORDER="1">
+                                        <mets:div ID="log9738495" DMDID="md9738495" ADMID="amd9738495" TYPE="article"
+                                                  LABEL="Zur Nahrungssuche des Grünspechtes (Picus virdis) an Hauswänden"
+                                                  ORDER="1" CONTENTIDS="urn:nbn:de:hebis:30:4-140904">
+                                            <mets:fptr FILEID="PDF_9738495"/>
+                                            <mets:fptr FILEID="IMG_TEASER_9695720"/>
+                                        </mets:div>
+                                    </mets:div>
+                                </mets:div>
+                            </mets:div>
+                        </mets:div>
+                    </mets:structMap>
+                    <mets:structLink>
+                        <mets:smLink xlink:from="log9738495" xlink:to="physroot"/>
+                        <mets:smLink xlink:from="log9738495" xlink:to="phys9695720"/>
+                    </mets:structLink>
+                </mets:mets>
+            </metadata>
+        </record>
+    </GetRecord>
+</OAI-PMH>

@@ -1,8 +1,8 @@
 import os
+
 import pytest
 
 from VisualLibrary import (
-    VisualLibrary,
     Volume,
     Journal,
     Article,
@@ -17,10 +17,6 @@ TEST_DATA_FOLDER = f'{this_files_directory}/data/VisualLibrary'
 
 
 class TestVisualLibrary:
-    @pytest.fixture
-    def visual_library(self):
-        return VisualLibrary()
-
     def test_publication_year_hard_to_fetch(self, visual_library):
         issue_id = '10823380'
         vl_issue = visual_library.get_element_for_id(issue_id)

@@ -861,7 +861,10 @@ class Article(VisualLibraryExportElement):
             start_element = page_range_element.find(self.MODS_TAG_START_STRING)
             if start_element is not None:
                 start = start_element.text
-                end = page_range_element.find(self.MODS_TAG_END_STRING).text
+                end_node = page_range_element.find(self.MODS_TAG_END_STRING)
+
+                # Set start and end page equal, if no end but only the start page is given
+                end = end_node.text if end_node is not None else start
             else:
                 mods_list = page_range_element.find(self.MODS_TAG_LIST_STRING)
                 if mods_list is not None:
