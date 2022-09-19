@@ -105,6 +105,7 @@ class VisualLibraryExportElement(ABC):
     MODS_TAG_SUBTITLE_STRING = 'mods:subtitle'
     MODS_TAG_TITLE_INFO_STRING = 'mods:titleinfo'
     MODS_TAG_TITLE_STRING = 'mods:title'
+    MODS_TAG_LICENSE_INFO = 'mods:accesscondition'
 
     def __init__(self, vl_id, xml_importer, parent):
         self.xml_importer = xml_importer
@@ -123,6 +124,7 @@ class VisualLibraryExportElement(ABC):
         self.keywords = []
         self.label = self._own_section.label
         self.languages = []
+        self.license = None
         self.metadata = self._own_section.metadata
         self.order = self._own_section.order
         self.publication_date = None
@@ -142,6 +144,7 @@ class VisualLibraryExportElement(ABC):
         self._extract_publication_date_from_metadata()
         self._extract_publisher_from_metadata()
         self._extract_titles_from_metadata()
+        self._extract_license_from_metadata()
 
         logger.info('Created new {class_name}. ID: {id}'.format(class_name=self.__class__.__name__, id=vl_id))
 
@@ -403,6 +406,14 @@ class VisualLibraryExportElement(ABC):
 
         if translated_title_elements:
             self._add_translated_titles_to_title(translated_title_elements)
+
+    def _extract_license_from_metadata(self):
+        license_element = self.metadata.find(self.MODS_TAG_LICENSE_INFO)
+
+        if license_element is None:
+            return None
+
+        self.license = license_element[self.HREF_LINK_STRING]
 
     def _get_mods_caption_if_available(self):
         mods_captions = self._own_section.metadata.find(self.MODS_TAG_PART_STRING)

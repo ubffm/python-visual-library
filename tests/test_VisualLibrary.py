@@ -262,6 +262,15 @@ class TestVisualLibrary:
         author = instance.authors[0]
         assert author.given_name == 'Werner' and author.family_name == 'Hassenkamp'
 
+    @pytest.mark.parametrize(['item_id', 'license_url'],
+                             [
+                                 ('9273349', 'https://rightsstatements.org/vocab/InC/1.0/'),
+                                 ('4497496', 'https://creativecommons.org/licenses/by-nc-sa/4.0/')
+                             ])
+    def test_creative_commons_license_is_retrieved(self, visual_library, item_id, license_url):
+        instance = visual_library.get_element_for_id(item_id)
+        assert instance.license == license_url
+
 
 def test_remove_letters_from_alphanumeric_string():
     assert remove_letters_from_alphanumeric_string('1071953)') == '1071953'
