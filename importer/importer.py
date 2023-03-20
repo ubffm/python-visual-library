@@ -1,3 +1,5 @@
+from typing import Optional
+
 import base64
 
 import logging
@@ -219,6 +221,24 @@ class MetsImporter(XMLImporter):
         self.structure = [self.Section(sec, self.xml_data) for sec in subsections]
 
         self._resolve_mets_internal_id_references_for_section()
+
+    def resolve_resource_pointer(self, resource_pointer_data: dict, mets_file_group_section=None) -> Optional[File]:
+        """Returns a file object representing the given resource data."""
+
+        if mets_file_group_section is None:
+            mets_file_group_download = self.xml_data.find(self.METS_TAG_FILE_GROUP_STRING)
+
+            if mets_file_group_download is None:
+                return None
+
+        logger.debug('Processing file pointer: {}'.format(resource_pointer_data))
+        file_tag_id = resource_pointer_data.get(self.ATTRIBUTE_FILE_ID_STRING)
+        file_metadata = mets_file_group_download.find(
+            attrs={self.ID_STRING: file_tag_id})
+        if file_metadata is not None:
+            return self._get_file_from_metadata(file_metadata)
+
+        return None
 
     def _get_file_from_metadata(self, mets_data):
         """ Creates a file object and adds data as far as possible.

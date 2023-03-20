@@ -136,6 +136,7 @@ class VisualLibraryExportElement(ABC):
         self.volume_number = None
         self.issue_number = None
         self.pdf_url = self._extract_pdf_url_from_metadata()
+        self.teaser_image_url = None
 
         self._extract_top_parent_data_from_metadata()
         self._extract_parent_metadata()
@@ -145,6 +146,7 @@ class VisualLibraryExportElement(ABC):
         self._extract_publisher_from_metadata()
         self._extract_titles_from_metadata()
         self._extract_license_from_metadata()
+        self._extract_teaser_image_url_from_metadata()
 
         logger.info('Created new {class_name}. ID: {id}'.format(class_name=self.__class__.__name__, id=vl_id))
 
@@ -414,6 +416,14 @@ class VisualLibraryExportElement(ABC):
             return None
 
         self.license = license_element[self.HREF_LINK_STRING]
+
+    def _extract_teaser_image_url_from_metadata(self):
+        for pointer_data in self._own_section.file_pointers_data:
+            file_id = pointer_data.attrs.get("fileid")
+            if "TEASER" in file_id:
+                file_section = self.xml_importer.resolve_resource_pointer(pointer_data)
+                if file_section is not None:
+                    self.teaser_image_url = file_section.url
 
     def _get_mods_caption_if_available(self):
         mods_captions = self._own_section.metadata.find(self.MODS_TAG_PART_STRING)

@@ -271,6 +271,15 @@ class TestVisualLibrary:
         instance = visual_library.get_element_for_id(item_id)
         assert instance.license == license_url
 
+    @pytest.mark.parametrize(["item_id", "expected_image_url"],
+                             [
+                                 ("12543503", "https://sammlungen.ub.uni-frankfurt.de/download/webcache/304/12535112"),
+                                 ("12535182", "https://sammlungen.ub.uni-frankfurt.de/download/webcache/304/12535184")
+                             ])
+    def test_teaser_image_url_has_own_property(self, visual_library, item_id, expected_image_url):
+        instance = visual_library.get_element_for_id(item_id)
+        assert instance.teaser_image_url == expected_image_url
+
 
 def test_remove_letters_from_alphanumeric_string():
     assert remove_letters_from_alphanumeric_string('1071953)') == '1071953'
