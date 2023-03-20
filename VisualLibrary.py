@@ -137,6 +137,7 @@ class VisualLibraryExportElement(ABC):
         self.issue_number = None
         self.pdf_url = self._extract_pdf_url_from_metadata()
         self.teaser_image_url = None
+        self.teaser_image_file = None
 
         self._extract_top_parent_data_from_metadata()
         self._extract_parent_metadata()
@@ -424,6 +425,8 @@ class VisualLibraryExportElement(ABC):
                 file_section = self.xml_importer.resolve_resource_pointer(pointer_data)
                 if file_section is not None:
                     self.teaser_image_url = file_section.url
+                    self.teaser_image_file = File()
+                    self.teaser_image_file.url = file_section.url
 
     def _get_mods_caption_if_available(self):
         mods_captions = self._own_section.metadata.find(self.MODS_TAG_PART_STRING)
