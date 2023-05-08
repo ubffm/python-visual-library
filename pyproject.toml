@@ -12,10 +12,10 @@ classifiers = [
     "Programming Language :: Python :: 3"
 ]
 dependencies = [
-    "beautifulsoup4==4.11.2",
+    "beautifulsoup4~=4.12",
     "lxml",
     "more-itertools==8.4.0",
-    "requests==2.28.2",
+    "requests~=2.30",
 ]
 version = "1.2.0"
 
