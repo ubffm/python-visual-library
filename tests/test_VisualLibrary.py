@@ -6,9 +6,10 @@ from VisualLibrary import (
     Volume,
     Journal,
     Article,
-    Page,
-    remove_letters_from_alphanumeric_string
+    Page
 )
+from VisualLibrary.VisualLibrary import remove_letters_from_alphanumeric_string
+
 
 IMAGE_MIME_TYPE = 'image/jpeg'
 

@@ -1,12 +1,11 @@
-from .VisualLibrary import (Article, File, Journal, Page, VisualLibrary, Volume,
-                            remove_letters_from_alphanumeric_string)
+from .VisualLibrary import (Article, File, Issue, Journal, Page, VisualLibrary, Volume)
 
 __all__ = [
     "Article",
     "File",
+    "Issue",
     "Journal",
     "Page",
     "VisualLibrary",
     "Volume",
-    "remove_letters_from_alphanumeric_string",
 ]
