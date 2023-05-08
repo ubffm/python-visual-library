@@ -4,7 +4,7 @@ import re
 from datetime import datetime
 from pathlib import Path
 
-from importer.importer import File, MetsImporter, DEBUG_FILE_DATA_CONTENT_BYTE_STRING
+from VisualLibrary.importer.importer import File, MetsImporter, DEBUG_FILE_DATA_CONTENT_BYTE_STRING
 
 CURRENT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 TEST_DATA_DIRECTORY = '{base_dir}/data/Importer'.format(base_dir=CURRENT_DIRECTORY)

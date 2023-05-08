@@ -3,7 +3,7 @@ import pathlib
 import pytest
 
 from VisualLibrary import VisualLibrary
-from importer.importer import MetsImporter
+from VisualLibrary.importer.importer import MetsImporter
 
 
 @pytest.fixture

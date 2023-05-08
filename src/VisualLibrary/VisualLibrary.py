@@ -8,7 +8,7 @@ import sys
 from bs4 import BeautifulSoup as Soup
 from bs4 import Tag
 
-from importer.importer import MetsImporter, File, HtmlImporter
+from .importer.importer import MetsImporter, File, HtmlImporter
 
 log_format = logging.Formatter('[%(asctime)s] [%(levelname)s] - %(message)s')
 logger = logging.getLogger('VisualLibrary')

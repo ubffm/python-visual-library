@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup as Soup
 from datetime import datetime
 
-from .htmlhandler import get_content_from_url
+from VisualLibrary.importer.htmlhandler import get_content_from_url
 
 logger = logging.getLogger('Import')
 BASE64_ENCODING_STRING = 'base64'
