@@ -14,7 +14,7 @@ classifiers = [
 dependencies = [
     "beautifulsoup4~=4.12",
     "lxml",
-    "more-itertools==8.4.0",
+    "more-itertools~=8.4",
     "requests~=2.30",
 ]
 version = "1.2.0"
