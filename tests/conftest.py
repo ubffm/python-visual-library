@@ -19,9 +19,9 @@ def mets_importer():
 @pytest.fixture
 def test_data_directory():
     current_path = pathlib.Path(__file__).parent
-    return current_path / 'data'
+    return current_path / "data"
 
 
 @pytest.fixture
 def article_test_data_directory(test_data_directory):
-    return test_data_directory / 'Article'
+    return test_data_directory / "Article"
