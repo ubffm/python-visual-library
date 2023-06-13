@@ -17,7 +17,7 @@ dependencies = [
     "more-itertools~=8.4",
     "requests~=2.30",
 ]
-version = "1.2.0"
+version = "1.2.1"
 
 [tool.setuptools.packages.find]
 where = ["src"]
