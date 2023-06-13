@@ -178,17 +178,6 @@ class HtmlImporter(XMLImporter):
 class MetsImporter(XMLImporter):
     """A class for importing METS data."""
 
-    ATTRIBUTE_FILTER_FOR_SECTIONS = {
-        "type": [
-            "periodical",
-            "volume",
-            "issue",
-            "article",
-            "section",
-            "document",
-            "illustration",
-        ]
-    }
     ATTRIBUTE_DOWNLOAD_STRING = "download"
     ATTRIBUTE_FILE_ID_STRING = "fileid"
     ATTRIBUTE_KEY_USE_STRING = "use"
@@ -240,7 +229,6 @@ class MetsImporter(XMLImporter):
 
         subsections = mets_structure.find_all(
             name=self.METS_TAG_DIV_STRING,
-            attrs=self.ATTRIBUTE_FILTER_FOR_SECTIONS,
             recursive=False,
         )
         self.structure = [self.Section(sec, self.xml_data) for sec in subsections]
@@ -359,7 +347,6 @@ class MetsImporter(XMLImporter):
 
             subsections = mets_data.find_all(
                 name=MetsImporter.METS_TAG_DIV_STRING,
-                attrs=MetsImporter.ATTRIBUTE_FILTER_FOR_SECTIONS,
                 recursive=True,
             )
             self.sections = [

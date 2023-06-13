@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from VisualLibrary import Article, Journal, Page, Volume
+from VisualLibrary import Article, Journal, Page, VisualLibraryExportElement, Volume
 from VisualLibrary.VisualLibrary import remove_letters_from_alphanumeric_string
 
 IMAGE_MIME_TYPE = "image/jpeg"
@@ -20,19 +20,23 @@ class TestVisualLibrary:
 
     def test_call_for_journal(self, visual_library):
         """Metadata from:
-        https://sammlungen.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10688403
+        https://sammlungen.ub.uni-frankfurt.de/oai/?verb=GetRecord
+        &metadataPrefix=mets&identifier=10688403
         """
         xml_test_file_path = f"{TEST_DATA_FOLDER}/journal-oai-response.xml"
 
         vl_object = visual_library.get_element_from_xml_file(xml_test_file_path)
-        journal_label = "Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens"
+        journal_label = (
+            "Decheniana: Verhandlungen des Naturhistorischen "
+            "Vereins der Rheinlande und Westfalens"
+        )
 
         assert isinstance(vl_object, Journal)
         assert vl_object.label == "Decheniana"
         assert vl_object.title == "Decheniana"
         assert (
-            vl_object.subtitle
-            == "Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens"
+            vl_object.subtitle == "Verhandlungen des Naturhistorischen Vereins der "
+            "Rheinlande und Westfalens"
         )
         assert vl_object.publication_date == "1937-1954"
         assert vl_object.languages == ["ger"]
@@ -59,12 +63,16 @@ class TestVisualLibrary:
 
     def test_call_for_volume(self, visual_library):
         """Metadata from:
-        https://sammlungen.ub.uni-frankfurt.de/oai/?verb=GetRecord&metadataPrefix=mets&identifier=10771471
+        https://sammlungen.ub.uni-frankfurt.de/oai/?verb=
+        GetRecord&metadataPrefix=mets&identifier=10771471
         """
         xml_test_file_path = f"{TEST_DATA_FOLDER}/volume-oai-response.xml"
 
         vl_object = visual_library.get_element_from_xml_file(xml_test_file_path)
-        journal_label = "Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens"
+        journal_label = (
+            "Decheniana: Verhandlungen des Naturhistorischen Vereins der "
+            "Rheinlande und Westfalens"
+        )
 
         assert isinstance(vl_object, Volume)
         assert vl_object.label == "95 A (1937)"
@@ -90,7 +98,10 @@ class TestVisualLibrary:
         xml_test_file_path = f"{TEST_DATA_FOLDER}/article-oai-response.xml"
 
         vl_object = visual_library.get_element_from_xml_file(xml_test_file_path)
-        journal_label = "Decheniana: Verhandlungen des Naturhistorischen Vereins der Rheinlande und Westfalens"
+        journal_label = (
+            "Decheniana: Verhandlungen des Naturhistorischen Vereins "
+            "der Rheinlande und Westfalens"
+        )
 
         assert isinstance(vl_object, Article)
         assert vl_object.title == "Diluvialer Gehängeschutt südlich von Bonn"
@@ -234,9 +245,8 @@ class TestVisualLibrary:
             "der ICE-Neubaustrecke Köln-Rhein/Main"
         )
         assert (
-            vl_issue.title["eng"]
-            == "Geology and paleontology of the Devonian and Tertiary at the ICE line in "
-            "the Siebengebirge (Bonn, FRG)"
+            vl_issue.title["eng"] == "Geology and paleontology of the Devonian and "
+            "Tertiary at the ICE line in the Siebengebirge (Bonn, FRG)"
         )
         assert vl_issue.subtitle["eng"] is None
 
@@ -294,8 +304,8 @@ class TestVisualLibrary:
         instance = visual_library.get_element_for_id(volume_id)
         assert instance.title == "Nr. 1 (Januar 1930)"
         assert (
-            instance.journal_label
-            == "Journal für Ornithologie: Zeitschrift der Deutschen Ornithologen-Gesellschaft"
+            instance.journal_label == "Journal für Ornithologie: Zeitschrift der "
+            "Deutschen Ornithologen-Gesellschaft"
         )
 
     def test_ignores_publisher_as_author(self, visual_library):
@@ -337,6 +347,19 @@ class TestVisualLibrary:
     ):
         instance = visual_library.get_element_for_id(item_id)
         assert instance.teaser_image_url == expected_image_url
+
+    def test_find_metadata_node_in_mets_data(self, visual_library) -> None:
+        """Fix: In the mets data, some document types were not found and raised:
+
+        File "/src/visuallibrary/src/VisualLibrary/VisualLibrary.py", line 121,
+            in __init__
+            self.files = self._own_section.files
+        AttributeError: 'NoneType' object has no attribute 'files'
+        """
+        item_id = "4655656"
+        instance = visual_library.get_element_for_id(item_id)
+
+        assert isinstance(instance, VisualLibraryExportElement)
 
 
 def test_remove_letters_from_alphanumeric_string():

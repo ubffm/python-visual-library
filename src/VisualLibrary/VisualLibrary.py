@@ -1068,7 +1068,6 @@ def get_object_type_from_xml(xml_data: Soup, vl_id: str):
 
     sections = xml_data.find_all(
         VisualLibraryExportElement.METS_TAG_DIV_STRING,
-        attrs=MetsImporter.ATTRIBUTE_FILTER_FOR_SECTIONS,
     )
 
     if sections:
@@ -1267,7 +1266,7 @@ class VisualLibrary:
 
     def _create_vl_export_object(
         self, vl_id: str, xml_data: Soup
-    ) -> (VisualLibraryExportElement, None):
+    ) -> Optional[VisualLibraryExportElement]:
         object_type = get_object_type_from_xml(xml_data, vl_id)
         if object_type is not None:
             xml_importer = MetsImporter()
