@@ -27,4 +27,6 @@ exclude = ["tests*"]
 dev = [
     "pytest~=7.1",
     "pytest-cov",
+    "black",
+    "isort"
 ]
