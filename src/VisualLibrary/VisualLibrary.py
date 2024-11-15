@@ -459,8 +459,11 @@ class VisualLibraryExportElement(ABC):
 
         if license_element is None:
             return None
-
-        self.license = license_element[self.HREF_LINK_STRING]
+        
+        try:
+            self.license = license_element[self.HREF_LINK_STRING]
+        except KeyError:
+            self.license = license_element.get(self.HREF_LINK_STRING)
 
     def _extract_teaser_image_url_from_metadata(self):
         for pointer_data in self._own_section.file_pointers_data:
@@ -1090,7 +1093,8 @@ def get_object_type_from_xml(xml_data: Soup, vl_id: str):
 
 def subsections_have_resource_pointer(metdata: Soup, vl_id: str):
     own_section = metdata.find(attrs={"id": "log{}".format(vl_id)})
-    subsections = own_section.find_all(attrs=MetsImporter.ATTRIBUTE_FILTER_FOR_SECTIONS)
+    subsections = own_section.find_all(VisualLibraryExportElement.METS_TAG_DIV_STRING)
+    #attrs=MetsImporter.ATTRIBUTE_FILTER_FOR_SECTIONS)
 
     return any(
         section.find(VisualLibraryExportElement.METS_TAG_RESOURCE_POINTER_STRING)
